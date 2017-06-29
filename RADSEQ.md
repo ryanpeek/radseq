@@ -195,6 +195,7 @@ you can use the number of loci you found in #4 (good to check both really)
    - `cat.sh`
    - `getLoci.py` 
    
+   
 11. VIM (or another text editor) `RecoverLocusSpecificReads.sh` to reflect your ../data_list and two fastq files (../_R1.fastq and ../_R2.fastq). Also adjust $x -le ? to reflect the number of files in your data_list (so if you have aa->ag, ? = 7)
  - This builds shell scripts in the PRICE directory for each aa -> whatever that you have
 
