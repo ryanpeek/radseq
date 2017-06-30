@@ -7,11 +7,19 @@ output:
 
 # *UNIX/BASH COMMANDS*
 ## Basic commands refresher
+### Server runs
+To log into the server `ssh ____@agri.cse.ucdavis.edu`   where ___ is your username
 
-### Cancel Cluster Jobs
- - to cancel cluster tasks:
-   - `scancel [JOBNUMBER]`
-   
+To check what is running on the server right now `top`
+
+To start a program on the server and not the head node `sbatch ____`
+
+To check whether sbatch is running, type `smap -c | grep your_user_name`
+
+To check error files `less slurm ___` The latest file should have the highest number
+
+To cancel server tasks `scancel [JOBNUMBER]`
+
 ### Word count/file counts
  - `wc -l` the fastq files
  - `ls -l *.hash | wc -l` count files in a dir
@@ -36,8 +44,6 @@ Find and replace many/every line
  - :%s:AMER:../AMER:
  - Alternatively you can say :7,12: for lines 7 through 12
 
-### Server runs
-To check whether sbatch is running, type `smap -c | grep your_user_name`
 
 ### Bioinformatic setup
 There are two ways of approaching all the scripts and programs necessary. Keep them in your /bin ($PATH), in a separate directory (like /scripts) or copy and paste them in the directory you are working in. The last way allows for project specific changes without changing the original script. 
@@ -63,7 +69,7 @@ Initial files are .fastq because they contain Q quality scores
 
 ---
 
-# DOWNLOADING ORIGINAL ILLUMINA FILES
+# *DOWNLOADING ORIGINAL ILLUMINA FILES*
  - All files come as zipped .fastq files
 1. Make a new directory `mkdir SOMM_`
 2. Files are always downloaded here
@@ -95,7 +101,7 @@ Initial files are .fastq because they contain Q quality scores
 
 ---
 
-# DE NOVO ASSEMBLY
+# *DE NOVO ASSEMBLY*
 ## Choosing Individuals
 1. Pick your best 5 - 10 individuals (using du -hs or wc -l)
 2. Copy these individuals (just RA) into a new directory
@@ -204,7 +210,6 @@ you can use the number of loci you found in #4 (good to check both really)
    - `cat.sh`
    - `getLoci.py` 
    
-   
 11. VIM (or another text editor) `RecoverLocusSpecificReads.sh` to reflect your ../data_list and two fastq files (../_R1.fastq and ../_R2.fastq). Also adjust $x -le ? to reflect the number of files in your data_list (so if you have aa->ag, ? = 7)
  - This builds shell scripts in the PRICE directory for each aa -> whatever that you have
 
@@ -241,7 +246,7 @@ you can use the number of loci you found in #4 (good to check both really)
 
 ---
  
-# ALIGN INDIVIDUALS TO LOCI
+# *ALIGN INDIVIDUALS TO LOCI*
 
  1. Build index of contigs: bwa index `final_contigs_300.fasta` or `A_model_genome.fasta`
   - Files will now end in .amb, .ann, etc.
@@ -253,7 +258,7 @@ you can use the number of loci you found in #4 (good to check both really)
    - It's taking all fastq files (R1 and R2) and aligning to the _300.fasta file (or model genome file)
 4. This should create your final bam files   
 
-# SUBSAMPLING WITH SAMTOOLS
+# *SUBSAMPLING WITH SAMTOOLS*
 
 - Look at Individual Alignments
  - `samtools flagstat ALAME_AH_2_R1.sort.flt.bam`   Could also be done on _.sort.bam
@@ -320,8 +325,9 @@ Example:
 **Create a new subsampled bamlist**
 - `ls *_100000.bam > _subbamlist`  
 
-# PCA
+# *PCA*
 **This is a general way to generate a principal component analysis from your subsampled bam files**
+
 1. Obtain scripts 
 pca_calc.sh and plotPCA_2.R and pca_plot.sh
 2. Run pca_calc.sh
@@ -329,48 +335,45 @@ pca_calc.sh and plotPCA_2.R and pca_plot.sh
 3. `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
 4. VIM (or other text editor) out.clst and insert a header FID IID CLUSTER   (IID changes symbol; CLUSTER changes color)
   - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
-5. 
+5. `sh pca_plot.sh`  This should create 3 pdfs (but can be modified by modifying the script)
 
-# ANGSD
+## Connect to Cluster to put these files in your local directory (your computer)
+
+- Open a new shell window using `ctrl t`
+
+> `sftp __@agri.cse.ucdavis.edu` where __ is your username for the server
+> `cd _/_`  navigate to whichever directory has these files
+> `get *pdf` Or download each file independently
+
+- Incidentially to put something on the server
+
+Make sure you are in the local directory that contains the file(s)
+
+> `put ___`  puts it in your home directory on the server
+
+# *ANGSD*
 **This is the primary program for analyzing the data from a population genetics standpoint**
-- For a full understanding, see 
-Manipulate to get the allele frequences.
- - `cp ~jbaumste/Roach_Hitch/Roach/pca_calc.sh ./`
- - `cp ~jbaumste/Roach_Hitch/Roach/pca_plot.sh ./`
- - `cp ~millermr/scripts/plotPCA_2.R ./`
+**Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions** 
+This program has too many options to put here but a simple explanation may eventually be done
+- For a full understanding, see http://www.popgen.dk/angsd/index.php/ANGSD
 
-Create a bamlist of filtered samples:
- - `ls *_90000.bam > bamlist`
-
-Now filter out the flt_90000 from the file name
- - `sed 's/_R1\.sort\.flt_300000\.bam/ 1 1/g' bamlist2 > out_rabo2.clst`
- - Then `vim out_rabo2.clst` and add FID IID CLUSTER to the header
-   - `out_rabo3.clst` is the updated >300000 sequences
-   - `out_rabo4.clst` is the Sierra only pops
-
-Now create covar data for PCA from bamlist
- - `sbatch pca_calc.sh bamlist2 out_rabo3` (this took 25 min)
- - `sbatch pca_calc.sh bamlist3 out_rabo4` (this took 25 min)
-
-## PCA
-
-Use the existing .covar matrix to build a PCA plot
-- `sh pca_plot.sh out_rabo1` # this is 90k all pops
-- `sh pca_plot.sh out_rabo3` # this is the 300k all pops
-- `sh pca_plot.sh out_rabo4` # this is the sierran pops only
-
-## Connect to Cluster for Local File Access
-
-Need to connect to copy files
-
-> `sftp rapeek@agri.cse.ucdavis.edu`
-> `cd projects/rabo/fastq`
-> `get *pdf`
-
-# Use `angsd`
+# *ADMIXTURE*
+1. Obtain the scripts Beagleinput.sh & NGSAdmixture.sh & Multi_K_NGSadmixture.sh & Admix_plot.R
+2. Using your bamlist, generate a Beagle input file `sbatch Beagleinput.sh bamlist out`  (out can be any name you want)
+3a. To make 1 version of multiple Ks
+  - `sbatch NGSAdmixture.sh ___.beagle.gz out K`     (where K can be adjusted in the script) OR
+3b. To make multiple versions of multiple Ks
+  - `sh Multi_K_NGSadmix.sh __  K`   This currently makes 3 version per K but can be modified in the script
+4. The results should be various outputs out__.qopt where __ is a number (e.g. 11, 12,13, 21, 22, 23 and so on)
+5. You can run an R script `Rscript Admix_plot.R __.qopt bamlist.input K out.pdf`  which will plot the admixture graph
+6. For Evanno `grep -h "^best" --no-group-separator NAME.log | cut -c11 - 24 > FILE`
 
 
 
-# RESULTS/NOTES
 
-Admixture may show more structure because it's using the allele frequences. For PCA of structure you may not see much because populations in Sierras aren't as old as the coastal pops and haven't had as much time to accrue mutations (and odds of picking a mutation on a SNP are low). So if we do see a signal it needs to be due to really strong selection or populations diverged for a long time.
+
+
+
+
+
+
