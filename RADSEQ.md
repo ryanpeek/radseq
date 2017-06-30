@@ -13,6 +13,10 @@ To log into the server `ssh ____@agri.cse.ucdavis.edu`   where ___ is your usern
 To check what is running on the server right now `top`
 
 To start a program on the server and not the head node `sbatch ____`
+  - Must use -t for time needed to run program so `sbatch -t 24:00:00 __` would be for 24 hrs
+  - Must use -p for imporance (low, med, high) so `sbatch -t time -p high ___` for some time with high importance
+**Although not always shown below, all sbatch must have -t and -p or they will fail to run**
+  - Added memory is also posssible `sbatch --mem=16G -t time - p high ___` For memory intensive jobs (16, 32, 64, etc.)
 
 To check whether sbatch is running, type `smap -c | grep your_user_name`
 
@@ -37,7 +41,9 @@ To cancel server tasks `scancel [JOBNUMBER]`
  - Screen detach (`Ctrl a + d`)
  - to kill screen `screen -r [name]` then `exit`
 
-### VIM
+### Text Editors
+While there are many available, we prefer to use VIM
+
 Find and replace many/every line
 
  - :%s: everyline
@@ -71,30 +77,40 @@ Initial files are .fastq because they contain Q quality scores
 
 # *DOWNLOADING ORIGINAL ILLUMINA FILES*
  - All files come as zipped .fastq files
+ 
 1. Make a new directory `mkdir SOMM_`
+
 2. Files are always downloaded here
    `cp ~millermr/UCDavis/SOMM_/*index_* ./`
  - to learn plate barcode, open info.txt in SOMM folder SOMM____ INDEX___
+ 
 3. `gunzip s*`
+
 4. To keep things clean, remove the zip file (not the unzipped ones though)
+
 5. Obtain the following scripts
   - BarcodeSplitListBestRadPairedEnd.pl 
   - run_BestRadSplit_.sh (underscore is either a 6 or an 8 - depending on enzyme used)
+  
 6. If you have multiple runs, you should concatenate them together
  - Example `cat S*_R1.* > SOMM?_index?_ATTCCT_L001_R1.fastq`
  - Example `cat S*_R2.* > SOMM?_index?_ATTCCT_L001_R2.fastq`
+ 
 7. Use cat'd files (if necessary) to run run_BestRadSplit_.sh
  - This script runs the perl script BarcodeSplitListBestRadPairedEnd.pl and looks at R1 and R2 to find which has the Indiv. barcode (because the probe sits down randomly on either), then puts all the fragments with barcodes as RA and those without as RB. This should give you the same # of lines.
  - Script bases matches on location in file (as sorted) but a numeric value is available
  - RA will be slightly smaller (use `du -hs`) because the barcode is cleaved (but still in the name of the file)
+ 
 8. Obtain your metadate file. This file contains the name of each individual, its location on the plate, etc.
 
  <span style="color:red"> This part can be done now or later. But be absolutely sure that your indiv names, their plate location (A1, B1, etc.), and the appropriate barcode are all in sync. For example, the barcodes might be A1 A2 A3 (Across the plate row) while your sample names are A1 B1 C1 (Down the plate column)</span> 
 
 9. Replace barcode with name of Indiv using Metadata file and script Barcode_to_Name
  - `sbatch -t 2880 -p high Barcode_to_Name metadatafile`  2880 is the number of minutes (estimate to run - adjustable)
+ 
 10. Concatenate each individuals multiple files into one RA, RB per indiv.
  - `sbatch -t 2880 -p high Concatenate.sh` You might need to hardcode the metadata file into this script.
+ 
 11. Keep concatenated files, remove all others. They should be something like NAME1_RA.fastq and NAME1_RB.fastq
 
 **The de novo step is not necessary if a model genome is available (skip to Align individuals to loci)**   
@@ -104,23 +120,28 @@ Initial files are .fastq because they contain Q quality scores
 # *DE NOVO ASSEMBLY*
 ## Choosing Individuals
 1. Pick your best 5 - 10 individuals (using du -hs or wc -l)
+
 2. Copy these individuals (just RA) into a new directory
 
 ## Option 1 (Clean up reads in a single script)
 1. Make an indiv file list (for however many files you chose). Start by making a list of files using sed:
     - `ls fastq | sed "s:.fastq::g" > list`
+    
 2. Modify and run the script Hash_reads.sh, which will run all three perl scripts (see Option 2)
 
 ## Option 2 (Clean up reads one script/Indiv at a time)
 1. Modify file for quality control by throwing out seqs which do not meet threshold
  - Example `perl QualityFilter.pl Dpup_007_RA.fastq > Dpupt_oo7_RA_QF.fastq`
  - Do for all individuals you chose
+ 
 2. Find and shrink seqs to only unique ones while culling down file from 4 lines to 2 lines
  - `perl HashSeqs.pl Dpup_007_RA_QF.fastq Dpup_007 > Dpup_007_RA_QF.hash`
  - Do for all indivduals you chose
+ 
 3. Depending on coverage, you can look at the distribution and see the # of occurrences vs. # of sequences, expect a peak a some point followed by a dip and a recovery, with a spike early on (usually errors).
   - `perl PrintHashHisto.pl Dpup_007_RA_QF.hash`
   - Do for all individuals you chose
+  
 4. May need more samples because don't have many sequences within the distribution (low coverage)
 
 ## Alignment
@@ -219,7 +240,7 @@ you can use the number of loci you found in #4 (good to check both really)
 13. VIM `format_contigs.sh` and adjust as needed:
 - Change the number(?) in $x -le ? to whatever your total loci number is from #8 (*max 104000*) which covers the aa up to a? files in `format_contigs.sh`
 
-## Run scripts in each extendLoci directory IN ORDER:
+## Run scripts in each extendLoci directory IN ORDER from within that directory:
 
 14. Now run `RecoverLocusSpecificReads.sh` in `extend_Loci_?` directory
  - `sbatch RecoverLocusSpecificReads.sh with Loci list (data_list)`to create sh files in PRICE 
@@ -248,7 +269,7 @@ you can use the number of loci you found in #4 (good to check both really)
  
 # *ALIGN INDIVIDUALS TO LOCI*
 
- 1. Build index of contigs: bwa index `final_contigs_300.fasta` or `A_model_genome.fasta`
+ 1. Build index of contigs: `bwa index final_contigs_300.fasta` OR `A_model_genome.fasta`
   - Files will now end in .amb, .ann, etc.
  2. Using all `fastq` build a list of the fastq R1 and R2 files into different columns
    - `ls *_??_?_R2* > listR2` and `ls *_??_?_R1* > listR1`
@@ -328,13 +349,16 @@ Example:
 # *PCA*
 **This is a general way to generate a principal component analysis from your subsampled bam files**
 
-1. Obtain scripts 
-pca_calc.sh and plotPCA_2.R and pca_plot.sh
+1. Obtain scripts:   pca_calc.sh and plotPCA_2.R and pca_plot.sh
+
 2. Run pca_calc.sh
 - `sbatch pca_calc.sh subbamlist out`        (out can be any name for your outputted file)
+
 3. `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
+
 4. VIM (or other text editor) out.clst and insert a header FID IID CLUSTER   (IID changes symbol; CLUSTER changes color)
   - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
+  
 5. `sh pca_plot.sh`  This should create 3 pdfs (but can be modified by modifying the script)
 
 ## Connect to Cluster to put these files in your local directory (your computer)
@@ -354,19 +378,38 @@ Make sure you are in the local directory that contains the file(s)
 # *ANGSD*
 **This is the primary program for analyzing the data from a population genetics standpoint**
 **Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions** 
+
 This program has too many options to put here but a simple explanation may eventually be done
 - For a full understanding, see http://www.popgen.dk/angsd/index.php/ANGSD
 
 # *ADMIXTURE*
 1. Obtain the scripts Beagleinput.sh & NGSAdmixture.sh & Multi_K_NGSadmixture.sh & Admix_plot.R
+
 2. Using your bamlist, generate a Beagle input file `sbatch Beagleinput.sh bamlist out`  (out can be any name you want)
 3a. To make 1 version of multiple Ks
   - `sbatch NGSAdmixture.sh ___.beagle.gz out K`     (where K can be adjusted in the script) OR
 3b. To make multiple versions of multiple Ks
   - `sh Multi_K_NGSadmix.sh __  K`   This currently makes 3 version per K but can be modified in the script
+  
 4. The results should be various outputs out__.qopt where __ is a number (e.g. 11, 12,13, 21, 22, 23 and so on)
+
 5. You can run an R script `Rscript Admix_plot.R __.qopt bamlist.input K out.pdf`  which will plot the admixture graph
+
 6. For Evanno `grep -h "^best" --no-group-separator NAME.log | cut -c11 - 24 > FILE`
+
+7. An easier method may be to put all ___.qopt files on your local computer and use the simple online gui to make all of your admixture graphs  http://pophelper.com/
+
+# *FST*
+1. Obtain scripts: SAF.sh & pwfst.sh
+
+2. Create a bamlist with individuals from only the "population" you want to test
+
+3. Generate a simple allele frequencies file (.saf) for every "population" bamlist you want to compare
+  `sbatch -t 24:00:00 - p high SAF.sh bamlist outfile_name ancestral_file` (ancestral file can be __300.fasta)
+  
+4. For pairwise comparisons between "populations", use two ____.saf.index files you just generated
+  - `sbatch -t 24:00:00 -p high pwfst.sh pop1 pop2`  where pop1 is the 1st ___.saf.index and pop2 is the 2nd
+
 
 
 
