@@ -91,6 +91,8 @@ Initial files are .fastq because they contain Q quality scores
  - `sbatch -t 2880 -p high Concatenate.sh` You might need to hardcode the metadata file into this script.
 11. Keep concatenated files, remove all others. They should be something like NAME1_RA.fastq and NAME1_RB.fastq
 
+**The de novo step is not necessary if a model genome is available (skip to Align individuals to loci)**   
+
 ---
 
 # DE NOVO ASSEMBLY
@@ -226,8 +228,7 @@ you can use the number of loci you found in #4 (good to check both really)
  
 16. To obtain the file you need (aa_contigs.fasta) which was output from cat.sh, and needs to be in PRICE, `mv aa_contigs.fasta ../`
 
-<span style="color:red">Be careful not to "ls"" the extendLoci_* directories as the are very large and may stall your command line for quite a length of time </span> 
-
+<span style="color:red">Be careful not to "ls" the extendLoci_* directories as they are very full and may stall your command line</span> 
 
 17. Cat Loci_aa and Loci_bb together, if necessary
 `cat Loci_??_contigs.fasta > final_contigs.fasta`
@@ -238,25 +239,28 @@ you can use the number of loci you found in #4 (good to check both really)
    - The number of total loci is **??????/2** #4 or #8 above
    - The number of total loci with minimum length 300 is **??????/2** #18
 
-This concludes the de novo assembly. This is not necessary if a model genome is available   
 ---
  
 # ALIGN INDIVIDUALS TO LOCI
 
- - build index of contigs: bwa index `final_contigs_300.fasta`
- - In `fastq` build a list of the fasta R1 and R2 files into different columns
+ 1. Build index of contigs: bwa index `final_contigs_300.fasta` or `A_model_genome.fasta`
+  - Files will now end in .amb, .ann, etc.
+ 2. Using all `fastq` build a list of the fastq R1 and R2 files into different columns
    - `ls *_??_?_R2* > listR2` and `ls *_??_?_R1* > listR1`
    - Then paste lists together into columns: `paste listR1 listR2 | sed 's/\.fastq//g' > list`
- - Copy `cp ~millermr/common/run_align.sh ./`
- - `sh run_align.sh list ~/projects/rabo/PRICE/final_contigs_300.fasta`
- - it's taking all fastq files (R1 and R2) and aligning to 300 loci
+ 3. Obtain the run_align.sh script  For example copy `cp ~millermr/common/run_align.sh ./`
+   - `sh run_align.sh list ~/projects/rabo/PRICE/final_contigs_300.fasta`
+   - It's taking all fastq files (R1 and R2) and aligning to the _300.fasta file (or model genome file)
+4. This should create your final bam files   
 
-## Samtools
+# SUBSAMPLING WITH SAMTOOLS
 
- - Look at Alignments
- - `samtools flagstat ALAME_AH_2_R1.sort.flt.bam`
-   - 94696 + 0 in total (QC-passed reads + QC-failed reads)
-`0 + 0 duplicates
+- Look at Individual Alignments
+ - `samtools flagstat ALAME_AH_2_R1.sort.flt.bam`   Could also be done on _.sort.bam
+ 
+Example: 
+> 94696 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 duplicates
 94696 + 0 mapped (100.00%:-nan%)
 94696 + 0 paired in sequencing
 47492 + 0 read1
@@ -265,15 +269,16 @@ This concludes the de novo assembly. This is not necessary if a model genome is 
 94696 + 0 with itself and mate mapped
 0 + 0 singletons (0.00%:-nan%)
 1458 + 0 with mate mapped to a different chr
-655 + 0 with mate mapped to a different chr (mapQ>=5)`
+655 + 0 with mate mapped to a different chr (mapQ>=5)
 
 - Look at sizes of alignments
-- `du -hs *.sort.flt.bam | sort -h`
+  - `du -hs *.sort.flt.bam | sort -h`
+  - Note that these are sorted filtered bam files
+- Need to pick a threshold for sizes, we generally like alignments over 100,000.
 
-Need to pick a threshold for sizes, Mike tends to like alignments over 100,000.
-
+Example:
 > 332K	*NFAME_IH_3_R1.sort.flt.bam*
-> 468K	*NFAME_IH_2_R1.sort.flt.bam*
+  468K	*NFAME_IH_2_R1.sort.flt.bam*
 8.0M	ALAME_AH_2_R1.sort.flt.bam
 25M	NFMFA_SC_3_R1.sort.flt.bam
 31M	NFAME_IH_1_R1.sort.flt.bam
@@ -297,21 +302,38 @@ Need to pick a threshold for sizes, Mike tends to like alignments over 100,000.
 44M	MFAME_SG_2_R1.sort.flt.bam
 44M	RUBIC_PH_3_R1.sort.flt.bam
 
-### Filter out files that weren't sufficient
+**Copy script**
+ - `cp ~jbaumste/Roach_Hitch/Roach/sub_sample.sh ./`   Could be obtained from anywhere; this is just an example
 
-Need a list to get the bamlist of samples that the proper number of alignments (select a threshold of preference, typically 120k for salmon).
-
-**Copy files**
- - `cp ~jbaumste/Roach_Hitch/Roach/sub_sample.sh ./`
-
+### Filter out files that are not sufficient
 **Make a bam sublist**
- - `ls *flt.bam | sed 's/\.bam//g' > sublist` Make a list of the bam files (and remove bam)
+- Need to make a bamlist of samples that only have the proper number of alignments (select a threshold of preference, typically 120k for salmon).
+**Check each individual to find where alignments get too low - remove those individuals**
+- To check where alignments get too low, run a quick pca with different subsamples (e.g. 90k, 80k, etc. till structure falls apart) 
+
+- Make a list of the bam files (and remove bam)
+ - `ls *flt.bam | sed 's/\.bam//g' > sublist` 
 
 **Subset to a certain number**
- - `sbatch sub_sample.sh sublist 90000`
+ - `sbatch sub_sample.sh sublist 100000`
 
-## ANGSD
+**Create a new subsampled bamlist**
+- `ls *_100000.bam > _subbamlist`  
 
+# PCA
+**This is a general way to generate a principal component analysis from your subsampled bam files**
+1. Obtain scripts 
+pca_calc.sh and plotPCA_2.R and pca_plot.sh
+2. Run pca_calc.sh
+- `sbatch pca_calc.sh subbamlist out`        (out can be any name for your outputted file)
+3. `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
+4. VIM (or other text editor) out.clst and insert a header FID IID CLUSTER   (IID changes symbol; CLUSTER changes color)
+  - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
+5. 
+
+# ANGSD
+**This is the primary program for analyzing the data from a population genetics standpoint**
+- For a full understanding, see 
 Manipulate to get the allele frequences.
  - `cp ~jbaumste/Roach_Hitch/Roach/pca_calc.sh ./`
  - `cp ~jbaumste/Roach_Hitch/Roach/pca_plot.sh ./`
