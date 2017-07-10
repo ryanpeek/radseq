@@ -1,0 +1,12 @@
+---
+title: "RADSeq_w_code"
+date: "Updated: `r format(Sys.Date())`"
+output:
+  github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
