@@ -1,16 +1,20 @@
 RADSeq\_w\_code
 ================
-Updated: 2017-07-10
+Updated: 2017-08-22
 
--   [*UNIX/BASH COMMANDS*](#unixbash-commands)
-    -   [Basic commands refresher](#basic-commands-refresher)
+-   [*BACKGROUND*](#background)
+    -   [UNIX/BASH Commands refresher](#unixbash-commands-refresher)
         -   [Server runs](#server-runs)
         -   [Word count/file counts](#word-countfile-counts)
         -   [Check File Sizes](#check-file-sizes)
+        -   [Get First Column of sorted multicolumn file:](#get-first-column-of-sorted-multicolumn-file)
+        -   [List Files by Datetime Stamp](#list-files-by-datetime-stamp)
         -   [Screens](#screens)
         -   [Text Editors (*VIM*)](#text-editors-vim)
-        -   [Bioinformatic setup](#bioinformatic-setup)
-        -   [General Genomic Information](#general-genomic-information)
+    -   [Using `sftp`](#using-sftp)
+    -   [Bioinformatic setup](#bioinformatic-setup)
+    -   [General Genomic Information](#general-genomic-information)
+        -   [Cutters](#cutters)
 -   [*DOWNLOADING ORIGINAL ILLUMINA FILES*](#downloading-original-illumina-files)
 -   [*DE NOVO ASSEMBLY*](#de-novo-assembly)
     -   [Choosing Individuals](#choosing-individuals)
@@ -26,16 +30,15 @@ Updated: 2017-07-10
 -   [*SUBSAMPLING WITH SAMTOOLS*](#subsampling-with-samtools)
     -   [Filter out files that are not sufficient](#filter-out-files-that-are-not-sufficient)
 -   [*PCA*](#pca)
-    -   [Using `sftp`](#using-sftp)
 -   [*ANGSD*](#angsd)
 -   [*ADMIXTURE*](#admixture)
--   [*FST*](#fst)
+-   [*F<sub>ST</sub>*](#fst)
 
-*UNIX/BASH COMMANDS*
-====================
+*BACKGROUND*
+============
 
-Basic commands refresher
-------------------------
+UNIX/BASH Commands refresher
+----------------------------
 
 ### Server runs
 
@@ -63,7 +66,15 @@ To cancel server tasks `scancel [JOBNUMBER]`
 
 ### Check File Sizes
 
--   `du -hs * | sort -hs` (use "*RUBIC-PH*")
+-   `du -hs * | sort -hs`
+
+### Get First Column of sorted multicolumn file:
+
+-   `wc -l rabo_all*mafs | sort -h | awk '{print $1}'`
+
+### List Files by Datetime Stamp
+
+-   `ls -lt *FILE*`
 
 ### Screens
 
@@ -90,15 +101,31 @@ While there are many available, we prefer to use **VIM**. A few tips regarding *
 
 For column-wise editing: - Press `Ctrl+v`, then mark across the column you want to edit. - Press `Shift+i` to insert text at the beginning of the column, `Shift+a` to append text, `r` to replace highlighted text, `d` to delete, `c` to change... etc.
 
-### Bioinformatic setup
+Using `sftp`
+------------
+
+To connect to the Cluster to get/put files from your local directory (your computer):
+
+-   Open a new shell window using `ctrl t`
+    -   `sftp __@agri.cse.ucdavis.edu` where \_\_ is your username for the server
+    -   `cd _/_` change directory to whichever location on CLUSTER that has these files
+    -   `ls *pdf` can list the files of interest to make sure it's what you want/exists
+    -   `lcd _/_` change directory locally (your computer)
+    -   `lls` local list the files in current local directory
+-   **`get` files from CLUSTER to local directory (your computer)**
+    -   `get *pdf` download all pdf files from Cluster to your computer
+-   **`put` files from local directory to CLUSTER**
+    -   `put *bamlist` copy files from local directory to CLUSTER
+
+Bioinformatic setup
+-------------------
 
 There are two ways of approaching all the scripts and programs necessary. Keep them in your /bin ($PATH), in a separate directory (like /scripts) or copy and paste them in the directory you are working in. The last way allows for project specific changes without changing the original script.
 
-------------------------------------------------------------------------
+General Genomic Information
+---------------------------
 
-### General Genomic Information
-
-#### Cutters
+### Cutters
 
 -   Six cutter `(5' -  CTGCA_G - 3')` *Pst1*
 -   Eight cutter `(5' - CCTGCA_GG - 3')` *Sbf1*
@@ -115,8 +142,6 @@ Initial files are `.fastq` because they contain Q quality scores.
     -   `Q = -10log10 P` where P = base calling error probability
     -   50 would be 99.999%; 20 would be 99%; 10 would be 90%
     -   Most common is +33
-
-------------------------------------------------------------------------
 
 *DOWNLOADING ORIGINAL ILLUMINA FILES*
 =====================================
@@ -398,40 +423,29 @@ samtools flagstat ALAME_AH_2_R1.sort.flt.bam`   Could also be done on `_.sort.ba
     -   Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
 5.  `sh pca_plot.sh` This should create 3 pdfs (but can be modified by modifying the script)
 
-Using `sftp`
-------------
-
-Now to coconnect to the Cluster to put these files in your local directory (your computer):
-
--   Open a new shell window using `ctrl t`
--   `sftp __@agri.cse.ucdavis.edu` where \_\_ is your username for the server
--   `cd _/_` navigate to whichever directory has these files
--   `get *pdf` Or download each file independently
-
--   Incidentially to put something on the server
-
-Make sure you are in the local directory that contains the file(s)
-
-> `put ___` puts it in your home directory on the server
-
 *ANGSD*
 =======
 
 **This is the primary program for analyzing the data from a population genetics standpoint. Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions. Be sure to update**
 
-This program has too many options to put here but a simple explanation may eventually be done - For a full understanding, see the help pages: <http://www.popgen.dk/angsd/index.php/ANGSD>
+This program has too many options to put here, but future renditions/updates may provide more explanation.
+
+-   For the best guidance/understanding, see the help pages: <http://www.popgen.dk/angsd/index.php/ANGSD>
 
 *ADMIXTURE*
 ===========
 
-1.  Obtain the scripts Beagleinput.sh & NGSAdmixture.sh & Multi\_K\_NGSadmixture.sh & Admix\_plot.R
-
-2.  Using your bamlist, generate a Beagle input file `sbatch Beagleinput.sh bamlist out` (out can be any name you want)
-
-3.  To make 1 version of multiple Ks:
-    -   `sbatch NGSAdmixture.sh ___.beagle.gz out K` (where K can be adjusted in the script) OR
+1.  Obtain the scripts
+    -   `Beagleinput.sh`
+    -   `NGSAdmixture.sh`
+    -   `Multi_K_NGSadmixture.sh`
+    -   `Admix_plot.R`
+2.  Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name:
+    -   `sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8` (out can be any name you want)
+3.  To make 1 version of multiple Ks (where K can be adjusted in the script):
+    -   `sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K` OR
     -   To make multiple versions of multiple Ks: `sh Multi_K_NGSadmix.sh __  K` which makes 3 version per K but can be modified in the script
-4.  The results should be various outputs `out__.qopt` where \_\_ is a number (e.g. 11, 12,13, 21, 22, 23 and so on)
+4.  The results should be various outputs `out__.qopt` where \_\_ is a number (e.g. 2, 3, 4, 21, 22 and so on)
 
 5.  You can run an R script `Rscript Admix_plot.R __.qopt bamlist.input K out.pdf` which will plot the admixture graph
 
@@ -439,14 +453,15 @@ This program has too many options to put here but a simple explanation may event
 
 7.  An easier method may be to put all `___.qopt` files on your local computer and use the simple online gui to make all of your admixture graphs (see [pophelper](http://pophelper.com/))
 
-*FST*
-=====
+*F<sub>ST</sub>*
+================
 
 1.  Obtain scripts: `SAF.sh` & `pwfst.sh`
 
 2.  Create a bamlist with individuals from only the "population" you want to test
 
-3.  Generate a simple allele frequencies file (.saf) for every "population" bamlist you want to compare:
-    -   `sbatch -t 24:00:00 - p high SAF.sh bamlist outfile_name ancestral_file` (\*ancestral file can be \_\_300.fasta\*)
-4.  For pairwise comparisons between "populations", use two \_\_\_\_.saf.index files you just generated:
-    -   `sbatch -t 24:00:00 -p high pwfst.sh pop1 pop2` where pop1 is the 1st \_\_\_.saf.index and pop2 is the 2nd
+3.  Generate a simple allele frequencies file (`.saf`) for every "population" bamlist you want to compare, requires bamlist, outfile name, and your ancestral/alignment file (i.e., *`___300.fasta`*)
+    -   `sbatch -t 24:00:00 - p high SAF.sh bamlist outfile_name ancestral_file`
+4.  For pairwise comparisons between "populations", use two `____.saf.index` files you just generated:
+    -   `sbatch -t 24:00:00 -p high pwfst.sh pop1 pop2` where `pop1` is the filename (no extension) of the 1st `___.saf.index` and `pop2` is the 2nd
+    -   find the output files: `ls *finalfstout` to view. The adjusted **F<sub>ST</sub>** is the second value.
