@@ -489,11 +489,19 @@ This program has too many options to put here but a simple explanation may event
 
 \*\*This step should only be attempted when one wishes to upload all of their data for public access. Generally we upload any working sample that had the minimum requirements to be included at some point in your study. For simplicity, we generally upload all of the RA RB files from the DOWNLOADING ORIGINAL ILLUMINA FILES step.
 
-You will also need your metadata file so as to enter information about every sample you sequenced (location, name, etc.). The following is a brief outline of what you need to do, basically leaving out many step spelled out by the Submission portal you will be forced to follow.
+You will also need your metadata file so as to enter information about every sample you sequenced (location, name, etc.). The following is a brief outline of what you need to do, basically leaving out many steps spelled out by the Submission portal you will be forced to follow.
 
 1.  Create a log in username and password in NCBI (no cost)
 
-Two ways of tackling the next steps: 2. Register your project at the BioProject database <https://www.ncbi.nlm.nih.gov/bioproject/> 3. Register your biological samples at the BioSample database <https://www.ncbi.nlm.nih.gov/biosample/> OR 4. Both (BioProject and BioSample) can be accomplished at the same time using the SRA wizard <https://submit.ncbi.nlm.nih.gov/subs/sra/>. Just follow the file format guidelines and submit what is asked for when it is asked for.
+Multiple ways of tackling the next steps:
+
+1.  Register your project at the BioProject database <https://www.ncbi.nlm.nih.gov/bioproject/>
+
+2.  Register your biological samples at the BioSample database <https://www.ncbi.nlm.nih.gov/biosample/>
+
+OR
+
+1.  Both (BioProject and BioSample) can be accomplished at the same time using the SRA wizard <https://submit.ncbi.nlm.nih.gov/subs/sra/>. Just follow the file format guidelines and submit what is asked for when it is asked for.
 
 Create your SRA data submission
 -------------------------------
@@ -505,7 +513,7 @@ Create your SRA data submission
 3.  These files allow information to be uploaded on each sample or sample run into NCBI so others who use them know about that sample or library prep/sequencer/etc.
 4.  Make sure files are saved as .csv
 
-\*\* The next step is the most difficult
+*<span style="color:red"> The next step is the most difficult</span>*
 
 Uploading your files to NCBI
 ----------------------------
@@ -518,13 +526,20 @@ Again all of this is available on the NCBI wizard webpages and we highly recomme
 
 Also, we highly recommend putting all your files in a specific folder that is easy to find and ONLY contains the files you want to upload and then being in that file.
 
-\*\* You only have 30 seconds to complete these tasks or you get kicked off ftp and have to start over so don't mess around!
+*<span style="color:red"> You only have 30 seconds to complete these tasks or you get kicked off ftp and have to start over so don't mess around!</span>*
 
-1.  From the terminal window (you must use -p for passive so you can ls once in) ftp -p ftp-private.ncbi.nlm.nih.gov
-2.  You will be prompted to enter the username and password shown in the wizard (you may have to click on ftp to get them). Copy and paste.
-3.  You should make a directory once in (like RA for example)
-4.  cd into that directory
-5.  Type prompt once in that directory
-6.  Type mput \* which should upload all files in that directory
+1.  From the terminal window (you must use -p for passive so you can ls once in)
+
+`ftp -p ftp-private.ncbi.nlm.nih.gov`
+
+1.  You will be prompted to enter the username and password shown in the wizard (you may have to click on ftp to get them). Copy and paste.
+
+2.  You should make a directory once in (like RA for example)
+
+3.  cd into that directory
+
+4.  Type `prompt` once in that directory
+
+5.  Type `mput *` which should upload all files in that directory
 
 A successful upload should result in an email and when you are online in NCBI. Results might take a few hours to a few days.
