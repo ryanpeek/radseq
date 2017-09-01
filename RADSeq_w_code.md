@@ -38,6 +38,10 @@ Updated: 2017-08-31
 -   [*ANGSD*](#angsd)
 -   [*ADMIXTURE*](#admixture)
 -   [*F<sub>ST</sub>*](#fst)
+-   [*FST*](#fst)
+-   [*Uploading to NCBI for final data availability*](#uploading-to-ncbi-for-final-data-availability)
+    -   [Create your SRA data submission](#create-your-sra-data-submission)
+    -   [Uploading your files to NCBI](#uploading-your-files-to-ncbi)
 
 *BACKGROUND*
 ============
@@ -254,6 +258,7 @@ Option 1 (Clean up reads in a single script)
 
 1.  Make an indiv file list (for however many files you chose). Start by making a list of files using sed:
     -   `ls fastq | sed "s:.fastq::g" > list`
+
 2.  Modify and run the script `Hash_reads.sh`, which will run all three perl scripts (see Option 2)
 
 Option 2 (Clean up reads one script/Indiv at a time)
@@ -262,12 +267,15 @@ Option 2 (Clean up reads one script/Indiv at a time)
 1.  Modify file for quality control by throwing out seqs which do not meet threshold
     -   Example `perl QualityFilter.pl Dpup_007_RA.fastq > Dpupt_oo7_RA_QF.fastq`
     -   Do for all individuals you chose
+
 2.  Find and shrink seqs to only unique ones while culling down file from 4 lines to 2 lines
     -   `perl HashSeqs.pl Dpup_007_RA_QF.fastq Dpup_007 > Dpup_007_RA_QF.hash`
     -   Do for all indivduals you chose
+
 3.  Depending on coverage, you can look at the distribution and see the \# of occurrences vs. \# of sequences, expect a peak a some point followed by a dip and a recovery, with a spike early on (usually errors).
     -   `perl PrintHashHisto.pl Dpup_007_RA_QF.hash`
     -   Do for all individuals you chose
+
 4.  May need more samples because don't have many sequences within the distribution (low coverage)
 
 Alignment
@@ -296,6 +304,7 @@ ID loci
 1.  Now identify loci:
     -   `screen` See notes at start of this pipeline in case you are unfamiliar
     -   `srun --mem=16G IdentifyLoci3.pl _.novo > _IDloci.fasta`
+
 2.  Once done counting loci, divide by 2 to get idea of how many loci we are dealing with, perl can only handle 8000 lines and 4000 loci chunks (\*We will need to split \_IDloci.fasta into 8000 line chunks\*)
     -   See how many polymorphic loci exist `perl SimplifyLoci2.pl _IDloci.fasta | grep "_2" | wc -l`
 
@@ -307,6 +316,7 @@ Price (Extension)
     -   `mkdir extendLoci_1` (if 104,000 or less (aa:az)) *4000 loci x 26 letters (a-z) equals 104,000*
     -   `mkdir extendLoci_2` (if &gt;104,000 loci) *add another directory for each 104000 you will need.*
     -   This is common when a six cutter is used because more loci will be generated.
+
 2.  Make sure you have scripts required in the PRICE directory:
     -   `cp ~PATH/RecoverLocusSpecificReads.pl ./` (*This must be in the PRICE directory*)
     -   `getLoci.py`
@@ -315,22 +325,28 @@ Price (Extension)
     -   `format_contigs.sh`
     -   `cat.sh`
     -   `select_loci.py` (*This must be in the PRICE directory*)
+
 3.  Cat all your R1 & R2 files into one file each (one R1 and one R2) and copy to PRICE:
     *Depending on the size and number of seq, may be best to sbatch*
     -   `cat *_RA.fastq > RABO_R1.fastq` For example RABO is the species name and its all individuals sequenced
     -   `cat *_RB.fastq > RABO_R2.fastq`
     -   `cp RABO* ./PRICE`
+
 4.  wc -l the ID Loci file and divide by 2 to see how many loci
     -   `????? / 2 =` **?????? LOCI** using `IDLoci2`
+
 5.  Strip names off of files to make a simplified version:
     -   `perl ~/scripts/SimplifyLoci2.pl _IDloci.fasta | grep --no-group-separator -A 1 "_1" > _IDloci_s.fasta`
     -   Then remove the \_1 and make a `simplified final` version
     -   `sed 's/_1//' _IDloci_s.fasta > _IDloci_sf.fasta`
+
 6.  Split files into 8000 line chunks in the PRICE folder
     -   `split -l 8000 _IDloci_sf.fasta _IDloci_sf.fasta'_'` This should give you the same file name plus aa,ab,ac,etc at the end of the file name
     -   Double check with tail and wc -l to make sure each chunk is 8000 (except last one)
+
 7.  Make a list of all the output files you just made (e.g., `_IDloci_sf.fasta_aa`, `_IDloci_sf.fasta_ab`)
     -   `ls *.fasta_a* > data_list`
+
 8.  To get an idea of how many loci you have, open the last file created by splitting and `tail _IDloci_sf.fasta_a?` and the last number is the number of loci you have (R??????) OR you can use the number of loci you found in \#4 (good to check both really)
 
 9.  In PRICE create a `Loci_aa` file which is a list of R000001 to whatever locus number you have from \#8 (up to R104000) and (*if necessary*) a `Loci_bb` which is R104001 to whatever locus number you have. You can use the Rscript (`makelist.R`) or use a text editor.
@@ -345,10 +361,13 @@ Price (Extension)
     -   `format_contigs.sh`
     -   `cat.sh`
     -   `getLoci.py`
+
 2.  VIM (or another text editor) `RecoverLocusSpecificReads.sh` to reflect your ../data\_list and two fastq files (../\_R1.fastq and ../\_R2.fastq). Also adjust `$x -le ?` to reflect the number of files in your data\_list (so if you have aa-&gt;ag, ? = 7).
     -   This builds shell scripts in the PRICE directory for each aa -&gt; whatever that you have
+
 3.  VIM `extendLoci.sh` and adjust as needed:
     -   Change the number(?) in $x -le ? to whatever your total loci number is from \#8 (*max 104000*) which covers the aa up to a? files in `extendLoci_1.sh`
+
 4.  VIM `format_contigs.sh` and adjust as needed:
     -   Change the number(?) in $x -le ? to whatever your total loci number is from \#8 (*max 104000*) which covers the aa up to a? files in `format_contigs.sh`
 
@@ -356,11 +375,13 @@ Price (Extension)
 
 1.  Now run `RecoverLocusSpecificReads.sh` in `extend_Loci_?` directory
     -   `sbatch RecoverLocusSpecificReads.sh with Loci list (data_list)`to create sh files in PRICE
+
 2.  Then run these from the extendLoci\_\* directories, one at a time, in order.
     -   `sbatch extendLoci.sh ../Loci_aa`
     -   `sbatch format_contigs.sh ../Loci_aa`
     -   `sbatch cat.sh aa`
     -   Do the same for Loci\_bb (which would be R104000-&gt;whatever) in extendLoci\_2 **if necessary**
+
 3.  To obtain the file you need (aa\_contigs.fasta) which was output from cat.sh, and needs to be in PRICE, `mv aa_contigs.fasta ../`
 
 <span style="color:red">*Be careful not to "ls" the `extendLoci_*` directories as they are very full and may stall your command line*</span>
@@ -474,11 +495,13 @@ Sometimes the nodes fail, and you need to find/re-run scripts for certain files.
 
 2.  Run `pca_calc.sh`
     -   `sbatch pca_calc.sh subbamlist out` (out can be any name for your outputted file)
+
 3.  Make a clst file for plotting: `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
 
 4.  VIM (or other text editor) out.clst and insert a header **`FID IID CLUSTER`**:
     -   (IID changes symbol; CLUSTER changes color)
     -   Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
+
 5.  `sh pca_plot.sh` This should create 3 pdfs (but can be modified by modifying the script)
 
 *ANGSD*

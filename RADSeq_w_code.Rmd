@@ -517,3 +517,56 @@ This program has too many options to put here, but future renditions/updates may
     - `sbatch -t 24:00:00 -p high pwfst.sh pop1 pop2`  where `pop1` is the filename (no extension) of the 1st `___.saf.index` and `pop2` is the 2nd
     - find the output files: `ls *finalfstout` to view. The adjusted **F<sub>ST</sub>** is the second value.
 
+# *Uploading to NCBI for final data availability*
+**This step should only be attempted when one wishes to upload all of their data for public access. Generally we upload any working sample that had the minimum requirements to be included at some point in your study. For simplicity, we generally upload all of the RA RB files from the DOWNLOADING ORIGINAL ILLUMINA FILES step.
+
+You will also need your metadata file so as to enter information about every sample you sequenced (location, name, etc.). The following is a brief outline of what you need to do, basically leaving out many steps spelled out by the Submission portal you will be forced to follow.
+
+1. Create a log in username and password in NCBI (no cost)
+
+Multiple ways of tackling the next steps:
+
+1. Register your project at the BioProject database https://www.ncbi.nlm.nih.gov/bioproject/
+
+2. Register your biological samples at the BioSample database https://www.ncbi.nlm.nih.gov/biosample/
+
+OR
+
+3. Both (BioProject and BioSample) can be accomplished at the same time using the SRA wizard https://submit.ncbi.nlm.nih.gov/subs/sra/.  Just follow the file format guidelines and submit what is asked for when it is asked for.
+
+## Create your SRA data submission
+ - submit your SRA metadata
+ 1. This will involve downloading their example file (mostly like in excel .csv) and replacing their data with your own.
+ 2. Two different files will be created: an attributes file and a metadata file
+ 3. These files allow information to be uploaded on each sample or sample run into NCBI so others who use them know about that sample or library prep/sequencer/etc.
+ 4. Make sure files are saved as .csv
+ 
+*<span style="color:red"> The next step is the most difficult</span>*
+
+## Uploading your files to NCBI 
+Because these are generally memory intensive files and numerous, it is recommended you upload from the farm (or whatever) server rather than downloading from the server to your local computer and then trying to upload from there.  But using ftp from the server does provide its challenges.
+
+If you have more than 500 sequence files (this inclused RA and RB), you will need to do the following in stages, using the same project's accession number (PRJNA#). Unless you have more than 500 individuals, the easiest thing might be to upload all of the RA files, then once completed, upload all of the RB files.
+
+Again all of this is available on the NCBI wizard webpages and we highly recommend reading before attempting.
+
+Also, we highly recommend putting all your files in a specific folder that is easy to find and ONLY contains the files you want to upload and then being in that file.
+
+*<span style="color:red"> You only have 30 seconds to complete these tasks or you get kicked off ftp and have to start over so don't mess around!</span>*
+
+1. From the terminal window (you must use -p for passive so you can ls once in)
+
+`ftp -p ftp-private.ncbi.nlm.nih.gov`
+
+2. You will be prompted to enter the username and password shown in the wizard (you may have to click on ftp to get them). Copy and paste.
+
+3. You should make a directory once in (like RA for example)
+
+4. cd into that directory
+
+5. Type `prompt`       once in that directory
+
+6. Type `mput *`    which should upload all files in that directory
+
+A successful upload should result in an email and when you are online in NCBI. Results might take a few hours to a few days.
+
