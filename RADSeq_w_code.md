@@ -31,6 +31,7 @@ Updated: 2017-08-31
     -   [Price (Extension)](#price-extension)
         -   [Adjust Scripts](#adjust-scripts)
 -   [*ALIGN INDIVIDUALS TO LOCI*](#align-individuals-to-loci)
+    -   [Node Failures and Missing Bams](#node-failures-and-missing-bams)
 -   [*SUBSAMPLING WITH SAMTOOLS*](#subsampling-with-samtools)
     -   [Filter out files that are not sufficient](#filter-out-files-that-are-not-sufficient)
 -   [*PCA*](#pca)
@@ -377,14 +378,21 @@ Price (Extension)
 ===========================
 
 1.  Build index of contigs: `bwa index final_contigs_300.fasta` OR `A_model_genome.fasta`
-    -   Files will now end in .amb, .ann, etc.
-2.  Using all `fastq` build a list of the fastq R1 and R2 files into different columns
-    -   `ls *_??_?_R2* > listR2` and `ls *_??_?_R1* > listR1`
-    -   Then paste lists together into columns: `paste listR1 listR2 | sed 's/\.fastq//g' > list`
-3.  Obtain the run\_align.sh script For example copy `cp ~millermr/common/run_align.sh ./`
-    -   `sh run_align.sh list ~/projects/rabo/PRICE/final_contigs_300.fasta`
-    -   It's taking all fastq files (R1 and R2) and aligning to the \_300.fasta file (or model genome file)
+    -   Files will now end in `.amb`, `.ann`, etc.
+2.  Using all `fastq` build a list of the fastq RA and RB files into different columns:
+    -   `ls *RA* | sed "s/\.fastq//g" > bamlistA`
+    -   `ls *RB* | sed "s/\.fastq//g" > bamlistB`
+    -   `paste bamlist? > bamlist`
+3.  Obtain the `run_align.sh` script For example copy `cp ~millermr/common/run_align.sh ./`
+    -   `sh run_align.sh bamlist final_contigs_300.fasta`
+    -   It's taking all fastq files (RA and RB) and aligning to the \_300.fasta file (or model genome file)
 4.  This should create your final bam files
+
+#### Node Failures and Missing Bams
+
+Sometimes the nodes fail, and you need to find/re-run scripts for certain files. Best option is to find/sort the files that did work, and then grep against the files that didn't to make a new list, then re-run `run_align.sh` script with new list.
+
+-   `ls *.flt.bam | sed "s/\.sort\.flt\.bam//g" | grep -f - -v bamlist > bamlist_rerun`
 
 *SUBSAMPLING WITH SAMTOOLS*
 ===========================
