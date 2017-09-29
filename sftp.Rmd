@@ -1,0 +1,22 @@
+---
+title: "Using `sftp` & `scp`"
+---
+
+## Using `sftp` 
+
+To connect to the Cluster to get/put files from your local directory (your computer):
+
+ - Open a new shell window using `ctrl t`
+    - `sftp __@agri.cse.ucdavis.edu` where __ is your username for the server
+    - `cd _/_`  change directory to whichever location on CLUSTER that has these files
+    - `ls *pdf` can list the files of interest to make sure it's what you want/exists
+    - `lcd _/_` change directory locally (your computer)
+    - `lls` local list the files in current local directory
+ - **`get` files from CLUSTER to local directory (your computer)**
+    - `get *pdf` download all pdf files from Cluster to your computer
+ - **`put` files from local directory to CLUSTER**
+    - `put *bamlist` copy files from local directory to CLUSTER
+    
+## Using `scp`
+
+*To be added*

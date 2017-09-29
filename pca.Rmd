@@ -1,0 +1,22 @@
+---
+title: "PCA"
+---
+
+# *PCA*
+
+**This is a general way to generate a principal component analysis from your subsampled bam files**
+
+1. Obtain and copy scripts:   `pca_calc.sh` and `plotPCA_2.R` and `pca_plot.sh`
+
+2. Run `pca_calc.sh`
+    - `sbatch pca_calc.sh subbamlist out` (out is whatever you want filename)
+
+3. Make a clst file for plotting: `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
+
+4. VIM (or other text editor) out.clst and insert a header **`FID IID CLUSTER`**:
+    - (IID changes symbol; CLUSTER changes color)
+    - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
+  
+5. `sh pca_plot.sh`  This should create 3 pdfs (but can be modified by modifying the script)
+
+<!-- add additional code/examples here, Ryan will add additional PCA code and custom R script here-->

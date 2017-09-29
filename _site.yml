@@ -1,0 +1,49 @@
+navbar:
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - text: "Background & bash"
+      menu:
+        - text: "Using `bash`"
+          href: background_bash.html
+        - text: "Using `sftp`"
+          href: sftp.html
+    - text: "Downloading Illumina Data"
+      href: downloading_illumina.html
+    - text: "De Novo Assembly"
+      href: de_novo_assembly.html
+    - text: "Alignment"
+      href: alignment.html
+    - text: "Subsampling"
+      href: subsampling.html 
+    - text: "PopGen Analyses"
+      menu: 
+        - text: "PCA"
+          href: pca.html
+        - text: "`angsd`"
+          href: angsd.html
+        - text: "Admixture"
+          href: admixture.html
+        - text: "F<sub>ST</sub>"
+          href: FST.html
+        - text: "Uploading to NCBI"
+          href: upload_ncbi.html
+    - text: "Resources"
+      href: resources.html
+  right:
+    - text: "Contact"
+      href: contact.html
+    - icon: fa-github fa-lg
+      href: https://github.com/ryanpeek/radseq
+output_dir: "."
+output:
+  html_document:
+    highlight: pygments
+    toc: true
+    toc_float:
+      collapsed: false
+    include:
+      in_header: header.html
+    css: style.css

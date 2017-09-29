@@ -1,0 +1,98 @@
+---
+title: "Background & UNIX Overview"
+---
+
+# *BACKGROUND*
+
+There's plenty of useful information on using the cluster or *SLURM* [here](https://wiki.cse.ucdavis.edu/support/hpc/software/slurm#slurma_highly_scalable_resource_manage), but we try to add some tidbits below that might be pertinent. Take all with a grain of salt.
+
+## Bioinformatic setup
+
+There are two ways of approaching all the scripts and programs necessary. Keep them in your main directory in a `/scripts` folder, or make copies of them in the project/directory you are working in. The last way allows for project specific changes without changing the original script. 
+
+### Folder Organization
+
+With the large number of files that exist within these pipelines, it's easy to get lazy, and then get confused about where/what files are. Following the same folder structure across sequencing runs and projects will be really helpful, as does naming conventions. Either way, pick something that works for you and stick with it. One possibility is as follows, but it's by no means "*the way*."
+
+<br>
+
+**Make a Project Folder**
+
+Create a project folder for your organism or project. When naming files/folders don't use spaces, and separate words using `_` or **C**amel**C**ase. Inside your project folder, you'll want another folder named for the sequencing run (i.e., `SOMMXXX`). Then create these subfolders inside:
+
+ - **`/raw`** (where raw sequencing files are linked/copied)
+ - **`/split`** (where the unzipped and then split by barcode fastq live)
+    - **`/split_out`** (split by plate barcode)
+ - **`/fastq`** (where the processed fastq/bams and analyses live)
+    - **`/align`** (the aligned bams)
+      - **`/slurm_outs`** (for all slurms)
+
+i.e., mine looks something like this: `/home/projects/rapture/SOMM163/raw`
+
+## UNIX/BASH Commands refresher
+
+### Server runs
+
+Logging in to the server requires your username and access:
+ - `ssh -p 2022 USERNAME@agri.cse.ucdavis.edu`
+
+To run a program or task on the server (*Never on the head node!*), you use `sbatch ____`.
+  - Must use **`-t`** for time needed to run program so `sbatch -t 24:00:00 __` would be for 24 hrs  
+  - Use **`-p`** for imporance (low, med, high) so `sbatch -t time -p high ___`
+  - Added memory is also possible `sbatch --mem=16G -t time - p high ___`, for memory intensive jobs (16, 32, 64, etc.)
+  - To cancel server tasks `scancel [JOBNUMBER]`
+ 
+**Although not always shown below, in our cluster, all `sbatch` must have a time (`-t`) flag or they will fail to run.**  
+
+To check whether sbatch is running, type `smap -c | grep USERNAME`, or to see everything that is running on the server right now, type `top`.
+
+The output of most all server tasks is a "slurm" file. It has helpful information on the job, status, etc. The first place to check when troubleshooting is usually a `slurm-____` file. They are numbered by job number, so the most recent file/job will have the highest number.
+
+### Word count/file counts
+ - `wc -l` the fastq files
+ - `ls -l *.hash | wc -l` count files in a dir
+
+### Check File Sizes
+ - `du -hs * | sort -hs`
+ 
+### Get First Column of sorted multicolumn file:
+ - `wc -l rabo_all*mafs | sort -h | awk '{print $1}'`
+
+### List Files by Datetime Stamp
+ - `ls -lt *FILE*`
+
+### Screens
+ - Screen is a full-screen window manager that multiplexes a physical terminal between several processes, typically shells. They provide a method to run multiple windows (usually programs) at one time, helpful if you are doing `srun` or viewing other tasks while working in a different screen.
+ - To open a new screen: 
+    - `screen`
+- To temporarily close a screen (hold down `ctrl`)
+    - `ctrl + a + d`
+- To Re-Open a Screen
+    - `screen -r`
+- To Detach a screen use
+    - `screen -d`
+- To Exit a screen:
+    - type `exit` in current screen
+- To List Screens or see screen numbers & return to a screen:
+    - `screen -ls`
+    - `screen -r` [number]
+ - Command keys (`Ctrl a + ?`) or Key Binding
+
+### Text Editors (*VIM*)
+
+While there are many available, we prefer to use **VIM**. A few tips regarding **VIM**:
+
+ - To exit without saving use `:q!`
+ - To exit and save use: `:wq`
+ - Find and replace many/every line: `:%s:` 
+ - Replace something specific: `:%s:AMER:../AMER:`
+ - Alternatively you can say `:7,12:` for lines 7 through 12
+ - To use a `sed` command within vim to find and replace, can use:
+    - `shift + :`, then `1, $s/TGCAGG$/TGCAGG.sort.flt.bam/g` (search for line ending with `TGCAGG`)
+
+For column-wise editing:
+
+ - Press `Ctrl+v`, then mark across the column you want to edit.
+ - `Shift+i` to insert text at the beginning of the column, 
+ - `Shift+a` to append text, 
+ - `r` to replace highlighted text, `d` to delete, `c` to change... etc.

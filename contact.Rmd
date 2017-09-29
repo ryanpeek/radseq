@@ -1,0 +1,21 @@
+---
+title: "Contact"
+---
+
+<br>
+
+## Miller Lab
+
+**Dr. Michael Miller**: 
+
+ - <i class="fa fa-envelope-square" aria-hidden="true"></i> [email](mailto:micmiller@ucdavis.edu)
+ - [<i class="fa fa-globe" aria-hidden="true"></i> website](https://sites.google.com/site/millermichaelryan/)  
+
+
+*Website (Ryan Peek)*
+
+ - <i class="fa fa-envelope-square" aria-hidden="true"></i> [email](mailto:rapeek@ucdavis.edu)  
+ - [<i class="fa fa-globe" aria-hidden="true"></i> website](https://ryanpeek.github.io/)
+ - <i class="fa fa-github-square" aria-hidden="true"></i> [ryanpeek](https://github.com/ryanpeek)  
+
+<br>

@@ -1,0 +1,14 @@
+---
+title: "Resources"
+---
+
+## Useful Content/Lessons
+
+* [Software Carpentry: R for Reproducible Scientific Analysis](http://data-lessons.github.io/gapminder-R/)
+* [Data Carpentry: R for Data Analysis and Visualization of Ecological Data](http://www.datacarpentry.org/R-ecology-lesson/)
+* [Data Carpentry: Data Organization in Spreadsheets](http://www.datacarpentry.org/spreadsheet-ecology-lesson/)
+* [Data Carpentry: Genomics Lesson](https://jasonjwilliamsny.github.io/tidiness-genomics/)
+* [ANGUS: Analyzing High Throughput Sequencing Data; Exploratory RNAseq data analysis using RMarkdown materials](http://angus.readthedocs.io/en/2017/index.html)
+* [Ethan White and Zack Brym's Data Carpentry for Biologists course](http://www.datacarpentry.org/semester-biology/)
+* [Jenny Bryan's Stat545 course](http://stat545.com/)
+* [Chester Ismay and Albert Y. Kim's Modern DiveR book](https://ismayc.github.io/moderndiver-book/)

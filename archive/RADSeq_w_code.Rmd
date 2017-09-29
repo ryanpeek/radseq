@@ -569,4 +569,3 @@ Also, we highly recommend putting all your files in a specific folder that is ea
 6. Type `mput *`    which should upload all files in that directory
 
 A successful upload should result in an email and when you are online in NCBI. Results might take a few hours to a few days.
-

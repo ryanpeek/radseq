@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>de Novo Assembly</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="site_libs_extra/academicons-1.8.0/css/academicons.css"/>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Background &amp; bash
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="background_bash.html">Using `bash`</a>
+    </li>
+    <li>
+      <a href="sftp.html">Using `sftp`</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="downloading_illumina.html">Downloading Illumina Data</a>
+</li>
+<li>
+  <a href="de_novo_assembly.html">De Novo Assembly</a>
+</li>
+<li>
+  <a href="alignment.html">Alignment</a>
+</li>
+<li>
+  <a href="subsampling.html">Subsampling</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    PopGen Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pca.html">PCA</a>
+    </li>
+    <li>
+      <a href="angsd.html">`angsd`</a>
+    </li>
+    <li>
+      <a href="admixture.html">Admixture</a>
+    </li>
+    <li>
+      <a href="FST.html">F&lt;sub&gt;ST&lt;/sub&gt;</a>
+    </li>
+    <li>
+      <a href="upload_ncbi.html">Uploading to NCBI</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="resources.html">Resources</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">Contact</a>
+</li>
+<li>
+  <a href="https://github.com/ryanpeek/radseq">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore"><em>de Novo</em> Assembly</h1>
+
+</div>
+
+
+<p><strong><em>The de novo step is not necessary if a model genome or previous alignment is available (skip to Align individuals to loci)</em></strong></p>
+<div id="choosing-individuals" class="section level2">
+<h2>Choosing Individuals</h2>
+<ol style="list-style-type: decimal">
+<li><p>Pick your best 5 - 10 individuals (using <code>du -hs</code> or <code>wc -l</code>)</p></li>
+<li><p>Copy these individuals (just RA) into a new directory</p></li>
+</ol>
+</div>
+<div id="option-1-clean-up-reads-in-a-single-script" class="section level2">
+<h2>Option 1 (Clean up reads in a single script)</h2>
+<ol style="list-style-type: decimal">
+<li>Make an indiv file list (for however many files you chose). Start by making a list of files using sed:
+<ul>
+<li><code>ls fastq | sed &quot;s:.fastq::g&quot; &gt; list</code></li>
+</ul></li>
+<li>Modify and run the script <code>Hash_reads.sh</code>, which will run all three perl scripts (see Option 2)</li>
+</ol>
+</div>
+<div id="option-2-clean-up-reads-one-scriptindiv-at-a-time" class="section level2">
+<h2>Option 2 (Clean up reads one script/Indiv at a time)</h2>
+<ol style="list-style-type: decimal">
+<li>Modify file for quality control by throwing out seqs which do not meet threshold
+<ul>
+<li>Example <code>perl QualityFilter.pl Dpup_007_RA.fastq &gt; Dpupt_oo7_RA_QF.fastq</code></li>
+<li>Do for all individuals you chose<br />
+</li>
+</ul></li>
+<li>Find and shrink seqs to only unique ones while culling down file from 4 lines to 2 lines
+<ul>
+<li><code>perl HashSeqs.pl Dpup_007_RA_QF.fastq Dpup_007 &gt; Dpup_007_RA_QF.hash</code></li>
+<li>Do for all indivduals you chose</li>
+</ul></li>
+<li>Depending on coverage, you can look at the distribution and see the # of occurrences vs. # of sequences, expect a peak a some point followed by a dip and a recovery, with a spike early on (usually errors).
+<ul>
+<li><code>perl PrintHashHisto.pl Dpup_007_RA_QF.hash</code></li>
+<li>Do for all individuals you chose</li>
+</ul></li>
+<li>May need more samples because don’t have many sequences within the distribution (low coverage)</li>
+</ol>
+</div>
+<div id="alignment" class="section level2">
+<h2>Alignment</h2>
+<p>Before aligning, need to know parameters for alignment script. To count files in a dir:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">ls</span> -l *.hash <span class="kw">|</span> <span class="fu">wc</span> -l</code></pre></div>
+<p>Concatenate all the hash files <code>cat *.hash &gt; _.fasta</code> where the underscore can be anything you want (like a name) - Make sure <strong>novoalign</strong> (a program) is in your bin or PATH or copied to this directory</p>
+<div id="index" class="section level3">
+<h3>Index</h3>
+<p>Create the novoindex index file (can run with 32G if need more memory): - <code>screen</code> See notes at start of this pipeline in case you are unfamiliar - <code>srun --mem=16G novoindex _.fa.idx _.fasta</code> This is what you want it called and whatever your fasta file was named - Use smap to view task <code>smap -c | grep your_user_name</code></p>
+</div>
+<div id="align" class="section level3">
+<h3>Align</h3>
+<p>Now align index to itself, with following:<br />
+- <code>screen</code> See notes at start of this pipeline in case you are unfamiliar - <code>srun --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta &gt; _.novo</code> - Output is a **“_.novo“_** file - Check size of file with <code>du -hs * | sort -hr</code></p>
+</div>
+</div>
+<div id="id-loci" class="section level2">
+<h2>ID loci</h2>
+<ol style="list-style-type: decimal">
+<li>Now identify loci:
+<ul>
+<li><code>screen</code> See notes at start of this pipeline in case you are unfamiliar</li>
+<li><code>srun --mem=16G IdentifyLoci3.pl _.novo &gt; _IDloci.fasta</code></li>
+</ul></li>
+<li>Once done counting loci, divide by 2 to get idea of how many loci we are dealing with, perl can only handle 8000 lines and 4000 loci chunks (*We will need to split _IDloci.fasta into 8000 line chunks*)
+<ul>
+<li>See how many polymorphic loci exist <code>perl SimplifyLoci2.pl _IDloci.fasta | grep &quot;_2&quot; | wc -l</code></li>
+</ul></li>
+</ol>
+</div>
+<div id="price-extension" class="section level2">
+<h2>Price (Extension)</h2>
+<ol style="list-style-type: decimal">
+<li>Now create PRICE directory and extendLoci directories inside PRICE
+<ul>
+<li><code>mkdir PRICE [in denovo folder]</code></li>
+<li><code>mkdir extendLoci_1</code> (if 104,000 or less (aa:az)) <em>4000 loci x 26 letters (a-z) equals 104,000</em></li>
+<li><code>mkdir extendLoci_2</code> (if &gt;104,000 loci) <em>add another directory for each 104000 you will need.</em></li>
+<li>This is common when a six cutter is used because more loci will be generated.</li>
+</ul></li>
+<li>Make sure you have scripts required in the PRICE directory:
+<ul>
+<li><code>cp ~PATH/RecoverLocusSpecificReads.pl ./</code> (<em>This must be in the PRICE directory</em>)</li>
+<li><code>getLoci.py</code><br />
+</li>
+<li><code>RecoverLocusSpecificReads.sh</code></li>
+<li><code>extendLoci.sh</code></li>
+<li><code>format_contigs.sh</code></li>
+<li><code>cat.sh</code></li>
+<li><code>select_loci.py</code> (<em>This must be in the PRICE directory</em>)</li>
+</ul></li>
+<li>Cat all your R1 &amp; R2 files into one file each (one R1 and one R2) and copy to PRICE:<br />
+<em>Depending on the size and number of seq, may be best to sbatch</em>
+<ul>
+<li><code>cat *_RA.fastq &gt; RABO_R1.fastq</code> For example RABO is the species name and its all individuals sequenced</li>
+<li><code>cat *_RB.fastq &gt; RABO_R2.fastq</code></li>
+<li><code>cp RABO* ./PRICE</code></li>
+</ul></li>
+<li>wc -l the ID Loci file and divide by 2 to see how many loci
+<ul>
+<li><code>????? / 2 =</code> <strong>?????? LOCI</strong> using <code>IDLoci2</code></li>
+</ul></li>
+<li>Strip names off of files to make a simplified version:
+<ul>
+<li><code>perl ~/scripts/SimplifyLoci2.pl _IDloci.fasta | grep --no-group-separator -A 1 &quot;_1&quot; &gt; _IDloci_s.fasta</code></li>
+<li>Then remove the _1 and make a <code>simplified final</code> version</li>
+<li><code>sed 's/_1//' _IDloci_s.fasta &gt; _IDloci_sf.fasta</code></li>
+</ul></li>
+<li>Split files into 8000 line chunks in the PRICE folder
+<ul>
+<li><code>split -l 8000 _IDloci_sf.fasta _IDloci_sf.fasta'_'</code> This should give you the same file name plus aa,ab,ac,etc at the end of the file name</li>
+<li>Double check with tail and wc -l to make sure each chunk is 8000 (except last one)</li>
+</ul></li>
+<li>Make a list of all the output files you just made (e.g., <code>_IDloci_sf.fasta_aa</code>, <code>_IDloci_sf.fasta_ab</code>)
+<ul>
+<li><code>ls *.fasta_a* &gt; data_list</code></li>
+</ul></li>
+<li><p>To get an idea of how many loci you have, open the last file created by splitting and <code>tail _IDloci_sf.fasta_a?</code> and the last number is the number of loci you have (R??????) OR you can use the number of loci you found in #4 (good to check both really)</p></li>
+<li>In PRICE create a <code>Loci_aa</code> file which is a list of R000001 to whatever locus number you have from #8 (up to R104000) and (<em>if necessary</em>) a <code>Loci_bb</code> which is R104001 to whatever locus number you have. You can use the Rscript (<code>makelist.R</code>) or use a text editor.
+<ul>
+<li>Make a list of each line number (i.e., R000001 &gt;&gt; ?), use Rscript <code>makelist.R</code> <code>numbs&lt;-seq(1:108279)</code> Again this is assuming you have 108279 loci <code>rabo&lt;-sprintf(&quot;R%06d&quot;, numbs)</code> <code>write.table(rabo, quote=FALSE, col.names = FALSE, row.names = F)</code></li>
+<li><code>Rscript makelist.R</code> Should provide Loci_aa and Loci_bb files</li>
+</ul></li>
+</ol>
+<div id="adjust-scripts" class="section level3">
+<h3>Adjust Scripts</h3>
+<ol style="list-style-type: decimal">
+<li>Copy the following scripts into each <code>extendLoci_*</code> directory you created
+<ul>
+<li><code>RecoverLocusSpecificReads.sh</code></li>
+<li><code>extendLoci.sh</code></li>
+<li><code>format_contigs.sh</code></li>
+<li><code>cat.sh</code></li>
+<li><code>getLoci.py</code></li>
+</ul></li>
+<li>VIM (or another text editor) <code>RecoverLocusSpecificReads.sh</code> to reflect your ../data_list and two fastq files (../_R1.fastq and ../_R2.fastq). Also adjust <code>$x -le ?</code> to reflect the number of files in your data_list (so if you have aa-&gt;ag, ? = 7).
+<ul>
+<li>This builds shell scripts in the PRICE directory for each aa -&gt; whatever that you have</li>
+</ul></li>
+<li>VIM <code>extendLoci.sh</code> and adjust as needed:
+<ul>
+<li>Change the number(?) in $x -le ? to whatever your total loci number is from #8 (<em>max 104000</em>) which covers the aa up to a? files in <code>extendLoci_1.sh</code></li>
+</ul></li>
+<li>VIM <code>format_contigs.sh</code> and adjust as needed:
+<ul>
+<li>Change the number(?) in $x -le ? to whatever your total loci number is from #8 (<em>max 104000</em>) which covers the aa up to a? files in <code>format_contigs.sh</code></li>
+</ul></li>
+</ol>
+<p><strong>Run scripts in each extendLoci directory IN ORDER from within that directory:</strong></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Now run <code>RecoverLocusSpecificReads.sh</code> in <code>extend_Loci_?</code> directory
+<ul>
+<li><code>sbatch RecoverLocusSpecificReads.sh with Loci list (data_list)</code>to create sh files in PRICE</li>
+</ul></li>
+<li>Then run these from the extendLoci_* directories, one at a time, in order.
+<ul>
+<li><code>sbatch extendLoci.sh ../Loci_aa</code></li>
+<li><code>sbatch format_contigs.sh ../Loci_aa</code></li>
+<li><code>sbatch cat.sh aa</code></li>
+<li>Do the same for Loci_bb (which would be R104000-&gt;whatever) in extendLoci_2 <strong>if necessary</strong></li>
+</ul></li>
+<li>To obtain the file you need (aa_contigs.fasta) which was output from cat.sh, and needs to be in PRICE, <code>mv aa_contigs.fasta ../</code></li>
+</ol>
+<p><span style="color:red"><em>Be careful not to “ls” the <code>extendLoci_*</code> directories as they are very full and may stall your command line</em></span></p>
+<ol start="8" style="list-style-type: decimal">
+<li><p>Cat Loci_aa and Loci_bb together, if necessary: <code>cat Loci_??_contigs.fasta &gt; final_contigs.fasta</code></p></li>
+<li>Then select loci with 300 bp or more: <code>python select_loci.py final_contigs.fasta 300</code>
+<ul>
+<li>word count to see total loci <code>wc -l final_contigs</code></li>
+<li>The number of total loci is <strong>??????/2</strong> #4 or #8 above</li>
+<li>The number of total loci with minimum length 300 is <strong>??????/2</strong> #18</li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

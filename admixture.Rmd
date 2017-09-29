@@ -1,0 +1,26 @@
+---
+title: "Admixture"
+---
+
+## Using Admixture
+
+  1. Obtain the scripts  
+    - `Beagleinput.sh`
+    - `NGSAdmixture.sh`
+    - `Multi_K_NGSadmixture.sh`
+    - `Admix_plot.R`
+
+  2. Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name:
+    - `sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8`  (out can be any name you want)
+  
+  3. To make 1 version of multiple Ks (where K can be adjusted in the script):
+    - `sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K ` OR
+    - To make multiple versions of multiple Ks: `sh Multi_K_NGSadmix.sh __  K` which makes 3 version per K but can be modified in the script
+  
+  4. The results should be various outputs `out__.qopt` where __ is a number (e.g. 2, 3, 4, 21, 22 and so on)
+  
+  5. You can run an R script `Rscript Admix_plot.R __.qopt bamlist.input K out.pdf`  which will plot the admixture graph
+  
+  6. For Evanno `grep -h "^best" --no-group-separator NAME.log | cut -c11 - 24 > FILE`
+  
+  7. An easier method may be to put all `___.qopt` files on your local computer and use the simple online gui to make all of your admixture graphs (see [pophelper](http://pophelper.com/))

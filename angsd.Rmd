@@ -1,0 +1,14 @@
+---
+title: "Using `angsd`"
+---
+
+
+## Analysis with `angsd`
+
+**This is the primary program for analyzing the data from a population genetics standpoint. Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions. Be sure to update** 
+
+This program has too many options to put here, but future renditions/updates may provide more explanation. 
+
+ - For the best guidance/understanding, see the help pages: **http://www.popgen.dk/angsd/index.php/ANGSD**
+ 
+<!-- add additional code/examples here--> 
