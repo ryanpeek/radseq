@@ -2,8 +2,6 @@
 title: "Background & UNIX Overview"
 ---
 
-# *BACKGROUND*
-
 There's plenty of useful information on using the cluster or *SLURM* [here](https://wiki.cse.ucdavis.edu/support/hpc/software/slurm#slurma_highly_scalable_resource_manage), but we try to add some tidbits below that might be pertinent. Take all with a grain of salt.
 
 ## Bioinformatic setup

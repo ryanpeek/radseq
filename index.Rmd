@@ -1,17 +1,16 @@
 ---
 title: "Miller Lab RADSeq/RAPTURE"
 subtitle: "Protocols, code & pipeline for genomic analysis"
-author: "Miller Lab"
 date: "Updated: `r format(Sys.Date())`"
 ---
 
 <br> 
 
-## Welcome
-
 Welcome to the [Miller Lab](https://sites.google.com/site/millermichaelryan/) RADSeq/RAPTURE pipeline. This website is a work-in-progress, but provides much of the protocols, pipeline, and code used in population genomic analyses.
 
-## Software Setup instructions
+![SF Eel - Elder Ck](images/p6230079-Elder-SFEel.jpg)
+
+## Software Setup Instructions
 
 ### R and RStudio
 
@@ -90,7 +89,7 @@ Welcome to the [Miller Lab](https://sites.google.com/site/millermichaelryan/) RA
 * Once it's installed, open RStudio to make sure it works and you don't get any
   error messages.
   
-  ### Spreadsheet program
+### Spreadsheet program
 
 To interact with spreadsheets, we can use LibreOffice, Microsoft Excel, Gnumeric, OpenOffice.org, or other programs. Commands may differ a bit between programs, but general ideas for thinking about spreadsheets are the same.
 

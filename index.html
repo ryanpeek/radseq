@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Miller Lab" />
 
 
 <title>Miller Lab RADSeq/RAPTURE</title>
@@ -271,32 +270,38 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="about.html">About</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Background &amp; bash
+    Background
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="background_bash.html">Using `bash`</a>
+      <a href="background_bash.html">Using bash</a>
     </li>
     <li>
-      <a href="sftp.html">Using `sftp`</a>
+      <a href="sftp.html">Using sftp</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="downloading_illumina.html">Downloading Illumina Data</a>
+  <a href="downloading_illumina.html">Downloading Data</a>
 </li>
-<li>
-  <a href="de_novo_assembly.html">De Novo Assembly</a>
-</li>
-<li>
-  <a href="alignment.html">Alignment</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    De Novo / Alignment
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="de_novo_assembly.html">de Novo Assembly</a>
+    </li>
+    <li>
+      <a href="alignment.html">Alignment</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="subsampling.html">Subsampling</a>
@@ -312,13 +317,13 @@ div.tocify {
       <a href="pca.html">PCA</a>
     </li>
     <li>
-      <a href="angsd.html">`angsd`</a>
+      <a href="angsd.html">Using angsd</a>
     </li>
     <li>
       <a href="admixture.html">Admixture</a>
     </li>
     <li>
-      <a href="FST.html">F&lt;sub&gt;ST&lt;/sub&gt;</a>
+      <a href="FST.html">F_st</a>
     </li>
     <li>
       <a href="upload_ncbi.html">Uploading to NCBI</a>
@@ -350,19 +355,19 @@ div.tocify {
 
 <h1 class="title toc-ignore">Miller Lab RADSeq/RAPTURE</h1>
 <h3 class="subtitle"><em>Protocols, code &amp; pipeline for genomic analysis</em></h3>
-<h4 class="author"><em>Miller Lab</em></h4>
 <h4 class="date"><em>Updated: 2017-09-28</em></h4>
 
 </div>
 
 
 <p><br></p>
-<div id="welcome" class="section level2">
-<h2>Welcome</h2>
 <p>Welcome to the <a href="https://sites.google.com/site/millermichaelryan/">Miller Lab</a> RADSeq/RAPTURE pipeline. This website is a work-in-progress, but provides much of the protocols, pipeline, and code used in population genomic analyses.</p>
+<div class="figure">
+<img src="images/p6230079-Elder-SFEel.jpg" alt="SF Eel - Elder Ck" />
+<p class="caption">SF Eel - Elder Ck</p>
 </div>
 <div id="software-setup-instructions" class="section level2">
-<h2>Software Setup instructions</h2>
+<h2>Software Setup Instructions</h2>
 <div id="r-and-rstudio" class="section level3">
 <h3>R and RStudio</h3>
 <p><strong>R</strong> and <strong>RStudio</strong> are separate downloads and installations. R is the underlying statistical computing environment. RStudio is a graphical integrated development environment (IDE) that makes using R much easier and more interactive. You need to install R before you install RStudio.</p>
@@ -418,10 +423,12 @@ div.tocify {
 <li>Under <em>Installers</em> select the version that matches your distribution, and install it with your preferred method (e.g., with Debian/Ubuntu <code>sudo dpkg -i   rstudio-x.yy.zzz-amd64.deb</code> at the terminal).</li>
 <li>Once it’s installed, open RStudio to make sure it works and you don’t get any error messages.</li>
 </ul>
-<p>### Spreadsheet program</p>
+</div>
+</div>
+<div id="spreadsheet-program" class="section level3">
+<h3>Spreadsheet program</h3>
 <p>To interact with spreadsheets, we can use LibreOffice, Microsoft Excel, Gnumeric, OpenOffice.org, or other programs. Commands may differ a bit between programs, but general ideas for thinking about spreadsheets are the same.</p>
 <p>For this lesson, if you don’t have a spreadsheet program already, you can use LibreOffice. It’s a free, open source spreadsheet program.</p>
-</div>
 <div id="windows-1" class="section level4">
 <h4>Windows</h4>
 <ul>

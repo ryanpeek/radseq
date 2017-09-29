@@ -2,31 +2,31 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
-    - text: "Background & bash"
+    - text: "Background"
       menu:
-        - text: "Using `bash`"
+        - text: "Using bash"
           href: background_bash.html
-        - text: "Using `sftp`"
+        - text: "Using sftp"
           href: sftp.html
-    - text: "Downloading Illumina Data"
+    - text: "Downloading Data"
       href: downloading_illumina.html
-    - text: "De Novo Assembly"
-      href: de_novo_assembly.html
-    - text: "Alignment"
-      href: alignment.html
+    - text: "De Novo / Alignment"
+      menu:
+        - text: "de Novo Assembly"
+          href: de_novo_assembly.html
+        - text: "Alignment"
+          href: alignment.html
     - text: "Subsampling"
       href: subsampling.html 
     - text: "PopGen Analyses"
       menu: 
         - text: "PCA"
           href: pca.html
-        - text: "`angsd`"
+        - text: "Using angsd"
           href: angsd.html
         - text: "Admixture"
           href: admixture.html
-        - text: "F<sub>ST</sub>"
+        - text: "F_st"
           href: FST.html
         - text: "Uploading to NCBI"
           href: upload_ncbi.html

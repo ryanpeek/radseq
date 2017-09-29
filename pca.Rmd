@@ -2,7 +2,7 @@
 title: "PCA"
 ---
 
-# *PCA*
+## Principal Component Analysis
 
 **This is a general way to generate a principal component analysis from your subsampled bam files**
 
@@ -18,5 +18,71 @@ title: "PCA"
     - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
   
 5. `sh pca_plot.sh`  This should create 3 pdfs (but can be modified by modifying the script)
+
+
+## Dynamic PCA 
+
+For data exploration, you can use the following script to make an interactive or dynamic plot, which is useful for investigating your data. 
+
+```{r, echo=TRUE, eval=T}
+
+# LIBRARIES ---------------------------------------------------------------
+
+suppressPackageStartupMessages({
+  library(tidyverse);
+  library(viridis); # for color palettes
+  library(plotly) # interactive plotting
+})
+
+# READ INPUT FILES --------------------------------------------------------
+
+covarfile<-"rabo_mfa_100k"
+clstfile<-"rabo_mfa_100k"
+
+# read covar file
+covar_path <- paste0("./data/",covarfile, ".covar")
+covar <- read.table(covar_path, stringsAsFactors = F);
+
+# Read annot file
+annot <- read.table(paste0("data/bamlist_mrg_",clstfile, "_clst"),stringsAsFactors = F, header = TRUE); 
+
+# CREATE EIGEN MATRIX -----------------------------------------------------
+
+# Eigenvalues
+eig <- eigen(covar, symm=TRUE);
+eig$val <- eig$val/sum(eig$val);
+
+# SET UP PCA -------------------------------------------------------------
+
+# get PC colnames and set label/col/pops
+PC <- as.data.frame(eig$vectors)
+colnames(PC) <- gsub("V", "PC", colnames(PC))
+PC$Region <- factor(annot$FID)
+PC$Pop <- factor(annot$CLUSTER)
+PC$ID <- factor(annot$IID)
+
+# SET UP PLOTS ------------------------------------------------------------
+
+# set the xy vars:
+x1 = 'PC1'
+y1 = 'PC2'
+
+# Create the titles for each PCA
+title12 <- paste("PC1 (",signif(eig$val[1], digits=3)*100,"%)"," / PC2 (",signif(eig$val[2], digits=3)*100,"%)", sep="",collapse="")
+title13 <- paste("PC1 (",signif(eig$val[1], digits=3)*100,"%)"," / PC3 (",signif(eig$val[3], digits=3)*100,"%)", sep="",collapse="")
+title23 <- paste("PC2 (",signif(eig$val[2], digits=3)*100,"%)"," / PC3 (",signif(eig$val[3], digits=3)*100,"%)",sep="",collapse="")
+
+# TEST PLOTLY PLOTS ------------------------------------------------------
+
+# 1 v 2
+(p1v2 <- ggplotly(p = ggplot(data=PC, aes(x=PC1, y=PC2, color=Pop, 
+                                          label=paste(Region,"-",ID))) +
+                    geom_point(size=4, alpha=0.8) + 
+                    labs(title=paste0(covarfile, ": ",title12)) +
+                    theme_bw() +
+                    scale_color_viridis(discrete = TRUE, option = "D")))
+
+```
+
 
 <!-- add additional code/examples here, Ryan will add additional PCA code and custom R script here-->
