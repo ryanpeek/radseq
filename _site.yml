@@ -8,6 +8,8 @@ navbar:
           href: background_bash.html
         - text: "Using sftp"
           href: sftp.html
+        - text: "Additional Coding Resources"
+          href: resources.html
     - text: "Downloading Data"
       href: downloading_illumina.html
     - text: "De Novo / Alignment"
@@ -30,8 +32,6 @@ navbar:
           href: FST.html
         - text: "Uploading to NCBI"
           href: upload_ncbi.html
-    - text: "Resources"
-      href: resources.html
   right:
     - text: "Contact"
       href: contact.html
