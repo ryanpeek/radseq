@@ -40,11 +40,9 @@ navbar:
 output_dir: "."
 output:
   html_document:
-    theme: flatly
+    theme: sandstone
     highlight: pygments
     toc: true
     toc_float:
       collapsed: false
-    include:
-      in_header: header.html
     css: style.css
