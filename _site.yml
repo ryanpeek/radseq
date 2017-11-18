@@ -3,6 +3,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Background"
+      icon: fa-info-circle  fa-1x
       menu:
         - text: "Using bash"
           href: background_bash.html
@@ -11,8 +12,10 @@ navbar:
         - text: "Additional Coding Resources"
           href: resources.html
     - text: "Downloading Data"
+      icon: fa-database fa-1x
       href: downloading_illumina.html
     - text: "Alignment"
+      icon: ion-ios-barcode-outline
       menu:
         - text: "de Novo Assembly"
           href: de_novo_assembly.html
@@ -20,7 +23,7 @@ navbar:
           href: reference.html
         - text: "Merging Reads"
           href: merging.html
-    - text: "Filtering/Data Quality"
+    - text: "Filtering/QC"
       menu:
         - text: "Subsampling"
           href: subsampling.html 
