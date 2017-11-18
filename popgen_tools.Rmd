@@ -1,0 +1,39 @@
+---
+title: "PopGen Tools"
+---
+
+<br> 
+
+## `angsd`
+
+*This is the primary program for analyzing the data from a population genetics standpoint. Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions, you may need to update.*
+
+  - For the best guidance/understanding, see the help pages: http://www.popgen.dk/angsd/index.php/ANGSD
+
+There are many `angsd` calls and modules that we can use, there are flags/arguments for different things and different analyses. Just as a quick overview of what a call to `angsd` might look like here's an *example* PCA call:
+
+ - `angsd -out outFileName -bam bam.filelist -GL 1 -doMaf 1 -doMajorMinor 1 -minQ 20 -minMapQ 10 -doMaf 2 -doPost 2 -doGeno 32 -minMaf 0.05 -postCutoff 0.95 -SNP_pval 1e-6`
+
+Bear in mind the numbers are often _**additive**_, so you can sum the various options together to get an output you want. For example, `-doGeno 5` is `(1+4)`, and prints the major and minor allele followed by the genotype (AA, AC ...) for each individual.
+
+See the [`angsd` wiki](http://www.popgen.dk/angsd/index.php/ANGSD#Overview) for more info.
+
+### Analyses with `angsd`
+
+Generally we mainly use `angsd` for:
+
+ - SNP/Genotype calling
+ - Generating PCA data
+ - SFS Estimation
+ - Calculating Thetas/Tajimas
+ - Calculating F~ST~
+ - Admixture
+ - Association
+
+## [`samtools`](http://www.htslib.org) & [`bedtools`](https://github.com/arq5x/bedtools2)
+
+We use `samtools` for many different things, but primarily for reading/editing/viewing SAM/BAM read files.
+
+We use `bedtools` for merging our different sequencing runs. There's a bunch of great documentation for these tools [here](http://quinlanlab.org/tutorials/bedtools/bedtools.html).
+ 
+

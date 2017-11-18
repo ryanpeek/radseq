@@ -6,7 +6,22 @@ date: "Updated: `r format(Sys.Date())`"
 
 <br> 
 
-Welcome to the [Miller Lab](https://sites.google.com/site/millermichaelryan/) RADSeq/RAPTURE pipeline. This website is a work-in-progress, but provides much of the protocols, pipeline, and code used in population genomic analyses.
+Welcome to the [Miller Lab](https://sites.google.com/site/millermichaelryan/) RADSeq/RAPTURE pipeline. This website is a work-in-progress, but provides much of the protocols, pipeline, and code used in population genomic analyses. A summary of what is on this site is as follows:
+
+ > **Background** tab has has info on coding using `bash`, how to connect to the cluster and to `sftp` as well as some additional R coding resources.
+
+ > [**Downloading Data**](https://ryanpeek.github.io/radseq/downloading_illumina.html) provides info on how to get your data, split by plate, split by barcode, and add metadata. 
+
+ > **Alignment** describes the main ways data will be aligned, (either [de novo](https://ryanpeek.github.io/radseq/de_novo_assembly.html) or [reference](https://ryanpeek.github.io/radseq/reference.html)
+
+ > **Filtering** shows how to filter data for quality and number of reads. The subsample script will select all bams with reads above a given threshold, and then randomly subsample to exactly that threshold of reads (e.g., so all samples have exactly 100k reads).
+
+ > **PopGen Analysis** shows a number of different analyses that can be done. Work in progress.
+
+ > **Pipelines** provides a few complete pipelines (as-is) that are used by different researchers and datasets as examples.  
+
+ > **Post Analysis** describes how to upload data to NCBI for archival purposes.
+ 
 
 ![SF Eel - Elder Ck](images/p6230079-Elder-SFEel.jpg)
 

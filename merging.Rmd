@@ -1,0 +1,119 @@
+---
+title: "Merging Reads"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+## Merging Sequencing Runs
+
+If you have multiple sequencing runs, you'll want to merge your reads into one single set of data for analysis.
+
+We need an alignment contig, the `fastq` files, and a modified version of the `run_align.sh` script.
+ - `cp final_contigs_300.fasta ~/projects/rana_rapture/fastq/`
+ - Get `~/scripts/01a_run_align_flt.sh` or `~/scripts/01b_run_sortbam_flt.sh`
+ 
+### Make `bam` lists from Newest Sequence Data
+
+Create a bamlist of the A and B `.fastq` files.
+
+ - `ls *RA* | sed "s/\.fastq//g" > bamlistA`
+ - `ls *RB* | sed "s/\.fastq//g" > bamlistB`
+ - `paste bamlist? > bamlist`
+
+Create the index for `bwa` to work from alignment (if not already completed)
+ - `bwa index -a is final_contigs_300.fasta`
+ 
+
+### Aligning before Merge
+
+**Time:** <span style="color:red">_(~3-4 hours)_</span>
+
+Because we are merging files, we need to do the filtering and merge BEFORE we remove dups... so need to modify the `run_align.sh` script. The `01a` version essentially just stops before running the remove duplicates step.
+
+Run the script:
+
+ - `sh 01a_run_align_flt.sh bamlist final_contigs_300.fasta`
+ 
+```{bash, eval=F, echo=T}
+
+#!/bin/bash -l
+
+list=$1
+ref=$2
+
+wc=$(wc -l ${list} | awk '{print $1}')
+
+x=1
+while [ $x -le $wc ] 
+do
+        string="sed -n ${x}p ${list}" 
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1, $2}')   
+        set -- $var
+        c1=$1
+        c2=$2
+
+        echo "#!/bin/bash -l
+
+        #SBATCH -o slurm_outs/01a_align_flt-%j.out
+        #SBATCH -J alignflt
+        
+        bwa mem $ref ${c1}.fastq ${c2}.fastq | samtools view -Sb - | samtools sort - ${c1}.sort
+        samtools view -f 0x2 -b ${c1}.sort.bam > ${c1}.sort.flt1.bam" > ${c1}.sh
+# | samtools rmdup - ${c1}.sort.flt.bam" > ${c1}.sh
+        
+        sbatch -t 24:00:00 -p med --mem=4G ${c1}.sh
+        sleep 2
+        x=$(( $x + 1 ))
+
+done
+        
+```
+
+__NOTE: *(If already aligned)*__
+
+If you've already aligned previously, you can use the `01b` script to pick up the sorted bamfiles and just filter, then use that output for the merge. (use script: `01b_run_sortbam_flt.sh`). Notice you don't need the contig alignment here.
+
+  - `sh 01b_run_sortbam_flt.sh bamlist.flt`
+  
+```{bash, eval=F, echo=T}
+
+#!/bin/bash -l
+
+list=$1
+#ref=$2
+
+wc=$(wc -l ${list} | awk '{print $1}')
+
+x=1
+while [ $x -le $wc ] 
+do
+        string="sed -n ${x}p ${list}" 
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1}')   
+        set -- $var
+        c1=$1
+        #c2=$2
+
+        echo "#!/bin/bash -l
+        
+        #SBATCH -o slurm_outs/01b_sortbamflt-%j.out
+        #SBATCH -J sortbamflt
+        
+        samtools view -f 0x2 -b ${c1} > ${c1}.sort.flt1.bam" > ${c1}.sh
+        # | samtools rmdup - ${c1}.sort.flt.bam" > ${c1}.sh
+        
+        sbatch -t 24:00:00 -p med --mem=2G ${c1}.sh
+        sleep 5
+        x=$(( $x + 1 ))
+
+done
+
+```
+
+If there are node failures, you'll need to use *`du -hs`* to verify.
+
+  - `du -hs *flt2.bam | sort -hs | head -n50`

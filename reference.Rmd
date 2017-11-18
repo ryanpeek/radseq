@@ -1,8 +1,11 @@
 ---
-title: "Alignment to Loci"
+title: "Reference Assembly"
 ---
 
-## *Align Individuals to Loci*
+## *Align Individuals to Existing Loci (reference)*
+
+If you aready of a reference genome or assembly, you can skip the *de Novo* steps and do as follows:
+
 
  1. Build index of contigs: `bwa index final_contigs_300.fasta` OR `A_model_genome.fasta`
     - Files will now end in `.amb`, `.ann`, etc.

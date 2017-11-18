@@ -23,6 +23,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 
@@ -147,6 +148,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -292,7 +301,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    De Novo / Alignment
+    Alignment
      
     <span class="caret"></span>
   </a>
@@ -301,25 +310,37 @@ div.tocify {
       <a href="de_novo_assembly.html">de Novo Assembly</a>
     </li>
     <li>
-      <a href="alignment.html">Alignment</a>
+      <a href="reference.html">Reference Assembly</a>
+    </li>
+    <li>
+      <a href="merging.html">Merging Reads</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="subsampling.html">Subsampling</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    PopGen Analyses
+    Filtering/Data Quality
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pca.html">PCA</a>
+      <a href="subsampling.html">Subsampling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    PopGen Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_tools.html">Tools</a>
     </li>
     <li>
-      <a href="angsd.html">Using angsd</a>
+      <a href="pca.html">PCA</a>
     </li>
     <li>
       <a href="admixture.html">Admixture</a>
@@ -327,6 +348,15 @@ div.tocify {
     <li>
       <a href="FST.html">F_st</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Post-Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="upload_ncbi.html">Uploading to NCBI</a>
     </li>
@@ -349,6 +379,14 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -384,12 +422,39 @@ div.tocify {
 </div>
 <div id="unixbash-commands-refresher" class="section level2">
 <h2>UNIX/BASH Commands refresher</h2>
-<div id="server-runs" class="section level3">
-<h3>Server runs</h3>
-<p>Logging in to the server requires your username and access: - <code>ssh -p 2022 USERNAME@agri.cse.ucdavis.edu</code></p>
-<p>To run a program or task on the server (<em>Never on the head node!</em>), you use <code>sbatch ____</code>. - Must use <strong><code>-t</code></strong> for time needed to run program so <code>sbatch -t 24:00:00 __</code> would be for 24 hrs<br />
-- Use <strong><code>-p</code></strong> for imporance (low, med, high) so <code>sbatch -t time -p high ___</code> - Added memory is also possible <code>sbatch --mem=16G -t time - p high ___</code>, for memory intensive jobs (16, 32, 64, etc.) - To cancel server tasks <code>scancel [JOBNUMBER]</code></p>
+<div id="logging-in-to-the-farm" class="section level3">
+<h3>Logging In to the <em>FARM</em></h3>
+<p>Logging in to the server requires your username and access.</p>
+<ul>
+<li><code>ssh -p 2022 USERNAME@agri.cse.ucdavis.edu</code></li>
+</ul>
+<p>You can add this full command as a shortcut to your <code>.bash_profile</code> doing something like the following, and then you only need to type “<code>farm</code>” to login.</p>
+<ul>
+<li><code>alias farm='ssh rapeek@farm.cse.ucdavis.edu'</code></li>
+</ul>
+</div>
+<div id="running-things-on-the-cluster" class="section level3">
+<h3>Running things on the Cluster</h3>
+<p>To run a program or task on the server (<em>Never on the head node!</em>), you’ll use <code>sbatch ____</code> or <code>srun</code>. However there are a few things you’ll need to add:</p>
+<ul>
+<li><strong>time</strong>: Must use <strong><code>-t</code></strong> for time needed to run program, for 24 hours:
+<ul>
+<li><code>sbatch -t 24:00:00 ___</code></li>
+</ul></li>
+<li><strong>priority</strong>: Use <strong><code>-p</code></strong> for importance (low, med, high):
+<ul>
+<li><code>sbatch -t time -p high ___</code></li>
+</ul></li>
+<li><strong>memory</strong>: Change the memory used, (i.e., 16, 64, etc.)
+<ul>
+<li><code>sbatch --mem=16G -t time - p high ___</code></li>
+</ul></li>
+</ul>
 <p><strong>Although not always shown below, in our cluster, all <code>sbatch</code> must have a time (<code>-t</code>) flag or they will fail to run.</strong></p>
+<p>Cancelling tasks on the cluster can be done with:</p>
+<ul>
+<li><code>scancel [JOBNUMBER]</code></li>
+</ul>
 <p>To check whether sbatch is running, type <code>smap -c | grep USERNAME</code>, or to see everything that is running on the server right now, type <code>top</code>.</p>
 <p>The output of most all server tasks is a “slurm” file. It has helpful information on the job, status, etc. The first place to check when troubleshooting is usually a <code>slurm-____</code> file. They are numbered by job number, so the most recent file/job will have the highest number.</p>
 </div>
@@ -452,7 +517,7 @@ div.tocify {
 </div>
 <div id="text-editors-vim" class="section level3">
 <h3>Text Editors (<em>VIM</em>)</h3>
-<p>While there are many available, we prefer to use <strong>VIM</strong>. A few tips regarding <strong>VIM</strong>:</p>
+<p>While there are many available, we tend to prefer <strong>VIM</strong>. There’s a whole bunch of resources online (see this <a href="https://github.com/kevinSuttle/learn-vim">webpage</a>) A few tips regarding <strong>VIM</strong>:</p>
 <ul>
 <li>To exit without saving use <code>:q!</code></li>
 <li>To exit and save use: <code>:wq</code></li>

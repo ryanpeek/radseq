@@ -11,7 +11,7 @@
 
 
 
-<title>Using angsd</title>
+<title>Reference Assembly</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,6 +23,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 
@@ -147,6 +148,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -292,7 +301,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    De Novo / Alignment
+    Alignment
      
     <span class="caret"></span>
   </a>
@@ -301,25 +310,37 @@ div.tocify {
       <a href="de_novo_assembly.html">de Novo Assembly</a>
     </li>
     <li>
-      <a href="alignment.html">Alignment</a>
+      <a href="reference.html">Reference Assembly</a>
+    </li>
+    <li>
+      <a href="merging.html">Merging Reads</a>
     </li>
   </ul>
 </li>
-<li>
-  <a href="subsampling.html">Subsampling</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    PopGen Analyses
+    Filtering/Data Quality
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="pca.html">PCA</a>
+      <a href="subsampling.html">Subsampling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    PopGen Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_tools.html">Tools</a>
     </li>
     <li>
-      <a href="angsd.html">Using angsd</a>
+      <a href="pca.html">PCA</a>
     </li>
     <li>
       <a href="admixture.html">Admixture</a>
@@ -327,6 +348,15 @@ div.tocify {
     <li>
       <a href="FST.html">F_st</a>
     </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Post-Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
     <li>
       <a href="upload_ncbi.html">Uploading to NCBI</a>
     </li>
@@ -350,22 +380,49 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Using <code>angsd</code></h1>
+
+<h1 class="title toc-ignore">Reference Assembly</h1>
 
 </div>
 
 
-<p><br></p>
-<div id="analysis-with-angsd" class="section level2">
-<h2>Analysis with <code>angsd</code></h2>
-<p><em>This is the primary program for analyzing the data from a population genetics standpoint. Be wary of what version you have (on the server or in your local) as scripts may/may not work with different versions, you may need to update.</em></p>
-<p>This is a placeholder for now, future updates may provide code/scripts.</p>
+<div id="align-individuals-to-existing-loci-reference" class="section level2">
+<h2><em>Align Individuals to Existing Loci (reference)</em></h2>
+<p>If you aready of a reference genome or assembly, you can skip the <em>de Novo</em> steps and do as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Build index of contigs: <code>bwa index final_contigs_300.fasta</code> OR <code>A_model_genome.fasta</code>
 <ul>
-<li>For the best guidance/understanding, see the help pages: <a href="http://www.popgen.dk/angsd/index.php/ANGSD" class="uri">http://www.popgen.dk/angsd/index.php/ANGSD</a></li>
+<li>Files will now end in <code>.amb</code>, <code>.ann</code>, etc.</li>
+</ul></li>
+<li>Using all <code>fastq</code> build a list of the fastq RA and RB files into different columns:
+<ul>
+<li><code>ls *RA* | sed &quot;s/\.fastq//g&quot; &gt; bamlistA</code></li>
+<li><code>ls *RB* | sed &quot;s/\.fastq//g&quot; &gt; bamlistB</code></li>
+<li><code>paste bamlist? &gt; bamlist</code></li>
+</ul></li>
+<li>Obtain the <code>run_align.sh</code> script For example copy <code>cp ~millermr/common/run_align.sh ./</code>
+<ul>
+<li><code>sh run_align.sh bamlist final_contigs_300.fasta</code></li>
+<li>It’s taking all fastq files (<code>RA</code> and <code>RB</code>) and aligning to the <code>_300.fasta</code> file (or model genome file)</li>
+</ul></li>
+<li>This should create your final bam files</li>
+</ol>
+<div id="node-failures-and-missing-bams" class="section level4">
+<h4>Node Failures and Missing Bams</h4>
+<p>Sometimes the nodes fail, and you need to find/re-run scripts for certain files. Best option is to find/sort the files that did work, and then grep against the files that didn’t to make a new list, then re-run <code>run_align.sh</code> script with new list.</p>
+<ul>
+<li><code>ls *.flt.bam | sed &quot;s/\.sort\.flt\.bam//g&quot; | grep -f - -v bamlist &gt; bamlist_rerun</code></li>
 </ul>
-<!-- add additional code/examples here-->
+</div>
 </div>
 
 

@@ -2,28 +2,160 @@
 title: "*de Novo* Assembly"
 ---
 
-**_The de novo step is not necessary if a model genome or previous alignment is available (skip to Align individuals to loci)_**   
+**_The de novo step is not necessary if a model genome or previous alignment is available (skip to Reference Assembly)_**   
 
 ## Choosing Individuals
-1. Pick your best 5 - 10 individuals (using `du -hs` or `wc -l`)
 
-2. Copy these individuals (just RA) into a new directory
+1. Pick your best 5--10 individuals (using `du -hs` or `wc -l`)
 
-## Option 1 (Clean up reads in a single script)
+2. Copy these individuals (just the `RA` files) into a new directory
+
+### Option 1 (Clean up reads in a single script)
 
 1. Make an indiv file list (for however many files you chose). Start by making a list of files using sed:
     - `ls fastq | sed "s:.fastq::g" > list`
     
 2. Modify and run the script `Hash_reads.sh`, which will run all three perl scripts (see Option 2)
+**Hash_reads.sh**
+```{bash hash_reads, eval=F}
 
-## Option 2 (Clean up reads one script/Indiv at a time)
+#!/bin/bash -l 
+
+F1=$1 # input file
+n=$(wc -l $F1 | awk '{print $1}')
+
+x=1
+while [ $x -le $n ]
+do
+
+        string="sed -n ${x}p $F1"
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1}')   
+        set -- $var
+        c1=$1   ### Sample name  ###
+        
+                echo "#!/bin/bash" > ${c1}.sh
+                echo "" >> ${c1}.sh
+
+#               echo "perl QualityFilter.pl ${c1}.fastq > ${c1}_L80P80.fastq" >> ${c1}.sh
+                echo "perl HashSeqs.pl ${c1}_L80P80.fastq ${c1} > ${c1}_L80P80.hash" >> ${c1}.sh
+                echo "perl PrintHashHisto.pl ${c1}_L80P80.hash > ${c1}_L80P80.txt" >> ${c1}.sh
+                
+                sbatch -c 1 ${c1}.sh
+
+        x=$(( $x + 1 ))
+
+done
+
+```
+
+### Option 2 (Clean up reads one script/Indiv at a time)
 
 1. Modify file for quality control by throwing out seqs which do not meet threshold
     - Example `perl QualityFilter.pl Dpup_007_RA.fastq > Dpupt_oo7_RA_QF.fastq`
     - Do for all individuals you chose  
+
+**QualityFilter.pl**
+```{bash QF_pl, eval=F}
+
+#!/usr/bin/perl
+
+########################################################################
+$percent_filter = 80;
+$length = 80;
+$phred = 33;  #The value should be either 33 or 64 depending on the base-calling pipeline.
+########################################################################
+
+
+$file = $ARGV[0];
+
+open(FILE, "<$file")
+        or die;
+
+while (<FILE>) {
+        
+        $R1_ID1 = $_;
+        $R1_seq = <FILE>;
+        $R1_ID2 = <FILE>;
+        $R1_qual = <FILE>;
+        chomp($R1_seq); 
+        chomp($R1_qual);
+
+        $R1_seq = substr($R1_seq,0,$length);
+        $R1_qual = substr($R1_qual,0,$length);
+
+        if ($R1_seq =~ m/N/) {
+
+        } else {
+
+                @ASCII = unpack("C*", $R1_qual);
+                $prob = 100;
+                $x = 1;
+                $R1_length = length($R1_qual);
+                foreach $value (@ASCII) {
+                        $value = $value - $phred;
+                        $prob = $prob * (1-(10**(-$value/10)));
+                        $x++;
+                }
+
+                if ($prob >= $percent_filter) {
+                        $good_reads++;
+                        print $R1_ID1;
+                        print "$R1_seq\n";
+                        print $R1_ID2;
+                        print "$R1_qual\n";
+                }
+
+        }
+        
+}
+close FILE;
+
+```
+    
 2. Find and shrink seqs to only unique ones while culling down file from 4 lines to 2 lines
     - `perl HashSeqs.pl Dpup_007_RA_QF.fastq Dpup_007 > Dpup_007_RA_QF.hash`
     - Do for all indivduals you chose
+
+**HashSeqs.pl**
+```{bash hashseqs, eval=F}
+
+#!/usr/bin/perl
+
+$file = $ARGV[0];
+$lib = $ARGV[1];
+$min = 2;
+
+
+open(FILE, "<$file")
+        or die;
+
+while (<FILE>) {
+                
+        $seq_line = <FILE>;
+        chomp($seq_line);
+        $tags{$seq_line}++;
+
+        $_ = <FILE>;
+        $_ = <FILE>;
+}
+close FILE;
+
+
+$z = 1;
+foreach $key (sort { $tags{$b} <=> $tags{$a} } keys %tags) {
+
+        if ($tags{$key} >= $min) {      
+                print ">$lib;$z;$tags{$key}\n";
+                print "$key\n";
+        }
+
+        $z++;
+}
+
+```
+
 3. Depending on coverage, you can look at the distribution and see the # of occurrences vs. # of sequences, expect a peak a some point followed by a dip and a recovery, with a spike early on (usually errors).
     - `perl PrintHashHisto.pl Dpup_007_RA_QF.hash`
     - Do for all individuals you chose
@@ -31,43 +163,233 @@ title: "*de Novo* Assembly"
 
 ## Alignment
 
-Before aligning, need to know parameters for alignment script. To count files in a dir:
+Before aligning, need to know parameters for alignment script. To count files in a dir: 
 
-```{bash, eval=F}
-ls -l *.hash | wc -l
-```
+ - `ls -l *.hash | wc -l`
 
-Concatenate all the hash files `cat *.hash > _.fasta` where the underscore can be anything you want (like a name)
+Concatenate all the hash files `cat *.hash > _.fasta` where the underscore can be anything you want (like a name).
+
   - Make sure **novoalign** (a program) is in your bin or PATH or copied to this directory
 
 ### Index
  
 Create the novoindex index file (can run with 32G if need more memory):
-  - `screen` See notes at start of this pipeline in case you are unfamiliar
-  - `srun --mem=16G novoindex _.fa.idx _.fasta` This is what you want it called and whatever your fasta file was named
-  - Use smap to view task `smap -c | grep your_user_name`
+
+ - `screen` See notes at start of this pipeline in case you are unfamiliar
+ - `srun --mem=16G novoindex _.fa.idx _.fasta` This is what you want it called and whatever your fasta file was named
+ - Use smap to view task `smap -c | grep your_user_name`
 
 ### Align
 
-Now align index to itself, with following:  
-  - `screen` See notes at start of this pipeline in case you are unfamiliar
-  - `srun --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta > _.novo`
-  - Output is a **"_.novo"_** file
-  - Check size of file with `du -hs * | sort -hr`
+Now align index to itself, with following:
+
+ - `screen` See notes at start of this pipeline in case you are unfamiliar
+ - `srun --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta > _.novo`
+ - Output is a **"_.novo"_** file
+ - Check size of file with `du -hs * | sort -hr`
 
 ## ID loci
 
- 1. Now identify loci: 
+ 1. Now identify loci:  
     - `screen` See notes at start of this pipeline in case you are unfamiliar
     - `srun --mem=16G IdentifyLoci3.pl _.novo > _IDloci.fasta`
 
+**IdentifyLoci3.pl**
+```{bash, eval=F}
+
+#!/usr/bin/perl
+
+#######################################################################################
+$max_alignment_score = 30;
+$divergence_factor = 2;
+$min_count = 0; #zero turns off to use min_flag instead
+$min_flag = 0; #zero turns off to use min_count instead
+$max_internal_alignments = 1;
+$min_internal_alignments = 0;
+$max_external_alignments = 10; # twice the df of the total number of samples (i.e. individuals) in the alignment
+$min_external_alignments = 2; # approximately half of the df of the total number of samples (i.e. individuals) in the alignment
+$max_total_alignments = 11; # max_ext_align + max_int_align
+$min_total_alignments = 2; # min_ext_align + min_int_align
+$min_alleles = 1;
+$max_alleles = 4;
+$min_samples_per_allele = 2;
+$max_samples_per_allele = 6; # total number of samples (i.e. individuals) in the alignment
+#######################################################################################
+
+$file = $ARGV[0];
+
+open(FILE, "<$file") or die;
+while (<FILE>) {
+        $line = $_;
+        chomp($line);
+        if (substr($line,0,1) eq ">") {
+                @tabs = split(/\t/,$line);
+
+                if ($tabs[9] eq "F") {
+
+                        $query = $tabs[0];
+                        ($query_lib, $query_ID, $query_count, $query_flag) = split(/\;/, $query);
+                        $query_sequence = $tabs[2];
+
+                        if ($query_used{$query} != 1 && $query_count >= $min_count && $query_flag >= $min_flag) {
+                                $query_sequences{$query} = $query_sequence;
+                                $sample_count{$query_sequence}++;
+                                $query_used{$query} = 1;
+                        }
+
+                }               
+
+        }
+}
+close(FILE);
+%query_used = (); #clear this hash to clear memory
+
+
+open(FILE, "<$file") or die;
+while (<FILE>) {
+
+        $line = $_;
+        chomp($line);
+
+
+        if (substr($line,0,1) eq ">") {
+                @tabs = split(/\t/,$line);
+
+                if ($tabs[9] eq "F") {
+
+                        $query = $tabs[0];
+                        ($query_lib, $query_ID, $query_count, $query_flag) = split(/\;/, $query); 
+                        $index = $tabs[7]; 
+                        ($index_lib, $index_ID, $index_count, $index_flag) = split(/\;/, $index);
+                
+                        $score = $tabs[5];
+                        $change = $tabs[13];
+                        $query_sequence = $tabs[2];
+                        $index_sequence = $query_sequences{$index};
+
+                        if ( ($query ne $index) && ( $sample_count{$query_sequence} >= $min_samples_per_allele && $sample_count{$query_sequence} <= $max_samples_per_allele ) && ( $sample_count{$index_sequence} >= $min_samples_per_allele && $sample_count{$index_sequence} <= $max_samples_per_allele ) ) {
+
+                                if ($query_lib eq $index_lib) {         
+                                                push(@{$internal_alignments{$query}}, $index);
+                                                push(@{$internal_alignment_scores{$query}}, $score);
+                                } else {
+                                        if ($score == 0) {
+                                                push(@{$perfect_external_alignments{$query}}, $index);
+                                                push(@{$external_alignments{$query}}, $index);
+                                                push(@{$external_alignment_scores{$query}}, $score);
+                                        } else {
+                                                push(@{$external_alignments{$query}}, $index);
+                                                push(@{$external_alignment_scores{$query}}, $score);
+                                        }
+                                }
+
+                        }       
+
+                }
+
+        }
+}
+close(FILE);
+
+$locus = 1;
+foreach $query (keys %query_sequences) {
+        if ($printed{$query} != 1) {
+        
+                $bad = 0;
+                @alleles = valid_alignments($query);
+                $string1 = "@alleles";
+
+                if ($string1 ne "") {
+                        foreach (@alleles) {
+                                @alleles2 = valid_alignments($_);
+                                $string2 = "@alleles2";
+                                if ($string1 ne $string2) { $bad = 1; }
+                        }
+                        if ($bad != 1) {
+                                $print_string = ""; $print_count = 0;
+                                foreach (@alleles) {
+                                        if ($printed{$_} != 1) {
+                                                @matches = ($_, @{$perfect_external_alignments{$_}});
+                                                @matches = sort(@matches);
+
+                                                $ID = "";
+                                                foreach (@matches) { 
+                                                        $ID = $ID . substr($_,1,length($_)) . "|"; 
+                                                        $printed{$_} = 1;       
+                                                }
+                                                chop($ID);
+
+                                                $plocus = sprintf("%06d", $locus); $plocus = "R" . $plocus;
+                                                $print_string = $print_string . ">$plocus\{$ID\}\n";
+                                                $print_string = $print_string . $query_sequences{$_} . "\n";
+                                                $print_count++;
+                                        }
+                                }
+                                if ($print_count >= $min_alleles && $print_count <= $max_alleles) {
+                                        print $print_string;
+                                        $locus++;
+                                }
+                        }
+                }
+
+        }
+}
+
+sub valid_alignments {
+        $seq = $_[0];
+        @int_aligns = ();
+        @ext_aligns = ();
+        @aligns = ();
+        $flag = 0;
+
+        ($seq_lib, $seq_ID, $blank, $seq_count) = split(/\;/, $seq);
+
+        $x = 0;
+        while ($x < scalar(@{$internal_alignments{$seq}})) {
+                if ($internal_alignment_scores{$seq}[$x] <= $max_alignment_score) {
+                        push(@int_aligns, $internal_alignments{$seq}[$x]);
+                } elsif ($internal_alignment_scores{$seq}[$x] < $max_alignment_score*$divergence_factor) {
+                        $flag = 1;
+                }
+                $x++;
+        }
+        if (scalar(@int_aligns) > $max_internal_alignments 
+        || scalar(@int_aligns) < $min_internal_alignments) { $flag = 1; }
+
+        $x = 0;
+        while ($x < scalar(@{$external_alignments{$seq}})) {
+                if ($external_alignment_scores{$seq}[$x] <= $max_alignment_score) {
+                        push(@ext_aligns, $external_alignments{$seq}[$x]);
+                } elsif ($external_alignment_scores{$seq}[$x] < $max_alignment_score*$divergence_factor) {
+                        $flag = 1;
+                }
+                $x++;
+        }
+        if (scalar(@ext_aligns) > $max_external_alignments
+        || scalar(@ext_aligns) < $min_external_alignments) { $flag = 1; }
+
+        if (scalar(@int_aligns)+scalar(@ext_aligns) > $max_total_alignments
+        || scalar(@int_aligns)+scalar(@ext_aligns) < $min_total_alignments) { $flag = 1; }
+
+        if ($flag != 1) {
+                @aligns = ($seq, @int_aligns, @ext_aligns);
+                @aligns = sort(@aligns);
+                return @aligns;
+        }
+}
+
+
+
+```
+
+
  2. Once done counting loci, divide by 2 to get idea of how many loci we are dealing with, perl can only handle 8000 lines and 4000 loci chunks (*We will need to split _IDloci.fasta into 8000 line chunks*)
-    - See how many polymorphic loci exist
-`perl SimplifyLoci2.pl _IDloci.fasta | grep "_2" | wc -l`
+    - See how many polymorphic loci exist: `perl SimplifyLoci2.pl _IDloci.fasta | grep "_2" | wc -l`
+
 
 ## Price (Extension)
 
- 1. Now create PRICE directory and extendLoci directories inside PRICE  
+ 1. Now create PRICE directory and extendLoci directories inside PRICE    
     - `mkdir PRICE [in denovo folder]`
     - `mkdir extendLoci_1` (if 104,000 or less (aa:az)) *4000 loci x 26 letters (a-z) equals 104,000*
     - `mkdir extendLoci_2` (if >104,000 loci)           *add another directory for each 104000 you will need.* 
@@ -103,9 +425,8 @@ Now align index to itself, with following:
  7. Make a list of all the output files you just made (e.g., `_IDloci_sf.fasta_aa`, `_IDloci_sf.fasta_ab`)
     - `ls *.fasta_a* > data_list`
  
- 8. To get an idea of how many loci you have, open the last file created by splitting and 
-`tail _IDloci_sf.fasta_a?` and the last number is the number of loci you have (R??????) OR
-you can use the number of loci you found in #4 (good to check both really)
+ 8. To get an idea of how many loci you have, open the last file created by splitting, `tail _IDloci_sf.fasta_a?` and the last number is the number of loci you have (`R??????`) OR
+    - you can use the number of loci you found in #4 (good to check both really)
 
  9. In PRICE create a `Loci_aa` file which is a list of R000001 to whatever locus number you have from #8 (up to R104000) and (*if necessary*) a `Loci_bb` which is R104001 to whatever locus number you have. You can use the Rscript (`makelist.R`) or use a text editor.
     - Make a list of each line number (i.e., R000001 >> ?), use Rscript `makelist.R`
@@ -116,7 +437,7 @@ you can use the number of loci you found in #4 (good to check both really)
 
 ### Adjust Scripts
 
- 1. Copy the following scripts into each `extendLoci_*` directory you created
+ 1. Copy the following scripts into each `extendLoci_*` directory you created  
     - `RecoverLocusSpecificReads.sh`
     - `extendLoci.sh`
     - `format_contigs.sh`

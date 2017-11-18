@@ -12,24 +12,30 @@ navbar:
           href: resources.html
     - text: "Downloading Data"
       href: downloading_illumina.html
-    - text: "De Novo / Alignment"
+    - text: "Alignment"
       menu:
         - text: "de Novo Assembly"
           href: de_novo_assembly.html
-        - text: "Alignment"
-          href: alignment.html
-    - text: "Subsampling"
-      href: subsampling.html 
-    - text: "PopGen Analyses"
+        - text: "Reference Assembly"
+          href: reference.html
+        - text: "Merging Reads"
+          href: merging.html
+    - text: "Filtering/Data Quality"
+      menu:
+        - text: "Subsampling"
+          href: subsampling.html 
+    - text: "PopGen Analysis"
       menu: 
+        - text: "Tools"
+          href: popgen_tools.html
         - text: "PCA"
           href: pca.html
-        - text: "Using angsd"
-          href: angsd.html
         - text: "Admixture"
           href: admixture.html
         - text: "F_st"
           href: FST.html
+    - text: "Post-Analysis"
+      menu: 
         - text: "Uploading to NCBI"
           href: upload_ncbi.html
   right:
@@ -42,6 +48,7 @@ output:
   html_document:
     theme: sandstone
     highlight: pygments
+    code_folding: hide
     toc: true
     toc_float:
       collapsed: false

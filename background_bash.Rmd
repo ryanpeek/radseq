@@ -29,19 +29,33 @@ i.e., mine looks something like this: `/home/projects/rapture/SOMM163/raw`
 
 ## UNIX/BASH Commands refresher
 
-### Server runs
+### Logging In to the *FARM*
 
-Logging in to the server requires your username and access:
+Logging in to the server requires your username and access.
+
  - `ssh -p 2022 USERNAME@agri.cse.ucdavis.edu`
 
-To run a program or task on the server (*Never on the head node!*), you use `sbatch ____`.
-  - Must use **`-t`** for time needed to run program so `sbatch -t 24:00:00 __` would be for 24 hrs  
-  - Use **`-p`** for imporance (low, med, high) so `sbatch -t time -p high ___`
-  - Added memory is also possible `sbatch --mem=16G -t time - p high ___`, for memory intensive jobs (16, 32, 64, etc.)
-  - To cancel server tasks `scancel [JOBNUMBER]`
- 
-**Although not always shown below, in our cluster, all `sbatch` must have a time (`-t`) flag or they will fail to run.**  
+You can add this full command as a shortcut to your `.bash_profile` doing something like the following, and then you only need to type "`farm`" to login.
 
+ - `alias farm='ssh rapeek@farm.cse.ucdavis.edu'`
+
+### Running things on the Cluster
+
+To run a program or task on the server (*Never on the head node!*), you'll use `sbatch ____` or `srun`. However there are a few things you'll need to add:
+
+  - **time**: Must use **`-t`** for time needed to run program, for 24 hours:
+    - `sbatch -t 24:00:00 ___`
+  - **priority**: Use **`-p`** for importance (low, med, high):
+    - `sbatch -t time -p high ___`
+  - **memory**: Change the memory used, (i.e., 16, 64, etc.)
+    - `sbatch --mem=16G -t time - p high ___`
+
+**Although not always shown below, in our cluster, all `sbatch` must have a time (`-t`) flag or they will fail to run.**  
+  
+Cancelling tasks on the cluster can be done with:
+
+ - `scancel [JOBNUMBER]`
+ 
 To check whether sbatch is running, type `smap -c | grep USERNAME`, or to see everything that is running on the server right now, type `top`.
 
 The output of most all server tasks is a "slurm" file. It has helpful information on the job, status, etc. The first place to check when troubleshooting is usually a `slurm-____` file. They are numbered by job number, so the most recent file/job will have the highest number.
@@ -78,7 +92,7 @@ The output of most all server tasks is a "slurm" file. It has helpful informatio
 
 ### Text Editors (*VIM*)
 
-While there are many available, we prefer to use **VIM**. A few tips regarding **VIM**:
+While there are many available, we tend to prefer **VIM**. There's a whole bunch of resources online (see this [webpage](https://github.com/kevinSuttle/learn-vim)) A few tips regarding **VIM**:
 
  - To exit without saving use `:q!`
  - To exit and save use: `:wq`
