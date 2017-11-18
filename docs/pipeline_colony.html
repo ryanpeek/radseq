@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="John M. Mola" />
+
+
+<title>Sequence Data to COLONY</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Background
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="background_bash.html">Using bash</a>
+    </li>
+    <li>
+      <a href="sftp.html">Using sftp</a>
+    </li>
+    <li>
+      <a href="resources.html">Additional Coding Resources</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="downloading_illumina.html">Downloading Data</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Alignment
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="de_novo_assembly.html">de Novo Assembly</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference Assembly</a>
+    </li>
+    <li>
+      <a href="merging.html">Merging Reads</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Filtering/Data Quality
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="subsampling.html">Subsampling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    PopGen Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_tools.html">Tools</a>
+    </li>
+    <li>
+      <a href="pca.html">PCA</a>
+    </li>
+    <li>
+      <a href="admixture.html">Admixture</a>
+    </li>
+    <li>
+      <a href="FST.html">F_st</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Piplelines
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pipeline_colony.html">Colony</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Post-Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="upload_ncbi.html">Uploading to NCBI</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">Contact</a>
+</li>
+<li>
+  <a href="https://github.com/ryanpeek/radseq">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Sequence Data to COLONY</h1>
+<h3 class="subtitle"><em>A simple guide for going from sequencing data all the way to sibship inference!</em></h3>
+<h4 class="author"><em>John M. Mola</em></h4>
+
+</div>
+
+
+<div id="outline-the-bare-bones" class="section level2">
+<h2>Outline: The Bare Bones</h2>
+<ol style="list-style-type: decimal">
+<li><a href="#split">Split/align</a></li>
+<li><a href="#filter">Filter to read quality</a></li>
+<li><a href="#subset">Subset to samples of interest</a></li>
+<li><a href="#angsd">SNP Calling (with angsd)</a></li>
+<li><a href="#sibship">Loci-selection for sibship</a></li>
+<li><a href="#colony">Run COLONY!</a></li>
+</ol>
+<p>X. <a href="#misc">Quality Checks and Misc.</a></p>
+<p>Y. <a href="#glossary">Glossary of <em>some</em> terms</a></p>
+<p>Z. <a href="#simple">Simplified, no verbage</a></p>
+</div>
+<div id="splitalign" class="section level2">
+<h2><a name="split"></a> 1. Split/align</h2>
+<div id="the-split-script" class="section level3">
+<h3>The <code>split</code> script</h3>
+<p>First, we will split our .fastq files using the <code>run_BestRadSplit_PstI.sh</code> <code>bash</code> script provided by the Miller Lab.</p>
+<div id="note-the-script-is-specific-to-the-psti-cutter-so-use-sbfi-if-that-is-the-cutter-etc." class="section level5">
+<h5>Note: The script is specific to the PstI cutter, so use SbfI if that is the cutter, etc.</h5>
+<p>The script gets fed the R1 and R3 .fastq files and we give our output a name, typically the standard name. (e.g. <code>SOMM185_ACTTGA</code> below)</p>
+<p><code>sbatch -p high -t 24:00:00 ../run_BestRadSplit_PstI.sh SOMM185_R1_ACTTGA.fastq  SOMM185_R3_ACTTGA.fastq SOMM185_ACTTGA</code></p>
+<p>In a new screen, compress the output of the <code>split</code> script:</p>
+<p><code>srun -t 24:00:00 gzip *ACTTGA.fastq</code></p>
+</div>
+</div>
+<div id="the-align-script" class="section level3">
+<h3>The <code>align</code> script</h3>
+<p>Next, we will make two lists of all of the .fastq file names and then paste them together. We’ll then feed this list to a <code>run_align</code> script with a reference genome (available online).</p>
+<p><code>ls *RA* | sed &quot;s/\.fastq\.gz//g&quot; &gt; listA</code> <code>ls *RB* | sed &quot;s/\.fastq\.gz//g&quot; &gt; listB</code></p>
+<p>Here, selected all of the files with RA and RB located inside the file name (<code>ls *RA*</code>) and then substituted (<code>s</code>) .fastq and .gz for a blank space (<code>//</code>). This gives us just the file names without the extensions.</p>
+<p><code>paste listA listB &gt; list_ACTTGA</code> <code>sbatch -t 24:00:00 ../run_align.sh list_ACTTGA ../../Mola/B_imp_ref_genome/GCF_000188095.1_BIMP_2.0_genomic.fna</code></p>
+<p>To align, we combine the two lists into one list (in this case for plate <code>ACTTGA</code>). We then <code>sbatch</code> the <code>run_align.sh</code> script providing it with our list and a reference genome (in this case <em>Bombus impatiens</em>).</p>
+</div>
+<div id="a-little-bit-of-tidying" class="section level3">
+<h3>A little bit of tidying</h3>
+<p>To finish the split/align section, I like to organize the output files. This is especially handy when we’re working plate-by-plate rather than in a full run of all plates at once.</p>
+<p><code>mkdir aligned_files filtered_bams slurm_outputs zipped_fastq</code></p>
+<p>Then move the various file types into their respective folders (with <code>mv</code>).</p>
+<p>It’s also good to check the length of the bams file (should be 96) using <code>ls filtered_bams/ | wc</code>.</p>
+<p>In the end, 4 subdirectories, the list, and the two original .fastq files should remain in the plate directory.</p>
+</div>
+</div>
+<div id="filter-to-read-quality" class="section level2">
+<h2><a name="filter"></a> 2. Filter to read quality</h2>
+<p>There are various ways to filter read quality, and some of them will be done later on at the loci level when we call SNPs. However, we can subset to individuals on a minimum number of aligned reads. This helps filter out poorly sequenced individuals who might mess up downstream loci selection and be unusable anyway.</p>
+<div id="use-the-subsample-script" class="section level4">
+<h4>Use the subsample script</h4>
+<blockquote>
+<p>need to insert info on subsample script</p>
+</blockquote>
+</div>
+</div>
+<div id="subset-to-our-sample-of-interest" class="section level2">
+<h2><a name="subset"></a> 3. Subset to our sample of interest</h2>
+<p>For sibship analysis, we want loci that are the most informative within our specific “population” or sample of interest. For example, we know that workers in 2012 won’t be full-sibs of workers in 2016, so we don’t want to SNP call with all of those individuals mixed together. You can likely skip this step for other types of analyses and call SNPs first, then subset for downstream analyses.</p>
+<p>Copy over the bamclst_lists.R file (This handy script was originally written by <a href="https://ryanpeek.github.io">Ryan Peek</a>).</p>
+<p><code>cp ~dir/bamclst_lists.R /dir/.</code></p>
+<p>Refer to the script for exact details.</p>
+<div id="input" class="section level4">
+<h4>Input</h4>
+<ul>
+<li>A bamlist, the script assumes you’re using a subsampled list, but this is not necessary.</li>
+<li>Metadata containing <em>individual barcodes</em> and whatever information you have for those samples.</li>
+</ul>
+</div>
+<div id="output" class="section level4">
+<h4>Output</h4>
+<ul>
+<li>A bamlist of your samples of interest (for use with angsd)</li>
+</ul>
+<p>AND/OR</p>
+<ul>
+<li>A <code>.clst</code> file you can use for PCA plots (this requires output from <code>pca_calc.sh</code> script as well)</li>
+</ul>
+</div>
+</div>
+<div id="snp-calling-with-angsd" class="section level2">
+<h2><a name="angsd"></a> 4. SNP Calling (with angsd)</h2>
+<p>After subsetting to our bamlist to the subpopulation of interest, we can call SNPs using <code>angsd</code>. The binary will need to be installed on your user cluster.</p>
+<p>A basic angsd call looks like this:</p>
+<p><code>~/bin/angsd -bam $list  -GL 1 -out $output -doMaf 2 -minInd 20 -doMajorMinor 1 -SNP_pval 0.000001 -doGeno 4 -doPost 2 -postCutoff 0.95 -minMaf 0.005</code></p>
+<p>Wrapping this in a shell script is probably the way to go. I have one called <code>~johnmola/scripts/genoget.sh</code>.</p>
+<div id="input-1" class="section level4">
+<h4>Input</h4>
+<ul>
+<li>a bamlist (<code>$list</code>)</li>
+<li>an output file name (<code>$output</code>)</li>
+</ul>
+</div>
+<div id="output-can-be-customized-output-below-is-what-the-basic-angsd-call-will-provide" class="section level4">
+<h4>Output (can be customized, output below is what the basic angsd call will provide)</h4>
+<ul>
+<li>an arguments file (<code>.arg</code>)</li>
+<li>minor allele frequency spectrum (<code>.mafs</code>)</li>
+<li>genotypes (<code>.geno</code>)</li>
+</ul>
+<div id="note-they-will-be-.gz-files.-just-unzip." class="section level6">
+<h6><em>Note: They will be <code>.gz</code> files. Just unzip.</em></h6>
+</div>
+</div>
+<div id="typical-angsd-commandscalls" class="section level4">
+<h4>Typical <code>angsd</code> commands/calls</h4>
+<p><code>angsd</code> calls use a numbering system. For instance, for the <code>-doGeno</code> command, if you want <code>angsd</code> to write the major and minor alleles, you give it the number “1”, if you want posterior probability, you provide “8”. However, if you want <em>both</em> of those values, you provide it 8+1 = “9”</p>
+<p>See the <code>angsd</code> wiki for more information. <a href="http://www.popgen.dk/angsd/index.php/ANGSD">LINK</a></p>
+</div>
+</div>
+<div id="loci-selection-for-sibship" class="section level2">
+<h2><a name="sibship"></a> 5. Loci-selection for sibship</h2>
+<p>In order to run COLONY successfully, we need to select loci that are at least:</p>
+<ul>
+<li>In HWE</li>
+<li>In Linkage-equilibrium</li>
+</ul>
+<p>Additionally, it’s preferable that we customize the following as well:</p>
+<ul>
+<li>Select loci from the subset of interest</li>
+<li>At least 100 loci</li>
+<li>Less than 25% of individuals are missing a genotype call at that loci</li>
+<li>Minor allele frequency of 0.1 or higher</li>
+</ul>
+<p>In the <code>Geno2Colony.pl</code> file, we will customize the following parameters. Nothing else needs to be edited!! We’ll go through them in detail.</p>
+<pre><code>$geno = $ARGV[0];
+$list = $ARGV[1];
+
+#SNP Filters
+$max_mis = 0.25;
+$min_maf = 0.01;
+$max_chi = 3.84;
+
+#SNP Drawing
+$num = 300;
+$dist = 10000;
+
+#Colony
+$type = 0;
+$adrop = 0.05;
+$gerror = 0.05;</code></pre>
+<div id="input-2" class="section level4">
+<h4>Input</h4>
+<p><code>$geno</code> is the list of genotypes for all of your individuals. This is the <code>.geno</code> output from angsd.</p>
+<p><code>$list</code> is a header file needed for matching the names to their genotypes. It’s basically just your bamlist, but preferably with human-readable names.</p>
+</div>
+<div id="snp-quality-filters" class="section level4">
+<h4>SNP quality filters</h4>
+<p><code>$max_mis</code> The maximum number of individuals that can be missing a retained SNP</p>
+<p><code>$min_maf</code> The minimum minor allele frequency for a SNP to be retained</p>
+<p><code>$max_chi</code> Basically assumes HWE if set at 3.84 (don’t change)</p>
+</div>
+<div id="snp-drawing" class="section level4">
+<h4>SNP drawing</h4>
+<p><code>$num</code> Set how many loci you want. The script will randomly pull, but if you set the number really high, it will go until it runs out.</p>
+<p><code>$dist</code> How far apart in base pairs should SNPs be. Typically 10,000. (To ensure linkage equilibrium)</p>
+</div>
+<div id="colony-this-input-is-just-needed-for-colonys-header" class="section level4">
+<h4>Colony (This input is just needed for COLONY’s header)</h4>
+<p><code>$type</code> The type of marker. In this case 0 is the only appropriate answer for SNPs.</p>
+<p><code>$adrop</code> The allele dropout rate. Assuming 0.05 is usually good.</p>
+<p><code>$gerror</code> The genotype error rate. Assuming 0.05 is usually good.</p>
+<p>Save the output of this perl script, we’ll feed it to COLONY next. I usually name it with a convention based on the first 5 settings. E.g. The name for the code chunk above would be: <code>projectname_m25_maf01_n300_d10k.DAT</code> meaning the name of the project max missing = 0.25, maf = 0.01, 300 loci, 10000 bp apart.</p>
+</div>
+</div>
+<div id="running-colony" class="section level2">
+<h2><a name="colony"></a> 6. Running COLONY!</h2>
+<p>Download COLONY <a href="https://www.zsl.org/science/software/colony">here</a>.</p>
+<p>We are almost ready to feed our file to COLONY!</p>
+<p>We first need to finish the .DAT file that we outputted from the <code>Geno2Colony.pl</code> script. COLONY requires a header and footer of options to be appended onto our offspring genotypes, and then all fed in with one file.</p>
+<div id="note-this-is-different-if-you-use-the-gui-version-of-colonybut-dont." class="section level6">
+<h6><em>Note: This is different if you use the GUI version of COLONY…but …don’t.</em></h6>
+<p>While this step can be automated, I actually prefer some level of interaction here to ensure everything is correct before proceeding. I have saved a typical COLONY header and footer, and then copy and paste them using <code>vim</code> to the beginning and end of the file, respectively. I then ensure the settings are what I want before running COLONY with the folowing command:</p>
+<p><code>srun -t 24:00:00 ./colony2s.ifort.out IFN:./m25_maf10_n500_r1.DAT</code></p>
+</div>
+<div id="note-for-whatever-reason-the-colony-software-freaks-out-if-you-dont-have-.-in-the-front-of-your-file-location." class="section level6">
+<h6><em>Note: For whatever reason, the COLONY software freaks out if you don’t have <code>./</code> in the front of your file location.</em></h6>
+</div>
+</div>
+<div id="andthats-it-youre-donerunning-colony-at-least" class="section level2">
+<h2>And…that’s it! You’re done!<sup><sup><sup>running</sup></sup></sup> <sup><sup><sup>COLONY</sup></sup></sup> <sup><sup><sup>at</sup></sup></sup> <sup><sup><sup>least…</sup></sup></sup></h2>
+<div class="figure">
+<img src="https://media.giphy.com/media/s2qXK8wAvkHTO/giphy.gif" />
+
+</div>
+</div>
+<div id="x.-quality-checks-and-miscellaneous" class="section level2">
+<h2><a name="misc"></a> X. Quality Checks and Miscellaneous</h2>
+</div>
+<div id="y.-glossary-of-some-terms" class="section level2">
+<h2><a name="glossary"></a> Y. Glossary of some terms</h2>
+<p>PLACEHOLDER: I’ve noticed that I use subset, subsample, and subpopulation interchangeably…but to mean different things. Go back through and make clear. Might also be handy to have a glossary to terms that are unique (like bamlist)/weird.</p>
+<ul>
+<li><code>bamlist</code> -</li>
+<li>subpopulation -</li>
+<li>subsample -</li>
+<li>subset</li>
+</ul>
+</div>
+<div id="z.-simple-version-just-scripts-and-the-call" class="section level2">
+<h2><a name="simple"></a> Z. Simple version, just scripts and the call</h2>
+<div id="splitalign-1" class="section level4">
+<h4>1. Split/align</h4>
+<p>Split</p>
+<p><code>sbatch -p high -t 24:00:00 ../run_BestRadSplit_PstI.sh SOMM185_R1_ACTTGA.fastq  SOMM185_R3_ACTTGA.fastq SOMM185_ACTTGA</code></p>
+<p>Compress</p>
+<p><code>srun -t 24:00:00 gzip *ACTTGA.fastq</code></p>
+<p>Make lists</p>
+<p><code>ls *RA* | sed &quot;s/\.fastq\.gz//g&quot; &gt; listA ls *RB* | sed &quot;s/\.fastq\.gz//g&quot; &gt; listB</code> <code>paste listA listB &gt; list_ACTTGA</code></p>
+<p>Align</p>
+<p><code>sbatch -t 24:00:00 ../run_align.sh list_ACTTGA ../../Mola/B_imp_ref_genome/GCF_000188095.1_BIMP_2.0_genomic.fna</code></p>
+<p>Tidy</p>
+<p><code>mkdir aligned_files filtered_bams slurm_outputs zipped_fastq</code> then <code>mv</code></p>
+<p>Check</p>
+<p><code>ls filtered_bams/ | wc</code></p>
+</div>
+<div id="filter" class="section level4">
+<h4>2. Filter</h4>
+<p>Remove extension</p>
+<p><code>ls *flt.bam | sed 's/\.bam//g' &gt; sublist</code></p>
+<p>Run sub sample</p>
+<p><code>sbatch -t 24:00:00 sub_sample.sh sublist 100000</code></p>
+<p>Make new bamlist</p>
+<p><code>ls *_100000.bam &gt; _subbamlist</code></p>
+</div>
+<div id="subset" class="section level4">
+<h4>3. Subset</h4>
+<p>Follow</p>
+<p><code>bamclst_lists.R</code></p>
+</div>
+<div id="snp-calling" class="section level4">
+<h4>4. SNP calling</h4>
+<p>Edit and run <code>genoget.sh</code></p>
+<p><code>sbatch -p high --mem 32G -t 72:00:00 ~/scripts/genoget.sh vm_30_bam vm3_30_out</code></p>
+</div>
+<div id="loci-selection" class="section level4">
+<h4>5. Loci selection</h4>
+<p>Edit and run <code>Geno2Colony.pl</code></p>
+<p><code>perl ~/scripts/Geno2Colony.pl ../mp_v5_2017_03_16_noclones.geno ../v3_perl_headers &gt; m25_maf01_n75</code></p>
+</div>
+<div id="colony" class="section level4">
+<h4>6. COLONY</h4>
+<p>Add header and footer</p>
+<p><code>vim</code></p>
+<p>Run COLONY</p>
+<p><code>srun -t 24:00:00 ./colony2s.ifort.out IFN:./m25_maf10_n500_r1.DAT</code></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

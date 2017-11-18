@@ -1,0 +1,35 @@
+---
+title: "NOTES"
+author: "Ryan Peek"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Notes
+
+# To Dos
+
+
+# SNIPPETS
+
+### `angsd` PCA call
+
+
+
+From John:
+
+```{bash}
+
+#!/bin/bash -l
+##Name:  get_PCA_MDS1.sh
+
+bamlist=$1
+out=$2
+nind=$3
+
+~/bin/angsd/angsd -bam ${bamlist} -out ${out}.PCAMDS1 -doIBS 1 -doCounts 1 -doMajorMinor 1 -minFreq 0.05 -maxMis ${nind} -minMapQ 30 -minQ 20 -SNP_pval 0.000001 -makeMatrix 1 -doCov 1 -GL 1 -doMaf 2 -doPost 2 -nThreads 16
+
+```

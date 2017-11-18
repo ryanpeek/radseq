@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Upload to NCBI</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 61px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+
+.section h2 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h3 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h4 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h5 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+.section h6 {
+  padding-top: 66px;
+  margin-top: -66px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Background
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="background_bash.html">Using bash</a>
+    </li>
+    <li>
+      <a href="sftp.html">Using sftp</a>
+    </li>
+    <li>
+      <a href="resources.html">Additional Coding Resources</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="downloading_illumina.html">Downloading Data</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Alignment
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="de_novo_assembly.html">de Novo Assembly</a>
+    </li>
+    <li>
+      <a href="reference.html">Reference Assembly</a>
+    </li>
+    <li>
+      <a href="merging.html">Merging Reads</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Filtering/Data Quality
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="subsampling.html">Subsampling</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    PopGen Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="popgen_tools.html">Tools</a>
+    </li>
+    <li>
+      <a href="pca.html">PCA</a>
+    </li>
+    <li>
+      <a href="admixture.html">Admixture</a>
+    </li>
+    <li>
+      <a href="FST.html">F_st</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Piplelines
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="pipeline_colony.html">Colony</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Post-Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="upload_ncbi.html">Uploading to NCBI</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="contact.html">Contact</a>
+</li>
+<li>
+  <a href="https://github.com/ryanpeek/radseq">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Upload to NCBI</h1>
+
+</div>
+
+
+<div id="uploading-sequence-data-to-ncbi" class="section level2">
+<h2>Uploading sequence data to NCBI</h2>
+<p><em>This step should only be attempted when one wishes to upload all of their data for public access. Generally we upload any working sample that had the minimum requirements to be included at some point in your study. For simplicity, we generally upload all of the RA RB files from the <strong>Downloading Illumina Data</strong> step.</em></p>
+<p>You will also need your metadata file so as to enter information about every sample you sequenced (location, name, etc.). The following is a brief outline of what you need to do, basically leaving out many steps spelled out by the Submission portal you will be forced to follow.</p>
+<ol style="list-style-type: decimal">
+<li>Create a log in username and password in NCBI (no cost)</li>
+</ol>
+<p>Multiple ways of tackling the next steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Register your project at the BioProject database <a href="https://www.ncbi.nlm.nih.gov/bioproject/" class="uri">https://www.ncbi.nlm.nih.gov/bioproject/</a></p></li>
+<li><p>Register your biological samples at the BioSample database <a href="https://www.ncbi.nlm.nih.gov/biosample/" class="uri">https://www.ncbi.nlm.nih.gov/biosample/</a></p></li>
+</ol>
+<p>OR</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Both (BioProject and BioSample) can be accomplished at the same time using the SRA wizard <a href="https://submit.ncbi.nlm.nih.gov/subs/sra/" class="uri">https://submit.ncbi.nlm.nih.gov/subs/sra/</a>. Just follow the file format guidelines and submit what is asked for when it is asked for.</li>
+</ol>
+</div>
+<div id="create-your-sra-data-submission" class="section level2">
+<h2>Create your SRA data submission</h2>
+<ul>
+<li>submit your SRA metadata</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>This will involve downloading their example file (mostly like in excel .csv) and replacing their data with your own.</li>
+<li>Two different files will be created: an attributes file and a metadata file</li>
+<li>These files allow information to be uploaded on each sample or sample run into NCBI so others who use them know about that sample or library prep/sequencer/etc.</li>
+<li>Make sure files are saved as .csv</li>
+</ol>
+<p><em><span style="color:red"> The next step is the most difficult</span></em></p>
+</div>
+<div id="uploading-your-files-to-ncbi" class="section level2">
+<h2>Uploading your files to NCBI</h2>
+<p>Because these are generally memory intensive files and numerous, it is recommended you upload from the farm (or whatever) server rather than downloading from the server to your local computer and then trying to upload from there. But using ftp from the server does provide its challenges.</p>
+<p>If you have more than 500 sequence files (this inclused RA and RB), you will need to do the following in stages, using the same project’s accession number (PRJNA#). Unless you have more than 500 individuals, the easiest thing might be to upload all of the RA files, then once completed, upload all of the RB files.</p>
+<p>Again all of this is available on the NCBI wizard webpages and we highly recommend reading before attempting.</p>
+<p>Also, we highly recommend putting all your files in a specific folder that is easy to find and ONLY contains the files you want to upload and then being in that file.</p>
+<p><em><span style="color:red"> You only have 30 seconds to complete these tasks or you get kicked off ftp and have to start over so don’t mess around!</span></em></p>
+<ol style="list-style-type: decimal">
+<li>From the terminal window (you must use -p for passive so you can ls once in)</li>
+</ol>
+<p><code>ftp -p ftp-private.ncbi.nlm.nih.gov</code></p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>You will be prompted to enter the username and password shown in the wizard (you may have to click on ftp to get them). Copy and paste.</p></li>
+<li><p>You should make a directory once in (like RA for example)</p></li>
+<li><p>cd into that directory</p></li>
+<li><p>Type <code>prompt</code> once in that directory</p></li>
+<li><p>Type <code>mput *</code> which should upload all files in that directory</p></li>
+</ol>
+<p>A successful upload should result in an email and when you are online in NCBI. Results might take a few hours to a few days.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
