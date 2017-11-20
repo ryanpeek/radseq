@@ -37,7 +37,7 @@ Initial files are `.fastq` because they contain Q quality scores.
  2. Files are always downloaded here: `~millermr/UCDavis/SOMM_/*index_*`
     - to learn plate barcode, open info.txt in SOMM folder `SOMM____ INDEX___`
     - you can either copy the files over using `cp ~millermr/UCDavis/SOMM_/* ./`
-    - OR, you can make a symbolic link, e.g., : `ln -s /home/millermr/UCDavis/SOMM163/*.gz /home/rapeek/projects/rana_rapture/SOMM163b/raw` (*it does require full path*)
+    - OR, you can make a symbolic link, e.g., : `ln -s /home/millermr/UCDavis/SOMM163/*.gz /home/your_project/raw` (*it does require full path*)
  3. To unzip files, use `sbatch` and `gunzip -c` and re-direct the output to a file of the same name (minus `.gz`):
     - `sbatch -t 8:00:00 -p high gunzip -c SOMM163_S1_L001_R1_001.fastq.gz > SOMM163_S1_L001_R1_001.fastq`
  4. Once completed, move the unzipped files into your "split" folder. If you `cp` the entire `fastq.gz` files, you can remove them.
@@ -47,6 +47,105 @@ Initial files are `.fastq` because they contain Q quality scores.
  1. This takes the R2 reads, which is the plate codes, and matches to the different reads. Once done, we can delete the R2 reads and use the R1/R3 reads for the Split by Well Barcodes. This requires the following scripts:
     - `run_split.sh`
     - `BarcodeSplitList3Files.pl`
+
+#### `run_split.sh`
+
+```{bash, eval=F, echo=T}
+#!/bin/bash
+
+r1=$1
+r2=$2
+r3=$3
+out=$4
+
+perl BarcodeSplitList3Files.pl $r1 $r2 $r3 CCGTTT,AACGTT,TCAGTT,CGTCTT,TAGCTT,GATATT,CTCATT,TCTTGT,CGCTGT,GTATGT,CATGGT,GGGGGT,AAGAGT,GCCAGT,ATGGCT,TGCGCT,GACCCT,ACACCT,CCTACT,TTAACT,TACTAT,TTTGAT,GTGCAT,CAACAT,CGGAAT,TTTTTG,CGATTG,GAGGTG,TGCCTG,AGTATG,AAATGG,ACCGGG,TTAGGG,CCTCGG,ATGCGG,GTTAGG,GCCTCG,TCTGCG,CACGCG,GGACCG,TAGACG,ATCACG,CTGTAG,GGCGAG,TCGCAG,AACCAG,CATAAG,GCAAAG,CATTTC,TGGTTC,GTCGTC,AGAGTC,TCTCTC,ACGATC,ATCTGC,CCATGC,TACGGC,GGTCGC,CAGCGC,TTGAGC,AAGTCC,CTTGCC,GCGCCC,CGCCCC,TGTACC,CAAACC,ACTTAC,GGATAC,GATGAC,AGGCAC,TTACAC,TCCAAC,AGCTTA,GAATTA,TGTGTA,CCCGTA,ATACTA,GTGATA,CTTTGA,GCAGGA,AATCGA,TGGCGA,GTCCGA,CCGAGA,AGAAGA,GGTTCA,TTGTCA,CGGGCA,TAAGCA,TCCCCA,TCATAA,ACGGAA,CTAGAA,GCTCAA,ATTAAA,GACAAA,CGATGT,TTAGGC,TGACCA,ACAGTG,GCCAAT,CAGATC,ACTTGA,GATCAG,GGCTAC,CTTGTA,AGTCAA,AGTTCC,ATGTCA,CCGTCC,GTCCGC,GTGAAA,GTGGCC,GTTTCG,CGTACG,GAGTGG,ACTGAT,ATTCCT $out
+
+```
+
+#### `BarcodeSplitList3Files.pl`
+
+```{bash, eval=F, echo=T}
+#!/usr/bin/perl
+
+if ($#ARGV == 4) {
+        $fileR1 = $ARGV[0];
+        $fileR2 = $ARGV[1];
+        $fileR3 = $ARGV[2];
+        $barcode = $ARGV[3];
+        $prefix = $ARGV[4];
+} else {
+        die;    
+}
+
+@commas = split(/\,/, $barcode);
+
+$x=0;
+while ($x <= $#commas) {
+
+        $hashR1{$commas[$x]} = $prefix . "_R1_" . $commas[$x] . ".fastq";
+        $filenameR1 = $hashR1{$commas[$x]};
+        open($filenameR1, ">$filenameR1") or die;
+
+        $hashR2{$commas[$x]} = $prefix . "_R2_" . $commas[$x] . ".fastq";
+        $filenameR2 = $hashR2{$commas[$x]};
+        open($filenameR2, ">$filenameR2") or die;
+
+        $hashR3{$commas[$x]} = $prefix . "_R3_" . $commas[$x] . ".fastq";
+        $filenameR3 = $hashR3{$commas[$x]};
+        open($filenameR3, ">$filenameR3") or die;
+
+        $x++;
+}
+
+
+open(FILER1, "<$fileR1") or die;
+open(FILER2, "<$fileR2") or die;
+open(FILER3, "<$fileR3") or die;
+
+
+while (<FILER1>) {
+
+        $R1_l1 = $_;
+        $R1_l2 = <FILER1>;
+        $R1_l3 = <FILER1>;
+        $R1_l4 = <FILER1>;
+        
+        $R2_l1 = <FILER2>;
+        $R2_l2 = <FILER2>;
+        $R2_l3 = <FILER2>;
+        $R2_l4 = <FILER2>;
+
+        $R3_l1 = <FILER3>;
+        $R3_l2 = <FILER3>;
+        $R3_l3 = <FILER3>;
+        $R3_l4 = <FILER3>;
+
+
+        $bc = substr($R2_l2,0,6);
+        
+        if ($hashR1{$bc} ne "")  {
+        
+                $F1 = $hashR1{$bc}; $F2 = $hashR2{$bc}; $F3 = $hashR3{$bc};
+                print $F1 $R1_l1 . $R1_l2 . $R1_l3 . $R1_l4;
+                print $F2 $R2_l1 . $R2_l2 . $R2_l3 . $R2_l4;
+                print $F3 $R3_l1 . $R3_l2 . $R3_l3 . $R3_l4;
+
+        }
+
+}
+close FILER1; close FILER2; close FILER3;
+
+$x=0;
+while ($x <= $#commas) {
+        $F1 = $hashR1{$commas[$x]}; $F2 = $hashR2{$commas[$x]}; $F3 = $hashR3{$commas[$x]};
+        close($F1); close($F2); close($F3);
+        $x++;
+}
+
+```
+
+
+
  2. Run script using something like:
     - `sbatch -t 8:00:00 run_split.sh SOMM163_S1_L001_R1_001.fastq SOMM163_S1_L001_R2_001.fastq SOMM163_S1_L001_R3_001.fastq SOMM163`
  
@@ -62,7 +161,152 @@ Initial files are `.fastq` because they contain Q quality scores.
  1. Now we have each plate barcode, but we need to split samples by well. This requires the following scripts: 
     - `BarcodeSplitListBestRadPairedEnd.pl`
     - `run_wellsplit.sh` (*make sure executable: `chmod u+x script`*)
-    - `run_BestRadSplit_.sh` (underscore is either a 6 or an 8 - depending on enzyme used)
+    - `run_BestRadSplit.sh` (check you have correct version (6 or 8) depending on enzyme used)
+  
+#### `BarcodeSplitListBestRadPairedEnd.pl`
+
+```{bash, eval=F, echo=T}
+#!/usr/bin/perl
+
+if ($#ARGV == 3) {
+        $file1 = $ARGV[0];
+        $file2 = $ARGV[1];
+        $barcode = $ARGV[2];
+        $prefix = $ARGV[3];
+} else {
+        die;    
+}
+
+@commas = split(/\,/, $barcode);
+$barcode_length = length($commas[0]);
+
+$x=0;
+while ($x <= $#commas) {
+        $hash_r1{$commas[$x]} = $prefix . "_RA_" . $commas[$x] . ".fastq";
+        $hash_r2{$commas[$x]} = $prefix . "_RB_" . $commas[$x] . ".fastq";
+        $filename_r1 = $hash_r1{$commas[$x]};
+        $filename_r2 = $hash_r2{$commas[$x]};
+        open($filename_r1, ">$filename_r1") or die;
+        open($filename_r2, ">$filename_r2") or die;
+        $x++;
+}
+
+
+open(FILE1, "<$file1") or die;
+open(FILE2, "<$file2") or die;
+
+
+while (<FILE1>) {
+
+        $f1a = $_;
+        $f1b = <FILE1>;
+        $f1c = <FILE1>;
+        $f1d = <FILE1>;
+
+        $f2a = <FILE2>;
+        $f2b = <FILE2>;
+        $f2c = <FILE2>;
+        $f2d = <FILE2>;
+        
+        $bc1 = substr($f1b,0,$barcode_length);
+        $bc2 = substr($f2b,0,$barcode_length);
+        
+        if ($hash_r1{$bc1} ne "" && $hash_r1{$bc2} eq "")  {
+
+                $f1b_2 = substr($f1b, $barcode_length, length($f1b));
+                $f1d_2 = substr($f1d, $barcode_length, length($f1d));
+
+                $out1 = $hash_r1{$bc1};
+                $out2 = $hash_r2{$bc1};
+
+                print $out1 $f1a . $f1b_2 . $f1c . $f1d_2;
+                print $out2 $f2a . $f2b . $f2c . $f2d;
+                
+        } elsif ($hash_r1{$bc1} eq "" && $hash_r1{$bc2} ne "")  {
+
+                $f2b_2 = substr($f2b, $barcode_length, length($f2b));
+                $f2d_2 = substr($f2d, $barcode_length, length($f2d));
+
+                $out1 = $hash_r1{$bc2};
+                $out2 = $hash_r2{$bc2};
+
+                print $out1 $f2a . $f2b_2 . $f2c . $f2d_2;
+                print $out2 $f1a . $f1b . $f1c . $f1d;
+
+        } elsif ($hash_r1{$bc1} ne "" && $hash_r1{$bc2} ne "")  {
+
+                print "Double Barcode!\t$bc1\t$bc2\n";
+        
+        }
+
+}
+close FILE1; close FILE2;
+
+
+
+$x=0;
+while ($x <= $#commas) {
+        close($hash_r1{$commas[$x]});
+        close($hash_r2{$commas[$x]});
+        $x++;
+}
+
+
+```
+
+#### `run_wellsplit.sh`
+
+```{bash, eval=F, echo=T}
+#!/bin/bash -l
+
+list=$1
+
+wc=$(wc -l ${list} | awk '{print $1}')
+
+x=1
+while [ $x -le $wc ] 
+do
+        string="sed -n ${x}p ${list}" 
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1, $2, $3}')   
+        set -- $var
+        c1=$1
+        c2=$2
+        c3=$3
+
+        sh run_BestRadSplit.sh $c1 $c2 $c3
+
+        x=$(( $x + 1 ))
+
+done
+
+
+```
+
+#### `run_BestRadSplit.sh`
+
+```{bash, eval=F, echo=T}
+#!/bin/bash
+
+f1=$1
+f2=$2
+out=$3
+
+perl BarcodeSplitListBestRadPairedEnd.pl $f1 $f2 GGACAAGCTATGCAGG,GGAAACATCGTGCAGG,GGACATTGGCTGCAGG,GGACCACTGTTGCAGG,GGAACGTGATTGCAGG,GGCGCTGATCTGCAGG,GGCAGATCTGTGCAGG,GGATGCCTAATGCAGG,GGAACGAACGTGCAGG,GGAGTACAAGTGCAGG,GGCATCAAGTTGCAGG,GGAGTGGTCATGCAGG,GGAACAACCATGCAGG,GGAACCGAGATGCAGG,GGAACGCTTATGCAGG,GGAAGACGGATGCAGG,GGAAGGTACATGCAGG,GGACACAGAATGCAGG,GGACAGCAGATGCAGG,GGACCTCCAATGCAGG,GGACGCTCGATGCAGG,GGACGTATCATGCAGG,GGACTATGCATGCAGG,GGAGAGTCAATGCAGG,GGAGATCGCATGCAGG,GGAGCAGGAATGCAGG,GGAGTCACTATGCAGG,GGATCCTGTATGCAGG,GGATTGAGGATGCAGG,GGCAACCACATGCAGG,GGCAAGACTATGCAGG,GGCAATGGAATGCAGG,GGCACTTCGATGCAGG,GGCAGCGTTATGCAGG,GGCATACCAATGCAGG,GGCCAGTTCATGCAGG,GGCCGAAGTATGCAGG,GGCCGTGAGATGCAGG,GGCCTCCTGATGCAGG,GGCGAACTTATGCAGG,GGCGACTGGATGCAGG,GGCGCATACATGCAGG,GGCTCAATGATGCAGG,GGCTGAGCCATGCAGG,GGCTGGCATATGCAGG,GGGAATCTGATGCAGG,GGGACTAGTATGCAGG,GGGAGCTGAATGCAGG,GGGATAGACATGCAGG,GGGCCACATATGCAGG,GGGCGAGTAATGCAGG,GGGCTAACGATGCAGG,GGGCTCGGTATGCAGG,GGGGAGAACATGCAGG,GGGGTGCGAATGCAGG,GGGTACGCAATGCAGG,GGGTCGTAGATGCAGG,GGGTCTGTCATGCAGG,GGGTGTTCTATGCAGG,GGTAGGATGATGCAGG,GGTATCAGCATGCAGG,GGTCCGTCTATGCAGG,GGTCTTCACATGCAGG,GGTGAAGAGATGCAGG,GGTGGAACAATGCAGG,GGTGGCTTCATGCAGG,GGTGGTGGTATGCAGG,GGTTCACGCATGCAGG,GGACACGAGATGCAGG,GGAAGAGATCTGCAGG,GGAAGGACACTGCAGG,GGAATCCGTCTGCAGG,GGAATGTTGCTGCAGG,GGACACTGACTGCAGG,GGACAGATTCTGCAGG,GGAGATGTACTGCAGG,GGAGCACCTCTGCAGG,GGAGCCATGCTGCAGG,GGAGGCTAACTGCAGG,GGATAGCGACTGCAGG,GGACGACAAGTGCAGG,GGATTGGCTCTGCAGG,GGCAAGGAGCTGCAGG,GGCACCTTACTGCAGG,GGCCATCCTCTGCAGG,GGCCGACAACTGCAGG,GGAGTCAAGCTGCAGG,GGCCTCTATCTGCAGG,GGCGACACACTGCAGG,GGCGGATTGCTGCAGG,GGCTAAGGTCTGCAGG,GGGAACAGGCTGCAGG,GGGACAGTGCTGCAGG,GGGAGTTAGCTGCAGG,GGGATGAATCTGCAGG,GGGCCAAGACTGCAGG $out
+
+```
+
+ 2. Run script using something like:
+    - `sbatch -t 8:00:00 run_split.sh SOMM163_S1_L001_R1_001.fastq SOMM163_S1_L001_R2_001.fastq SOMM163_S1_L001_R3_001.fastq SOMM163`
+ 
+ 3. If other plates with no data, or not your data, need to sort/filter. One option is to sort by size `du -hs *fastq | sort -hs`, get just the plates that have data...*(should see a size jump between plates w data and those without)*.
+    - This lists all files of interest, but may need to pipe to head or tail to filter:
+ - `du -hs *fastq | sort -hs | cut -f2`
+ 
+ 4. Move them to a folder of interest, here, the `split_out` folder in the `split` folder.
+ - `du -hs *fastq | sort -hs | tail -n37 | head -n-3 | cut -f2 | sed "s/^/mv /g" | sed "s/$/ split_out\//g"`
+ 
   
  2. Make a list of the files we want to split out (need the R1/R3's):
     - `ls *R1*.fastq > listR1`
@@ -83,7 +327,46 @@ Initial files are `.fastq` because they contain Q quality scores.
 
 If you want to add metadata to your filenames, you can do that here, but it is optional. A metadata file should contains the name of each individual, its location on the plate, etc. *<span style="color:red"> This part can be done now or later. But be absolutely sure that your indiv names, their plate location (A1, B1, etc.), and the appropriate barcode are all in sync. For example, the barcodes might be A1 A2 A3 (Across the plate row) while your sample names are A1 B1 C1 (Down the plate column)</span>*
 
- 1. Replace barcode with name of Indiv using Metadata file and script `Barcode_to_Name`
+#### `Barcode_to_Name.sh`
+
+```{bash, eval=F, echo=T}
+#!/bin/bash
+# use this script to remove the barcode from bamfile and replace with sample/indiv name
+
+
+pop=$1 # this is the metadata file with well number, old label, new label, description, etc (can include header)
+n=$ (wc -l ${pop} | awk '{print $1}')
+x=2 # change to 1 if no header
+
+## another option for 3 lines above:
+#x=1
+#while [ $x -le 96 ] #This can be adjusted based on number of files
+
+while [ $x -le ${n} ] 
+do
+
+        string="sed -n ${x}p file" # represents whatever metadata file contains columns of barcodes/names
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1, $2, $3, $4, $5}')   
+        set -- $var
+        c1=$1 ## Well Number
+        c2=$2 ## Old Labels
+        c3=$3 ## New Labels
+        c4=$4 ## Description
+        c5=$5 ## Barcode
+        
+        # need to fix these two lines to match your specific fastq file name and metadata cols
+        mv SOMM065_RA_GG${c5}TGCAGG.fastq ${c3}_RA.fastq
+        mv SOMM065_RB_GG${c5}TGCAGG.fastq ${c3}_RB.fastq
+
+        x=$(( $x + 1 )) # loop to next line
+
+done
+
+```
+
+ 1. Replace barcode with name of Indiv using Metadata file and script `Barcode_to_Name.sh`
     - `sbatch -t 2880 -p high Barcode_to_Name metadatafile`  2880 is the number of minutes
  2. Concatenate each individual's files into one RA, RB per indiv (if multiple).
     - `sbatch -t 2880 -p high Concatenate.sh` You might need to hardcode the metadata file into this script.
