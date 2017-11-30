@@ -4,6 +4,19 @@ title: "PCA"
 
 ## Principal Component Analysis
 
+PCA is a great way to explore your sequencing data, assess structure, patterns, or discover plate inversions. Yay.
+
+The newest `angsd` version (**0.918+**) provides a way to do PCA without subsampling your data. The basic angsd call for this is as follows:
+
+```{bash}
+~/bin/angsd -bam ${bamlist} -out ${out}.PCAMDS1 -doIBS 1 -doCounts 1 -doMajorMinor 1 -minFreq 0.05 -maxMis ${nind} -minMapQ 30 -minQ 20 -SNP_pval 0.000001 -makeMatrix 1 -doCov 1 -GL 1 -doMaf 2 -doPost 2 -nThreads 16
+
+```
+
+If you have already run the subsampling script, you could `ls` all bamfiles that have a certain threshold (say 100k), and then `sed` out the 100k component, so you end up with the original bam file name, but only bams that have read counts 100k or greater. Use this bamlist in the `angsd` call, and everything else should work.  
+
+### The `subsample` PCA pipeline
+
 **This is a general way to generate a principal component analysis from your subsampled bam files**
 
 1. Obtain and copy scripts:   `pca_calc.sh` and `plotPCA_2.R` and `pca_plot.sh`
