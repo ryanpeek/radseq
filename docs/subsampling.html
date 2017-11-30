@@ -28,6 +28,52 @@
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <style type="text/css">
@@ -419,6 +465,7 @@ div.tocify {
 <!-- add link/attach actual subsample script here-->
 <div id="subsampling-with-samtools" class="section level2">
 <h2><em>Subsampling with <code>samtools</code></em></h2>
+<p>Subsampling is a way to filter your data. The subsampling script (below) will select bamfiles that meet a certain threshold of alignments, and then randomly subsample to meet that exact number of alignments. So you are comparing all individuals with the exact same number of alignments.</p>
 <ul>
 <li>Look at Individual Alignments with <strong><a href="http://samtools.sourceforge.net/">samtools</a></strong>, can be done on bams (<code>_.sort.bam</code>), etc.
 <ul>
@@ -461,13 +508,53 @@ div.tocify {
 38M NFMFA_SC_2_R1.sort.flt.bam
 39M NFAME_RR_2_R1.sort.flt.bam
 44M RUBIC_PH_3_R1.sort.flt.bam</code></pre>
-<p><strong>Copy script</strong> - <code>cp ~/sub_sample.sh ./your_dir</code></p>
-<div id="filter-out-files-that-are-not-sufficient" class="section level3">
-<h3>Filter out files that are not sufficient</h3>
-<p><strong>Make a bam sublist</strong><br />
-- Need to make a bamlist of samples that only have the proper number of alignments (select a threshold of preference, typically 120k for salmon).</p>
-<p><strong>Check each individual to find where alignments get too low, then remove those individuals</strong><br />
-- To check where alignments get too low, run a quick pca with different subsamples (e.g. 90k, 80k, etc. till structure falls apart). - Make a list of the bam files (and remove bam) - <code>ls *flt.bam | sed 's/\.bam//g' &gt; sublist</code></p>
+<div id="subsampling-script" class="section level4">
+<h4>Subsampling Script</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="co">#!/bin/bash -l</span>
+
+<span class="co">#SBATCH -o slurm_outs/02c_subsample-%j.out</span>
+<span class="co">#SBATCH -J subsample</span>
+
+<span class="va">list=$1</span>
+<span class="va">num=$2</span>
+
+<span class="va">wc=$(</span><span class="fu">wc</span> -l <span class="va">${list}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>
+
+<span class="va">x=</span>1
+<span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$wc</span><span class="bu"> ]</span> 
+<span class="kw">do</span>
+        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p </span><span class="va">${list}</span><span class="st">&quot;</span> 
+        <span class="va">str=$($string)</span>
+
+        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>   
+        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span>
+        <span class="va">c1=$1</span>
+
+        <span class="va">count=$(</span><span class="ex">samtools</span> view -c <span class="va">${c1}</span>.bam<span class="va">)</span>
+
+        <span class="kw">if</span><span class="bu"> [</span> <span class="va">$num</span> <span class="ot">-le</span> <span class="va">$count</span><span class="bu"> ]</span>
+        <span class="kw">then</span>
+                <span class="va">frac=$(</span><span class="fu">bc</span> -l <span class="op">&lt;&lt;&lt;</span> <span class="va">$num</span>/<span class="va">$count)</span>
+                <span class="ex">samtools</span> view -bs <span class="va">$frac</span> <span class="va">${c1}</span>.bam <span class="op">&gt;</span> <span class="va">${c1}</span>_<span class="va">${num}</span>.bam
+        <span class="kw">fi</span>
+
+        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span>
+
+<span class="kw">done</span></code></pre></div>
+</div>
+<div id="filter-out-individualsbamfiles-with-low-alignments" class="section level3">
+<h3>Filter out individuals/bamfiles with low alignments</h3>
+<p><strong>Make a bam sublist</strong></p>
+<ul>
+<li>Make a bamlist of samples that exceed some threshold of alignments or reads (e.g, typically 120k for salmon).</li>
+</ul>
+<p><strong>Run a few PCA with these different thresholds</strong></p>
+<ul>
+<li>To assess where alignments become too low, run PCA’s with different subsamples (e.g. 90k, 80k, 50k) until structure begins to fall apart.</li>
+<li>Make a list of the bam files (and remove bam)</li>
+<li><code>ls *flt.bam | sed 's/\.bam//g' &gt; sublist</code></li>
+</ul>
 <p><strong>Subset to a certain number, here 100k reads</strong><br />
 - <code>sbatch sub_sample.sh sublist 100000</code></p>
 <p><strong>Create a new subsampled bamlist</strong><br />
