@@ -6,6 +6,8 @@ title: "Subsampling `bams`"
 
 ## *Subsampling with `samtools`*
 
+Subsampling is a way to filter your data. The subsampling script (below) will select bamfiles that meet a certain threshold of alignments, and then randomly subsample to meet that exact number of alignments. So you are comparing all individuals with the exact same number of alignments. 
+
  - Look at Individual Alignments with **[samtools](http://samtools.sourceforge.net/)**, can be done on bams (`_.sort.bam`), etc.
     - `samtools flagstat ALAME_AH_2_R1.sort.flt.bam`   
 
@@ -50,16 +52,54 @@ title: "Subsampling `bams`"
 44M	RUBIC_PH_3_R1.sort.flt.bam
 ```
 
-**Copy script**
- - `cp ~/sub_sample.sh ./your_dir`
+#### Subsampling Script
 
-### Filter out files that are not sufficient
+```{bash, eval=F, echo=T}
+
+#!/bin/bash -l
+
+#SBATCH -o slurm_outs/02c_subsample-%j.out
+#SBATCH -J subsample
+
+list=$1
+num=$2
+
+wc=$(wc -l ${list} | awk '{print $1}')
+
+x=1
+while [ $x -le $wc ] 
+do
+        string="sed -n ${x}p ${list}" 
+        str=$($string)
+
+        var=$(echo $str | awk -F"\t" '{print $1}')   
+        set -- $var
+        c1=$1
+
+        count=$(samtools view -c ${c1}.bam)
+
+        if [ $num -le $count ]
+        then
+                frac=$(bc -l <<< $num/$count)
+                samtools view -bs $frac ${c1}.bam > ${c1}_${num}.bam
+        fi
+
+        x=$(( $x + 1 ))
+
+done
+
+
+```
+
+### Filter out individuals/bamfiles with low alignments
 
 **Make a bam sublist**  
-  - Need to make a bamlist of samples that only have the proper number of alignments (select a threshold of preference, typically 120k for salmon).
 
-**Check each individual to find where alignments get too low, then remove those individuals**  
-  - To check where alignments get too low, run a quick pca with different subsamples (e.g. 90k, 80k, etc. till structure falls apart).
+  - Make a bamlist of samples that exceed some threshold of alignments or reads (e.g, typically 120k for salmon).
+
+**Run a few PCA with these different thresholds**  
+
+  - To assess where alignments become too low, run PCA's with different subsamples (e.g. 90k, 80k, 50k) until structure begins to fall apart.
   - Make a list of the bam files (and remove bam)
   - `ls *flt.bam | sed 's/\.bam//g' > sublist` 
 
