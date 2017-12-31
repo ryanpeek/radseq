@@ -104,7 +104,9 @@ done
   - `ls *flt.bam | sed 's/\.bam//g' > sublist` 
 
 **Subset to a certain number, here 100k reads**  
+
    - `sbatch sub_sample.sh sublist 100000`
 
 **Create a new subsampled bamlist**  
+
    - `ls *_100000.bam > _subbamlist`  
