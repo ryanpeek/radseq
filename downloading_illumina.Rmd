@@ -144,8 +144,6 @@ while ($x <= $#commas) {
 
 ```
 
-
-
  2. Run script using something like:
     - `sbatch -t 8:00:00 run_split.sh SOMM163_S1_L001_R1_001.fastq SOMM163_S1_L001_R2_001.fastq SOMM163_S1_L001_R3_001.fastq SOMM163`
  
@@ -297,17 +295,6 @@ perl BarcodeSplitListBestRadPairedEnd.pl $f1 $f2 GGACAAGCTATGCAGG,GGAAACATCGTGCA
 
 ```
 
- 2. Run script using something like:
-    - `sbatch -t 8:00:00 run_split.sh SOMM163_S1_L001_R1_001.fastq SOMM163_S1_L001_R2_001.fastq SOMM163_S1_L001_R3_001.fastq SOMM163`
- 
- 3. If other plates with no data, or not your data, need to sort/filter. One option is to sort by size `du -hs *fastq | sort -hs`, get just the plates that have data...*(should see a size jump between plates w data and those without)*.
-    - This lists all files of interest, but may need to pipe to head or tail to filter:
- - `du -hs *fastq | sort -hs | cut -f2`
- 
- 4. Move them to a folder of interest, here, the `split_out` folder in the `split` folder.
- - `du -hs *fastq | sort -hs | tail -n37 | head -n-3 | cut -f2 | sed "s/^/mv /g" | sed "s/$/ split_out\//g"`
- 
-  
  2. Make a list of the files we want to split out (need the R1/R3's):
     - `ls *R1*.fastq > listR1`
     - `ls *R3*.fastq > listR3`
