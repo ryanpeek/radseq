@@ -30,41 +30,69 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 div.sourceCode {
   overflow-x: visible;
 }
@@ -478,35 +506,35 @@ div.tocify {
 </ul></li>
 <li>Modify and run the script <code>Hash_reads.sh</code>, which will run all three perl scripts (see Option 2) <strong>Hash_reads.sh</strong></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="co">#!/bin/bash -l </span>
-
-<span class="va">F1=$1</span> <span class="co"># input file</span>
-<span class="va">n=$(</span><span class="fu">wc</span> -l <span class="va">$F1</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>
-
-<span class="va">x=</span>1
-<span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$n</span><span class="bu"> ]</span>
-<span class="kw">do</span>
-
-        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p </span><span class="va">$F1</span><span class="st">&quot;</span>
-        <span class="va">str=$($string)</span>
-
-        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>   
-        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span>
-        <span class="va">c1=$1</span>   ### <span class="ex">Sample</span> name  ###
-        
-                <span class="bu">echo</span> <span class="st">&quot;#!/bin/bash&quot;</span> <span class="op">&gt;</span> <span class="va">${c1}</span>.sh
-                <span class="bu">echo</span> <span class="st">&quot;&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh
-
-<span class="co">#               echo &quot;perl QualityFilter.pl ${c1}.fastq &gt; ${c1}_L80P80.fastq&quot; &gt;&gt; ${c1}.sh</span>
-                <span class="bu">echo</span> <span class="st">&quot;perl HashSeqs.pl </span><span class="va">${c1}</span><span class="st">_L80P80.fastq </span><span class="va">${c1}</span><span class="st"> &gt; </span><span class="va">${c1}</span><span class="st">_L80P80.hash&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh
-                <span class="bu">echo</span> <span class="st">&quot;perl PrintHashHisto.pl </span><span class="va">${c1}</span><span class="st">_L80P80.hash &gt; </span><span class="va">${c1}</span><span class="st">_L80P80.txt&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh
-                
-                <span class="ex">sbatch</span> -c 1 <span class="va">${c1}</span>.sh
-
-        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span>
-
-<span class="kw">done</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#!/bin/bash -l </span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="va">F1=$1</span> <span class="co"># input file</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="va">n=$(</span><span class="fu">wc</span> -l <span class="va">$F1</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="va">x=</span>1</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$n</span><span class="bu"> ]</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">do</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p </span><span class="va">$F1</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">        <span class="va">str=$($string)</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>   </a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">        <span class="va">c1=$1</span>   ### <span class="ex">Sample</span> name  ###</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">        </a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">                <span class="bu">echo</span> <span class="st">&quot;#!/bin/bash&quot;</span> <span class="op">&gt;</span> <span class="va">${c1}</span>.sh</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">                <span class="bu">echo</span> <span class="st">&quot;&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#               echo &quot;perl QualityFilter.pl ${c1}.fastq &gt; ${c1}_L80P80.fastq&quot; &gt;&gt; ${c1}.sh</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">                <span class="bu">echo</span> <span class="st">&quot;perl HashSeqs.pl </span><span class="va">${c1}</span><span class="st">_L80P80.fastq </span><span class="va">${c1}</span><span class="st"> &gt; </span><span class="va">${c1}</span><span class="st">_L80P80.hash&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">                <span class="bu">echo</span> <span class="st">&quot;perl PrintHashHisto.pl </span><span class="va">${c1}</span><span class="st">_L80P80.hash &gt; </span><span class="va">${c1}</span><span class="st">_L80P80.txt&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">${c1}</span>.sh</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">                </a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">                <span class="ex">sbatch</span> -c 1 <span class="va">${c1}</span>.sh</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="kw">done</span></a></code></pre></div>
 </div>
 <div id="option-2-clean-up-reads-one-scriptindiv-at-a-time" class="section level3">
 <h3>Option 2 (Clean up reads one script/Indiv at a time)</h3>
@@ -518,59 +546,59 @@ div.tocify {
 </ul></li>
 </ol>
 <p><strong>QualityFilter.pl</strong></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="co">#!/usr/bin/perl</span>
-
-<span class="co">########################################################################</span>
-<span class="va">$percent_filter</span> = <span class="ex">80</span><span class="kw">;</span>
-<span class="va">$length</span> = <span class="ex">80</span><span class="kw">;</span>
-<span class="va">$phred</span> = <span class="ex">33</span><span class="kw">;</span>  #<span class="ex">The</span> value should be either 33 or 64 depending on the base-calling pipeline.
-<span class="co">########################################################################</span>
-
-
-<span class="va">$file</span> = <span class="va">$ARGV[0]</span>;
-
-<span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>)
-        <span class="ex">or</span> die<span class="kw">;</span>
-
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-        
-        <span class="va">$R1_ID1</span> = <span class="va">$_</span>;
-        <span class="va">$R1_seq</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R1_ID2</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R1_qual</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="ex">chomp</span>(<span class="va">$R1_seq</span>); 
-        <span class="ex">chomp</span>(<span class="va">$R1_qual</span>);
-
-        <span class="va">$R1_seq</span> = <span class="ex">substr</span>(<span class="va">$R1_seq</span>,0,<span class="va">$length</span>);
-        <span class="va">$R1_qual</span> = <span class="ex">substr</span>(<span class="va">$R1_qual</span>,0,<span class="va">$length</span>);
-
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$R1_seq</span> =<span class="ex">~</span> <span class="ex">m/N/</span><span class="kw">)</span> <span class="kw">{</span>
-
-        <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span>
-
-                <span class="ex">@ASCII</span> = unpack(<span class="st">&quot;C*&quot;</span>, <span class="va">$R1_qual</span>);
-                <span class="va">$prob</span> = <span class="ex">100</span><span class="kw">;</span>
-                <span class="va">$x</span> = <span class="ex">1</span><span class="kw">;</span>
-                <span class="va">$R1_length</span> = <span class="ex">length</span>(<span class="va">$R1_qual</span>);
-                <span class="ex">foreach</span> <span class="va">$value</span> (@ASCII) <span class="kw">{</span>
-                        <span class="va">$value</span> = <span class="va">$value</span> <span class="ex">-</span> <span class="va">$phred</span><span class="kw">;</span>
-                        <span class="va">$prob</span> = <span class="va">$prob</span> <span class="ex">*</span> (1-(10**(-<span class="va">$value</span>/10)));
-                        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-                <span class="kw">}</span>
-
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$prob</span> <span class="op">&gt;</span>= <span class="va">$percent_filter</span><span class="kw">)</span> <span class="kw">{</span>
-                        <span class="va">$good_reads</span><span class="ex">++</span><span class="kw">;</span>
-                        <span class="ex">print</span> <span class="va">$R1_ID1</span><span class="kw">;</span>
-                        <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$R1_seq</span><span class="st">\n&quot;</span><span class="kw">;</span>
-                        <span class="ex">print</span> <span class="va">$R1_ID2</span><span class="kw">;</span>
-                        <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$R1_qual</span><span class="st">\n&quot;</span><span class="kw">;</span>
-                <span class="kw">}</span>
-
-        <span class="kw">}</span>
-        
-<span class="kw">}</span>
-<span class="ex">close</span> FILE<span class="kw">;</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#!/usr/bin/perl</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">########################################################################</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="va">$percent_filter</span> = <span class="ex">80</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="va">$length</span> = <span class="ex">80</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="va">$phred</span> = <span class="ex">33</span><span class="kw">;</span>  #<span class="ex">The</span> value should be either 33 or 64 depending on the base-calling pipeline.</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">########################################################################</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="va">$file</span> = <span class="va">$ARGV[0]</span>;</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">        <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">        </a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">        <span class="va">$R1_ID1</span> = <span class="va">$_</span>;</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">        <span class="va">$R1_seq</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">        <span class="va">$R1_ID2</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">        <span class="va">$R1_qual</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        <span class="ex">chomp</span>(<span class="va">$R1_seq</span>); </a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        <span class="ex">chomp</span>(<span class="va">$R1_qual</span>);</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25">        <span class="va">$R1_seq</span> = <span class="ex">substr</span>(<span class="va">$R1_seq</span>,0,<span class="va">$length</span>);</a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">        <span class="va">$R1_qual</span> = <span class="ex">substr</span>(<span class="va">$R1_qual</span>,0,<span class="va">$length</span>);</a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$R1_seq</span> =<span class="ex">~</span> <span class="ex">m/N/</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30">        <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32">                <span class="ex">@ASCII</span> = unpack(<span class="st">&quot;C*&quot;</span>, <span class="va">$R1_qual</span>);</a>
+<a class="sourceLine" id="cb2-33" data-line-number="33">                <span class="va">$prob</span> = <span class="ex">100</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34">                <span class="va">$x</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">                <span class="va">$R1_length</span> = <span class="ex">length</span>(<span class="va">$R1_qual</span>);</a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">                <span class="ex">foreach</span> <span class="va">$value</span> (@ASCII) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37">                        <span class="va">$value</span> = <span class="va">$value</span> <span class="ex">-</span> <span class="va">$phred</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38">                        <span class="va">$prob</span> = <span class="va">$prob</span> <span class="ex">*</span> (1-(10**(-<span class="va">$value</span>/10)));</a>
+<a class="sourceLine" id="cb2-39" data-line-number="39">                        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$prob</span> <span class="op">&gt;</span>= <span class="va">$percent_filter</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">                        <span class="va">$good_reads</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">                        <span class="ex">print</span> <span class="va">$R1_ID1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-45" data-line-number="45">                        <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$R1_seq</span><span class="st">\n&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-46" data-line-number="46">                        <span class="ex">print</span> <span class="va">$R1_ID2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47">                        <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$R1_qual</span><span class="st">\n&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb2-50" data-line-number="50">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-51" data-line-number="51">        </a>
+<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="ex">close</span> FILE<span class="kw">;</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Find and shrink seqs to only unique ones while culling down file from 4 lines to 2 lines
 <ul>
@@ -579,39 +607,39 @@ div.tocify {
 </ul></li>
 </ol>
 <p><strong>HashSeqs.pl</strong></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="co">#!/usr/bin/perl</span>
-
-<span class="va">$file</span> = <span class="va">$ARGV[0]</span>;
-<span class="va">$lib</span> = <span class="va">$ARGV[1]</span>;
-<span class="va">$min</span> = <span class="ex">2</span><span class="kw">;</span>
-
-
-<span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>)
-        <span class="ex">or</span> die<span class="kw">;</span>
-
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-                
-        <span class="va">$seq_line</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="ex">chomp</span>(<span class="va">$seq_line</span>);
-        <span class="va">$tags</span><span class="dt">{$seq_line}</span><span class="ex">++</span><span class="kw">;</span>
-
-        <span class="va">$_</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$_</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span>
-<span class="kw">}</span>
-<span class="ex">close</span> FILE<span class="kw">;</span>
-
-
-<span class="va">$z</span> = <span class="ex">1</span><span class="kw">;</span>
-<span class="ex">foreach</span> <span class="va">$key</span> (sort { <span class="va">$tags</span><span class="dt">{$b}</span> <span class="op">&lt;</span>=<span class="op">&gt;</span> <span class="va">$tags</span><span class="dt">{$a}</span> } <span class="ex">keys</span> %tags) <span class="kw">{</span>
-
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$tags</span><span class="dt">{$key}</span> <span class="op">&gt;</span>= <span class="va">$min</span><span class="kw">)</span> <span class="kw">{</span>      
-                <span class="ex">print</span> <span class="st">&quot;&gt;</span><span class="va">$lib</span><span class="st">;</span><span class="va">$z</span><span class="st">;</span><span class="va">$tags</span><span class="st">{</span><span class="va">$key</span><span class="st">}\n&quot;</span><span class="kw">;</span>
-                <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$key</span><span class="st">\n&quot;</span><span class="kw">;</span>
-        <span class="kw">}</span>
-
-        <span class="va">$z</span><span class="ex">++</span><span class="kw">;</span>
-<span class="kw">}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#!/usr/bin/perl</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="va">$file</span> = <span class="va">$ARGV[0]</span>;</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="va">$lib</span> = <span class="va">$ARGV[1]</span>;</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="va">$min</span> = <span class="ex">2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">        <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">                </a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">        <span class="va">$seq_line</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">        <span class="ex">chomp</span>(<span class="va">$seq_line</span>);</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">        <span class="va">$tags</span><span class="dt">{$seq_line}</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">        <span class="va">$_</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">        <span class="va">$_</span> = <span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="ex">close</span> FILE<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="va">$z</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="ex">foreach</span> <span class="va">$key</span> (sort { <span class="va">$tags</span><span class="dt">{$b}</span> <span class="op">&lt;</span>=<span class="op">&gt;</span> <span class="va">$tags</span><span class="dt">{$a}</span> } <span class="ex">keys</span> %tags) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$tags</span><span class="dt">{$key}</span> <span class="op">&gt;</span>= <span class="va">$min</span><span class="kw">)</span> <span class="kw">{</span>      </a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">                <span class="ex">print</span> <span class="st">&quot;&gt;</span><span class="va">$lib</span><span class="st">;</span><span class="va">$z</span><span class="st">;</span><span class="va">$tags</span><span class="st">{</span><span class="va">$key</span><span class="st">}\n&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29">                <span class="ex">print</span> <span class="st">&quot;</span><span class="va">$key</span><span class="st">\n&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32">        <span class="va">$z</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="kw">}</span></a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Depending on coverage, you can look at the distribution and see the # of occurrences vs. # of sequences, expect a peak a some point followed by a dip and a recovery, with a spike early on (usually errors).
 <ul>
@@ -662,186 +690,186 @@ div.tocify {
 </ul></li>
 </ol>
 <p><strong>IdentifyLoci3.pl</strong></p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="co">#!/usr/bin/perl</span>
-
-<span class="co">#######################################################################################</span>
-<span class="va">$max_alignment_score</span> = <span class="ex">30</span><span class="kw">;</span>
-<span class="va">$divergence_factor</span> = <span class="ex">2</span><span class="kw">;</span>
-<span class="va">$min_count</span> = <span class="ex">0</span><span class="kw">;</span> <span class="co">#zero turns off to use min_flag instead</span>
-<span class="va">$min_flag</span> = <span class="ex">0</span><span class="kw">;</span> <span class="co">#zero turns off to use min_count instead</span>
-<span class="va">$max_internal_alignments</span> = <span class="ex">1</span><span class="kw">;</span>
-<span class="va">$min_internal_alignments</span> = <span class="ex">0</span><span class="kw">;</span>
-<span class="va">$max_external_alignments</span> = <span class="ex">10</span><span class="kw">;</span> <span class="co"># twice the df of the total number of samples (i.e. individuals) in the alignment</span>
-<span class="va">$min_external_alignments</span> = <span class="ex">2</span><span class="kw">;</span> <span class="co"># approximately half of the df of the total number of samples (i.e. individuals) in the alignment</span>
-<span class="va">$max_total_alignments</span> = <span class="ex">11</span><span class="kw">;</span> <span class="co"># max_ext_align + max_int_align</span>
-<span class="va">$min_total_alignments</span> = <span class="ex">2</span><span class="kw">;</span> <span class="co"># min_ext_align + min_int_align</span>
-<span class="va">$min_alleles</span> = <span class="ex">1</span><span class="kw">;</span>
-<span class="va">$max_alleles</span> = <span class="ex">4</span><span class="kw">;</span>
-<span class="va">$min_samples_per_allele</span> = <span class="ex">2</span><span class="kw">;</span>
-<span class="va">$max_samples_per_allele</span> = <span class="ex">6</span><span class="kw">;</span> <span class="co"># total number of samples (i.e. individuals) in the alignment</span>
-<span class="co">#######################################################################################</span>
-
-<span class="va">$file</span> = <span class="va">$ARGV[0]</span>;
-
-<span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-        <span class="va">$line</span> = <span class="va">$_</span>;
-        <span class="ex">chomp</span>(<span class="va">$line</span>);
-        <span class="kw">if</span> <span class="kw">(</span><span class="ex">substr</span>(<span class="va">$line</span>,0,1<span class="kw">)</span> <span class="ex">eq</span> <span class="st">&quot;&gt;&quot;</span>) <span class="kw">{</span>
-                <span class="ex">@tabs</span> = split(/\t/,<span class="va">$line</span>);
-
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$tabs[9]</span> <span class="ex">eq</span> <span class="st">&quot;F&quot;</span><span class="kw">)</span> <span class="kw">{</span>
-
-                        <span class="va">$query</span> = <span class="va">$tabs[0]</span>;
-                        <span class="kw">(</span><span class="va">$query_lib</span>, <span class="va">$query_ID</span>, <span class="va">$query_count</span>, <span class="va">$query_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$query</span>);
-                        <span class="va">$query_sequence</span> = <span class="va">$tabs[2]</span>;
-
-                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$query_used</span><span class="dt">{$query}</span> != <span class="ex">1</span> <span class="kw">&amp;&amp;</span> <span class="va">$query_count</span> <span class="op">&gt;</span>= <span class="va">$min_count</span> <span class="kw">&amp;&amp;</span> <span class="va">$query_flag</span> <span class="op">&gt;</span>= <span class="va">$min_flag</span><span class="kw">)</span> <span class="kw">{</span>
-                                <span class="va">$query_sequences</span><span class="dt">{$query}</span> = <span class="va">$query_sequence</span>;
-                                <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span><span class="ex">++</span><span class="kw">;</span>
-                                <span class="va">$query_used</span><span class="dt">{$query}</span> = <span class="ex">1</span><span class="kw">;</span>
-                        <span class="kw">}</span>
-
-                <span class="kw">}</span>               
-
-        <span class="kw">}</span>
-<span class="kw">}</span>
-<span class="ex">close</span>(FILE);
-<span class="ex">%query_used</span> = (); <span class="co">#clear this hash to clear memory</span>
-
-
-<span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-
-        <span class="va">$line</span> = <span class="va">$_</span>;
-        <span class="ex">chomp</span>(<span class="va">$line</span>);
-
-        <span class="kw">if</span> <span class="kw">(</span><span class="ex">substr</span>(<span class="va">$line</span>,0,1<span class="kw">)</span> <span class="ex">eq</span> <span class="st">&quot;&gt;&quot;</span>) <span class="kw">{</span>
-                <span class="ex">@tabs</span> = split(/\t/,<span class="va">$line</span>);
-
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$tabs[9]</span> <span class="ex">eq</span> <span class="st">&quot;F&quot;</span><span class="kw">)</span> <span class="kw">{</span>
-
-                        <span class="va">$query</span> = <span class="va">$tabs[0]</span>;
-                        <span class="kw">(</span><span class="va">$query_lib</span>, <span class="va">$query_ID</span>, <span class="va">$query_count</span>, <span class="va">$query_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$query</span>); 
-                        <span class="va">$index</span> = <span class="va">$tabs[7]</span>; 
-                        <span class="kw">(</span><span class="va">$index_lib</span>, <span class="va">$index_ID</span>, <span class="va">$index_count</span>, <span class="va">$index_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$index</span>);
-                
-                        <span class="va">$score</span> = <span class="va">$tabs[5]</span>;
-                        <span class="va">$change</span> = <span class="va">$tabs[13]</span>;
-                        <span class="va">$query_sequence</span> = <span class="va">$tabs[2]</span>;
-                        <span class="va">$index_sequence</span> = <span class="va">$query_sequences</span><span class="dt">{$index}</span>;
-
-                        <span class="kw">if</span> <span class="kw">(</span> <span class="kw">(</span><span class="va">$query</span> <span class="ex">ne</span> <span class="va">$index</span><span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="kw">(</span> <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span> <span class="op">&gt;</span>= <span class="va">$min_samples_per_allele</span> <span class="kw">&amp;&amp;</span> <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span> <span class="op">&lt;</span>= <span class="va">$max_samples_per_allele</span> <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="kw">(</span> <span class="va">$sample_count</span><span class="dt">{$index_sequence}</span> <span class="op">&gt;</span>= <span class="va">$min_samples_per_allele</span> <span class="kw">&amp;&amp;</span> <span class="va">$sample_count</span><span class="dt">{$index_sequence}</span> <span class="op">&lt;</span>= <span class="va">$max_samples_per_allele</span> <span class="kw">)</span> <span class="kw">)</span> <span class="kw">{</span>
-
-                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$query_lib</span> <span class="ex">eq</span> <span class="va">$index_lib</span><span class="kw">)</span> <span class="kw">{</span>         
-                                                <span class="ex">push</span>(@<span class="dt">{$internal_alignments{$query}}</span>, <span class="va">$index</span>);
-                                                <span class="ex">push</span>(@<span class="dt">{$internal_alignment_scores{$query}}</span>, <span class="va">$score</span>);
-                                <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span>
-                                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$score</span> == <span class="ex">0</span><span class="kw">)</span> <span class="kw">{</span>
-                                                <span class="ex">push</span>(@<span class="dt">{$perfect_external_alignments{$query}}</span>, <span class="va">$index</span>);
-                                                <span class="ex">push</span>(@<span class="dt">{$external_alignments{$query}}</span>, <span class="va">$index</span>);
-                                                <span class="ex">push</span>(@<span class="dt">{$external_alignment_scores{$query}}</span>, <span class="va">$score</span>);
-                                        <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span>
-                                                <span class="ex">push</span>(@<span class="dt">{$external_alignments{$query}}</span>, <span class="va">$index</span>);
-                                                <span class="ex">push</span>(@<span class="dt">{$external_alignment_scores{$query}}</span>, <span class="va">$score</span>);
-                                        <span class="kw">}</span>
-                                <span class="kw">}</span>
-
-                        <span class="kw">}</span>       
-
-                <span class="kw">}</span>
-
-        <span class="kw">}</span>
-<span class="kw">}</span>
-<span class="ex">close</span>(FILE);
-
-<span class="va">$locus</span> = <span class="ex">1</span><span class="kw">;</span>
-<span class="ex">foreach</span> <span class="va">$query</span> (keys %query_sequences) <span class="kw">{</span>
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$printed</span><span class="dt">{$query}</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span>
-        
-                <span class="va">$bad</span> = <span class="ex">0</span><span class="kw">;</span>
-                <span class="ex">@alleles</span> = valid_alignments(<span class="va">$query</span>);
-                <span class="va">$string1</span> = <span class="st">&quot;@alleles&quot;</span>;
-
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$string1</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span><span class="kw">)</span> <span class="kw">{</span>
-                        <span class="ex">foreach</span> (@alleles) <span class="kw">{</span>
-                                <span class="ex">@alleles2</span> = valid_alignments(<span class="va">$_</span>);
-                                <span class="va">$string2</span> = <span class="st">&quot;@alleles2&quot;</span>;
-                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$string1</span> <span class="ex">ne</span> <span class="va">$string2</span><span class="kw">)</span> <span class="kw">{</span> <span class="va">$bad</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span>
-                        <span class="kw">}</span>
-                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$bad</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span>
-                                <span class="va">$print_string</span> = <span class="st">&quot;&quot;</span>; <span class="va">$print_count</span> = <span class="ex">0</span><span class="kw">;</span>
-                                <span class="ex">foreach</span> (@alleles) <span class="kw">{</span>
-                                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$printed</span><span class="dt">{$_}</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span>
-                                                <span class="ex">@matches</span> = (<span class="va">$_</span>, @<span class="dt">{$perfect_external_alignments{$_}}</span>);
-                                                <span class="ex">@matches</span> = sort(@matches);
-
-                                                <span class="va">$ID</span> = <span class="st">&quot;&quot;</span>;
-                                                <span class="ex">foreach</span> (@matches) <span class="kw">{</span> 
-                                                        <span class="va">$ID</span> = <span class="va">$ID</span> <span class="bu">.</span> <span class="ex">substr</span>(<span class="va">$_</span>,1,length(<span class="va">$_</span>)) <span class="bu">.</span> <span class="st">&quot;|&quot;</span>; 
-                                                        <span class="va">$printed</span><span class="dt">{$_}</span> = <span class="ex">1</span><span class="kw">;</span>       
-                                                <span class="kw">}</span>
-                                                <span class="ex">chop</span>(<span class="va">$ID</span>);
-
-                                                <span class="va">$plocus</span> = <span class="ex">sprintf</span>(<span class="st">&quot;%06d&quot;</span>, <span class="va">$locus</span>); <span class="va">$plocus</span> = <span class="st">&quot;R&quot;</span> <span class="bu">.</span> <span class="va">$plocus</span>;
-                                                <span class="va">$print_string</span> = <span class="va">$print_string</span> <span class="bu">.</span> <span class="st">&quot;&gt;</span><span class="va">$plocus</span><span class="st">\{</span><span class="va">$ID</span><span class="st">\}\n&quot;</span>;
-                                                <span class="va">$print_string</span> = <span class="va">$print_string</span> <span class="bu">.</span> <span class="va">$query_sequences</span><span class="dt">{$_}</span> <span class="bu">.</span> <span class="st">&quot;\n&quot;</span>;
-                                                <span class="va">$print_count</span><span class="ex">++</span><span class="kw">;</span>
-                                        <span class="kw">}</span>
-                                <span class="kw">}</span>
-                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$print_count</span> <span class="op">&gt;</span>= <span class="va">$min_alleles</span> <span class="kw">&amp;&amp;</span> <span class="va">$print_count</span> <span class="op">&lt;</span>= <span class="va">$max_alleles</span><span class="kw">)</span> <span class="kw">{</span>
-                                        <span class="ex">print</span> <span class="va">$print_string</span><span class="kw">;</span>
-                                        <span class="va">$locus</span><span class="ex">++</span><span class="kw">;</span>
-                                <span class="kw">}</span>
-                        <span class="kw">}</span>
-                <span class="kw">}</span>
-
-        <span class="kw">}</span>
-<span class="kw">}</span>
-
-<span class="ex">sub</span> valid_alignments {
-        <span class="va">$seq</span> = <span class="va">$_[0]</span>;
-        <span class="ex">@int_aligns</span> = ();
-        <span class="ex">@ext_aligns</span> = ();
-        <span class="ex">@aligns</span> = ();
-        <span class="va">$flag</span> = <span class="ex">0</span><span class="kw">;</span>
-
-        <span class="kw">(</span><span class="va">$seq_lib</span>, <span class="va">$seq_ID</span>, <span class="va">$blank</span>, <span class="va">$seq_count</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$seq</span>);
-
-        <span class="va">$x</span> = <span class="ex">0</span><span class="kw">;</span>
-        <span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span> <span class="ex">scalar</span>(@<span class="dt">{$internal_alignments{$seq}}</span><span class="kw">)</span>) <span class="kw">{</span>
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$internal_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span>= <span class="va">$max_alignment_score</span><span class="kw">)</span> <span class="kw">{</span>
-                        <span class="ex">push</span>(@int_aligns, <span class="va">$internal_alignments</span><span class="dt">{$seq}</span>[<span class="va">$x</span>]);
-                <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$internal_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span> <span class="va">$max_alignment_score</span>*<span class="va">$divergence_factor</span>) <span class="kw">{</span>
-                        <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span>
-                <span class="kw">}</span>
-                <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-        <span class="kw">}</span>
-        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@int_aligns<span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$max_internal_alignments</span> 
-        <span class="kw">||</span> <span class="ex">scalar</span>(@int_aligns) <span class="op">&lt;</span> <span class="va">$min_internal_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span>
-
-        <span class="va">$x</span> = <span class="ex">0</span><span class="kw">;</span>
-        <span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span> <span class="ex">scalar</span>(@<span class="dt">{$external_alignments{$seq}}</span><span class="kw">)</span>) <span class="kw">{</span>
-                <span class="kw">if</span> <span class="kw">(</span><span class="va">$external_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span>= <span class="va">$max_alignment_score</span><span class="kw">)</span> <span class="kw">{</span>
-                        <span class="ex">push</span>(@ext_aligns, <span class="va">$external_alignments</span><span class="dt">{$seq}</span>[<span class="va">$x</span>]);
-                <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$external_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span> <span class="va">$max_alignment_score</span>*<span class="va">$divergence_factor</span>) <span class="kw">{</span>
-                        <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span>
-                <span class="kw">}</span>
-                <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-        <span class="kw">}</span>
-        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@ext_aligns<span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$max_external_alignments</span>
-        <span class="kw">||</span> <span class="ex">scalar</span>(@ext_aligns) <span class="op">&lt;</span> <span class="va">$min_external_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span>
-
-        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@int_aligns<span class="kw">)</span><span class="ex">+scalar</span>(@ext_aligns) <span class="op">&gt;</span> <span class="va">$max_total_alignments</span>
-        <span class="kw">||</span> <span class="ex">scalar</span>(@int_aligns)<span class="ex">+scalar</span>(@ext_aligns) <span class="op">&lt;</span> <span class="va">$min_total_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span>
-
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$flag</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span>
-                <span class="ex">@aligns</span> = (<span class="va">$seq</span>, @int_aligns, @ext_aligns);
-                <span class="ex">@aligns</span> = sort(@aligns);
-                <span class="bu">return</span> @aligns<span class="kw">;</span>
-        <span class="kw">}</span>
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#!/usr/bin/perl</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#######################################################################################</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="va">$max_alignment_score</span> = <span class="ex">30</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="va">$divergence_factor</span> = <span class="ex">2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="va">$min_count</span> = <span class="ex">0</span><span class="kw">;</span> <span class="co">#zero turns off to use min_flag instead</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="va">$min_flag</span> = <span class="ex">0</span><span class="kw">;</span> <span class="co">#zero turns off to use min_count instead</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="va">$max_internal_alignments</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="va">$min_internal_alignments</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="va">$max_external_alignments</span> = <span class="ex">10</span><span class="kw">;</span> <span class="co"># twice the df of the total number of samples (i.e. individuals) in the alignment</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="va">$min_external_alignments</span> = <span class="ex">2</span><span class="kw">;</span> <span class="co"># approximately half of the df of the total number of samples (i.e. individuals) in the alignment</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="va">$max_total_alignments</span> = <span class="ex">11</span><span class="kw">;</span> <span class="co"># max_ext_align + max_int_align</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="va">$min_total_alignments</span> = <span class="ex">2</span><span class="kw">;</span> <span class="co"># min_ext_align + min_int_align</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="va">$min_alleles</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="va">$max_alleles</span> = <span class="ex">4</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="va">$min_samples_per_allele</span> = <span class="ex">2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="va">$max_samples_per_allele</span> = <span class="ex">6</span><span class="kw">;</span> <span class="co"># total number of samples (i.e. individuals) in the alignment</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#######################################################################################</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="va">$file</span> = <span class="va">$ARGV[0]</span>;</a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25">        <span class="va">$line</span> = <span class="va">$_</span>;</a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">        <span class="ex">chomp</span>(<span class="va">$line</span>);</a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">        <span class="kw">if</span> <span class="kw">(</span><span class="ex">substr</span>(<span class="va">$line</span>,0,1<span class="kw">)</span> <span class="ex">eq</span> <span class="st">&quot;&gt;&quot;</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">                <span class="ex">@tabs</span> = split(/\t/,<span class="va">$line</span>);</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$tabs[9]</span> <span class="ex">eq</span> <span class="st">&quot;F&quot;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32">                        <span class="va">$query</span> = <span class="va">$tabs[0]</span>;</a>
+<a class="sourceLine" id="cb4-33" data-line-number="33">                        <span class="kw">(</span><span class="va">$query_lib</span>, <span class="va">$query_ID</span>, <span class="va">$query_count</span>, <span class="va">$query_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$query</span>);</a>
+<a class="sourceLine" id="cb4-34" data-line-number="34">                        <span class="va">$query_sequence</span> = <span class="va">$tabs[2]</span>;</a>
+<a class="sourceLine" id="cb4-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb4-36" data-line-number="36">                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$query_used</span><span class="dt">{$query}</span> != <span class="ex">1</span> <span class="kw">&amp;&amp;</span> <span class="va">$query_count</span> <span class="op">&gt;</span>= <span class="va">$min_count</span> <span class="kw">&amp;&amp;</span> <span class="va">$query_flag</span> <span class="op">&gt;</span>= <span class="va">$min_flag</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37">                                <span class="va">$query_sequences</span><span class="dt">{$query}</span> = <span class="va">$query_sequence</span>;</a>
+<a class="sourceLine" id="cb4-38" data-line-number="38">                                <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39">                                <span class="va">$query_used</span><span class="dt">{$query}</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40">                        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb4-42" data-line-number="42">                <span class="kw">}</span>               </a>
+<a class="sourceLine" id="cb4-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb4-44" data-line-number="44">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="ex">close</span>(FILE);</a>
+<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="ex">%query_used</span> = (); <span class="co">#clear this hash to clear memory</span></a>
+<a class="sourceLine" id="cb4-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb4-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="ex">open</span>(FILE, <span class="st">&quot;&lt;</span><span class="va">$file</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-52" data-line-number="52"></a>
+<a class="sourceLine" id="cb4-53" data-line-number="53">        <span class="va">$line</span> = <span class="va">$_</span>;</a>
+<a class="sourceLine" id="cb4-54" data-line-number="54">        <span class="ex">chomp</span>(<span class="va">$line</span>);</a>
+<a class="sourceLine" id="cb4-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb4-56" data-line-number="56">        <span class="kw">if</span> <span class="kw">(</span><span class="ex">substr</span>(<span class="va">$line</span>,0,1<span class="kw">)</span> <span class="ex">eq</span> <span class="st">&quot;&gt;&quot;</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-57" data-line-number="57">                <span class="ex">@tabs</span> = split(/\t/,<span class="va">$line</span>);</a>
+<a class="sourceLine" id="cb4-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb4-59" data-line-number="59">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$tabs[9]</span> <span class="ex">eq</span> <span class="st">&quot;F&quot;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-60" data-line-number="60"></a>
+<a class="sourceLine" id="cb4-61" data-line-number="61">                        <span class="va">$query</span> = <span class="va">$tabs[0]</span>;</a>
+<a class="sourceLine" id="cb4-62" data-line-number="62">                        <span class="kw">(</span><span class="va">$query_lib</span>, <span class="va">$query_ID</span>, <span class="va">$query_count</span>, <span class="va">$query_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$query</span>); </a>
+<a class="sourceLine" id="cb4-63" data-line-number="63">                        <span class="va">$index</span> = <span class="va">$tabs[7]</span>; </a>
+<a class="sourceLine" id="cb4-64" data-line-number="64">                        <span class="kw">(</span><span class="va">$index_lib</span>, <span class="va">$index_ID</span>, <span class="va">$index_count</span>, <span class="va">$index_flag</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$index</span>);</a>
+<a class="sourceLine" id="cb4-65" data-line-number="65">                </a>
+<a class="sourceLine" id="cb4-66" data-line-number="66">                        <span class="va">$score</span> = <span class="va">$tabs[5]</span>;</a>
+<a class="sourceLine" id="cb4-67" data-line-number="67">                        <span class="va">$change</span> = <span class="va">$tabs[13]</span>;</a>
+<a class="sourceLine" id="cb4-68" data-line-number="68">                        <span class="va">$query_sequence</span> = <span class="va">$tabs[2]</span>;</a>
+<a class="sourceLine" id="cb4-69" data-line-number="69">                        <span class="va">$index_sequence</span> = <span class="va">$query_sequences</span><span class="dt">{$index}</span>;</a>
+<a class="sourceLine" id="cb4-70" data-line-number="70"></a>
+<a class="sourceLine" id="cb4-71" data-line-number="71">                        <span class="kw">if</span> <span class="kw">(</span> <span class="kw">(</span><span class="va">$query</span> <span class="ex">ne</span> <span class="va">$index</span><span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="kw">(</span> <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span> <span class="op">&gt;</span>= <span class="va">$min_samples_per_allele</span> <span class="kw">&amp;&amp;</span> <span class="va">$sample_count</span><span class="dt">{$query_sequence}</span> <span class="op">&lt;</span>= <span class="va">$max_samples_per_allele</span> <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="kw">(</span> <span class="va">$sample_count</span><span class="dt">{$index_sequence}</span> <span class="op">&gt;</span>= <span class="va">$min_samples_per_allele</span> <span class="kw">&amp;&amp;</span> <span class="va">$sample_count</span><span class="dt">{$index_sequence}</span> <span class="op">&lt;</span>= <span class="va">$max_samples_per_allele</span> <span class="kw">)</span> <span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb4-73" data-line-number="73">                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$query_lib</span> <span class="ex">eq</span> <span class="va">$index_lib</span><span class="kw">)</span> <span class="kw">{</span>         </a>
+<a class="sourceLine" id="cb4-74" data-line-number="74">                                                <span class="ex">push</span>(@<span class="dt">{$internal_alignments{$query}}</span>, <span class="va">$index</span>);</a>
+<a class="sourceLine" id="cb4-75" data-line-number="75">                                                <span class="ex">push</span>(@<span class="dt">{$internal_alignment_scores{$query}}</span>, <span class="va">$score</span>);</a>
+<a class="sourceLine" id="cb4-76" data-line-number="76">                                <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-77" data-line-number="77">                                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$score</span> == <span class="ex">0</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-78" data-line-number="78">                                                <span class="ex">push</span>(@<span class="dt">{$perfect_external_alignments{$query}}</span>, <span class="va">$index</span>);</a>
+<a class="sourceLine" id="cb4-79" data-line-number="79">                                                <span class="ex">push</span>(@<span class="dt">{$external_alignments{$query}}</span>, <span class="va">$index</span>);</a>
+<a class="sourceLine" id="cb4-80" data-line-number="80">                                                <span class="ex">push</span>(@<span class="dt">{$external_alignment_scores{$query}}</span>, <span class="va">$score</span>);</a>
+<a class="sourceLine" id="cb4-81" data-line-number="81">                                        <span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-82" data-line-number="82">                                                <span class="ex">push</span>(@<span class="dt">{$external_alignments{$query}}</span>, <span class="va">$index</span>);</a>
+<a class="sourceLine" id="cb4-83" data-line-number="83">                                                <span class="ex">push</span>(@<span class="dt">{$external_alignment_scores{$query}}</span>, <span class="va">$score</span>);</a>
+<a class="sourceLine" id="cb4-84" data-line-number="84">                                        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-85" data-line-number="85">                                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-86" data-line-number="86"></a>
+<a class="sourceLine" id="cb4-87" data-line-number="87">                        <span class="kw">}</span>       </a>
+<a class="sourceLine" id="cb4-88" data-line-number="88"></a>
+<a class="sourceLine" id="cb4-89" data-line-number="89">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-90" data-line-number="90"></a>
+<a class="sourceLine" id="cb4-91" data-line-number="91">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-92" data-line-number="92"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-93" data-line-number="93"><span class="ex">close</span>(FILE);</a>
+<a class="sourceLine" id="cb4-94" data-line-number="94"></a>
+<a class="sourceLine" id="cb4-95" data-line-number="95"><span class="va">$locus</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-96" data-line-number="96"><span class="ex">foreach</span> <span class="va">$query</span> (keys %query_sequences) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-97" data-line-number="97">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$printed</span><span class="dt">{$query}</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-98" data-line-number="98">        </a>
+<a class="sourceLine" id="cb4-99" data-line-number="99">                <span class="va">$bad</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-100" data-line-number="100">                <span class="ex">@alleles</span> = valid_alignments(<span class="va">$query</span>);</a>
+<a class="sourceLine" id="cb4-101" data-line-number="101">                <span class="va">$string1</span> = <span class="st">&quot;@alleles&quot;</span>;</a>
+<a class="sourceLine" id="cb4-102" data-line-number="102"></a>
+<a class="sourceLine" id="cb4-103" data-line-number="103">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$string1</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-104" data-line-number="104">                        <span class="ex">foreach</span> (@alleles) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-105" data-line-number="105">                                <span class="ex">@alleles2</span> = valid_alignments(<span class="va">$_</span>);</a>
+<a class="sourceLine" id="cb4-106" data-line-number="106">                                <span class="va">$string2</span> = <span class="st">&quot;@alleles2&quot;</span>;</a>
+<a class="sourceLine" id="cb4-107" data-line-number="107">                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$string1</span> <span class="ex">ne</span> <span class="va">$string2</span><span class="kw">)</span> <span class="kw">{</span> <span class="va">$bad</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-108" data-line-number="108">                        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-109" data-line-number="109">                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$bad</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-110" data-line-number="110">                                <span class="va">$print_string</span> = <span class="st">&quot;&quot;</span>; <span class="va">$print_count</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-111" data-line-number="111">                                <span class="ex">foreach</span> (@alleles) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-112" data-line-number="112">                                        <span class="kw">if</span> <span class="kw">(</span><span class="va">$printed</span><span class="dt">{$_}</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-113" data-line-number="113">                                                <span class="ex">@matches</span> = (<span class="va">$_</span>, @<span class="dt">{$perfect_external_alignments{$_}}</span>);</a>
+<a class="sourceLine" id="cb4-114" data-line-number="114">                                                <span class="ex">@matches</span> = sort(@matches);</a>
+<a class="sourceLine" id="cb4-115" data-line-number="115"></a>
+<a class="sourceLine" id="cb4-116" data-line-number="116">                                                <span class="va">$ID</span> = <span class="st">&quot;&quot;</span>;</a>
+<a class="sourceLine" id="cb4-117" data-line-number="117">                                                <span class="ex">foreach</span> (@matches) <span class="kw">{</span> </a>
+<a class="sourceLine" id="cb4-118" data-line-number="118">                                                        <span class="va">$ID</span> = <span class="va">$ID</span> <span class="bu">.</span> <span class="ex">substr</span>(<span class="va">$_</span>,1,length(<span class="va">$_</span>)) <span class="bu">.</span> <span class="st">&quot;|&quot;</span>; </a>
+<a class="sourceLine" id="cb4-119" data-line-number="119">                                                        <span class="va">$printed</span><span class="dt">{$_}</span> = <span class="ex">1</span><span class="kw">;</span>       </a>
+<a class="sourceLine" id="cb4-120" data-line-number="120">                                                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-121" data-line-number="121">                                                <span class="ex">chop</span>(<span class="va">$ID</span>);</a>
+<a class="sourceLine" id="cb4-122" data-line-number="122"></a>
+<a class="sourceLine" id="cb4-123" data-line-number="123">                                                <span class="va">$plocus</span> = <span class="ex">sprintf</span>(<span class="st">&quot;%06d&quot;</span>, <span class="va">$locus</span>); <span class="va">$plocus</span> = <span class="st">&quot;R&quot;</span> <span class="bu">.</span> <span class="va">$plocus</span>;</a>
+<a class="sourceLine" id="cb4-124" data-line-number="124">                                                <span class="va">$print_string</span> = <span class="va">$print_string</span> <span class="bu">.</span> <span class="st">&quot;&gt;</span><span class="va">$plocus</span><span class="st">\{</span><span class="va">$ID</span><span class="st">\}\n&quot;</span>;</a>
+<a class="sourceLine" id="cb4-125" data-line-number="125">                                                <span class="va">$print_string</span> = <span class="va">$print_string</span> <span class="bu">.</span> <span class="va">$query_sequences</span><span class="dt">{$_}</span> <span class="bu">.</span> <span class="st">&quot;\n&quot;</span>;</a>
+<a class="sourceLine" id="cb4-126" data-line-number="126">                                                <span class="va">$print_count</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-127" data-line-number="127">                                        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-128" data-line-number="128">                                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-129" data-line-number="129">                                <span class="kw">if</span> <span class="kw">(</span><span class="va">$print_count</span> <span class="op">&gt;</span>= <span class="va">$min_alleles</span> <span class="kw">&amp;&amp;</span> <span class="va">$print_count</span> <span class="op">&lt;</span>= <span class="va">$max_alleles</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-130" data-line-number="130">                                        <span class="ex">print</span> <span class="va">$print_string</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-131" data-line-number="131">                                        <span class="va">$locus</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-132" data-line-number="132">                                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-133" data-line-number="133">                        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-134" data-line-number="134">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-135" data-line-number="135"></a>
+<a class="sourceLine" id="cb4-136" data-line-number="136">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-137" data-line-number="137"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-138" data-line-number="138"></a>
+<a class="sourceLine" id="cb4-139" data-line-number="139"><span class="ex">sub</span> valid_alignments {</a>
+<a class="sourceLine" id="cb4-140" data-line-number="140">        <span class="va">$seq</span> = <span class="va">$_[0]</span>;</a>
+<a class="sourceLine" id="cb4-141" data-line-number="141">        <span class="ex">@int_aligns</span> = ();</a>
+<a class="sourceLine" id="cb4-142" data-line-number="142">        <span class="ex">@ext_aligns</span> = ();</a>
+<a class="sourceLine" id="cb4-143" data-line-number="143">        <span class="ex">@aligns</span> = ();</a>
+<a class="sourceLine" id="cb4-144" data-line-number="144">        <span class="va">$flag</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-145" data-line-number="145"></a>
+<a class="sourceLine" id="cb4-146" data-line-number="146">        <span class="kw">(</span><span class="va">$seq_lib</span>, <span class="va">$seq_ID</span>, <span class="va">$blank</span>, <span class="va">$seq_count</span><span class="kw">)</span> = <span class="fu">split</span>(/<span class="dt">\;</span>/, <span class="va">$seq</span>);</a>
+<a class="sourceLine" id="cb4-147" data-line-number="147"></a>
+<a class="sourceLine" id="cb4-148" data-line-number="148">        <span class="va">$x</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-149" data-line-number="149">        <span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span> <span class="ex">scalar</span>(@<span class="dt">{$internal_alignments{$seq}}</span><span class="kw">)</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-150" data-line-number="150">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$internal_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span>= <span class="va">$max_alignment_score</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-151" data-line-number="151">                        <span class="ex">push</span>(@int_aligns, <span class="va">$internal_alignments</span><span class="dt">{$seq}</span>[<span class="va">$x</span>]);</a>
+<a class="sourceLine" id="cb4-152" data-line-number="152">                <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$internal_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span> <span class="va">$max_alignment_score</span>*<span class="va">$divergence_factor</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-153" data-line-number="153">                        <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-154" data-line-number="154">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-155" data-line-number="155">                <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-156" data-line-number="156">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-157" data-line-number="157">        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@int_aligns<span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$max_internal_alignments</span> </a>
+<a class="sourceLine" id="cb4-158" data-line-number="158">        <span class="kw">||</span> <span class="ex">scalar</span>(@int_aligns) <span class="op">&lt;</span> <span class="va">$min_internal_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-159" data-line-number="159"></a>
+<a class="sourceLine" id="cb4-160" data-line-number="160">        <span class="va">$x</span> = <span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-161" data-line-number="161">        <span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span> <span class="ex">scalar</span>(@<span class="dt">{$external_alignments{$seq}}</span><span class="kw">)</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-162" data-line-number="162">                <span class="kw">if</span> <span class="kw">(</span><span class="va">$external_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span>= <span class="va">$max_alignment_score</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-163" data-line-number="163">                        <span class="ex">push</span>(@ext_aligns, <span class="va">$external_alignments</span><span class="dt">{$seq}</span>[<span class="va">$x</span>]);</a>
+<a class="sourceLine" id="cb4-164" data-line-number="164">                <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$external_alignment_scores</span><span class="dt">{$seq}</span>[<span class="va">$x</span>] <span class="op">&lt;</span> <span class="va">$max_alignment_score</span>*<span class="va">$divergence_factor</span>) <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-165" data-line-number="165">                        <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-166" data-line-number="166">                <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-167" data-line-number="167">                <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-168" data-line-number="168">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-169" data-line-number="169">        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@ext_aligns<span class="kw">)</span> <span class="op">&gt;</span> <span class="va">$max_external_alignments</span></a>
+<a class="sourceLine" id="cb4-170" data-line-number="170">        <span class="kw">||</span> <span class="ex">scalar</span>(@ext_aligns) <span class="op">&lt;</span> <span class="va">$min_external_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-171" data-line-number="171"></a>
+<a class="sourceLine" id="cb4-172" data-line-number="172">        <span class="kw">if</span> <span class="kw">(</span><span class="ex">scalar</span>(@int_aligns<span class="kw">)</span><span class="ex">+scalar</span>(@ext_aligns) <span class="op">&gt;</span> <span class="va">$max_total_alignments</span></a>
+<a class="sourceLine" id="cb4-173" data-line-number="173">        <span class="kw">||</span> <span class="ex">scalar</span>(@int_aligns)<span class="ex">+scalar</span>(@ext_aligns) <span class="op">&lt;</span> <span class="va">$min_total_alignments</span>) <span class="kw">{</span> <span class="va">$flag</span> = <span class="ex">1</span><span class="kw">;</span> <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-174" data-line-number="174"></a>
+<a class="sourceLine" id="cb4-175" data-line-number="175">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$flag</span> != <span class="ex">1</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb4-176" data-line-number="176">                <span class="ex">@aligns</span> = (<span class="va">$seq</span>, @int_aligns, @ext_aligns);</a>
+<a class="sourceLine" id="cb4-177" data-line-number="177">                <span class="ex">@aligns</span> = sort(@aligns);</a>
+<a class="sourceLine" id="cb4-178" data-line-number="178">                <span class="bu">return</span> @aligns<span class="kw">;</span></a>
+<a class="sourceLine" id="cb4-179" data-line-number="179">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb4-180" data-line-number="180">}</a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Once done counting loci, divide by 2 to get idea of how many loci we are dealing with, perl can only handle 8000 lines and 4000 loci chunks (*We will need to split _IDloci.fasta into 8000 line chunks*)
 <ul>

@@ -30,41 +30,69 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 div.sourceCode {
   overflow-x: visible;
 }
@@ -520,92 +548,92 @@ div.tocify {
 </ol>
 <div id="run_split.sh" class="section level4">
 <h4><code>run_split.sh</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
-
-<span class="va">r1=$1</span>
-<span class="va">r2=$2</span>
-<span class="va">r3=$3</span>
-<span class="va">out=$4</span>
-
-<span class="fu">perl</span> BarcodeSplitList3Files.pl <span class="va">$r1</span> <span class="va">$r2</span> <span class="va">$r3</span> CCGTTT,AACGTT,TCAGTT,CGTCTT,TAGCTT,GATATT,CTCATT,TCTTGT,CGCTGT,GTATGT,CATGGT,GGGGGT,AAGAGT,GCCAGT,ATGGCT,TGCGCT,GACCCT,ACACCT,CCTACT,TTAACT,TACTAT,TTTGAT,GTGCAT,CAACAT,CGGAAT,TTTTTG,CGATTG,GAGGTG,TGCCTG,AGTATG,AAATGG,ACCGGG,TTAGGG,CCTCGG,ATGCGG,GTTAGG,GCCTCG,TCTGCG,CACGCG,GGACCG,TAGACG,ATCACG,CTGTAG,GGCGAG,TCGCAG,AACCAG,CATAAG,GCAAAG,CATTTC,TGGTTC,GTCGTC,AGAGTC,TCTCTC,ACGATC,ATCTGC,CCATGC,TACGGC,GGTCGC,CAGCGC,TTGAGC,AAGTCC,CTTGCC,GCGCCC,CGCCCC,TGTACC,CAAACC,ACTTAC,GGATAC,GATGAC,AGGCAC,TTACAC,TCCAAC,AGCTTA,GAATTA,TGTGTA,CCCGTA,ATACTA,GTGATA,CTTTGA,GCAGGA,AATCGA,TGGCGA,GTCCGA,CCGAGA,AGAAGA,GGTTCA,TTGTCA,CGGGCA,TAAGCA,TCCCCA,TCATAA,ACGGAA,CTAGAA,GCTCAA,ATTAAA,GACAAA,CGATGT,TTAGGC,TGACCA,ACAGTG,GCCAAT,CAGATC,ACTTGA,GATCAG,GGCTAC,CTTGTA,AGTCAA,AGTTCC,ATGTCA,CCGTCC,GTCCGC,GTGAAA,GTGGCC,GTTTCG,CGTACG,GAGTGG,ACTGAT,ATTCCT <span class="va">$out</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#!/bin/bash</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="va">r1=$1</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="va">r2=$2</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="va">r3=$3</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="va">out=$4</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="fu">perl</span> BarcodeSplitList3Files.pl <span class="va">$r1</span> <span class="va">$r2</span> <span class="va">$r3</span> CCGTTT,AACGTT,TCAGTT,CGTCTT,TAGCTT,GATATT,CTCATT,TCTTGT,CGCTGT,GTATGT,CATGGT,GGGGGT,AAGAGT,GCCAGT,ATGGCT,TGCGCT,GACCCT,ACACCT,CCTACT,TTAACT,TACTAT,TTTGAT,GTGCAT,CAACAT,CGGAAT,TTTTTG,CGATTG,GAGGTG,TGCCTG,AGTATG,AAATGG,ACCGGG,TTAGGG,CCTCGG,ATGCGG,GTTAGG,GCCTCG,TCTGCG,CACGCG,GGACCG,TAGACG,ATCACG,CTGTAG,GGCGAG,TCGCAG,AACCAG,CATAAG,GCAAAG,CATTTC,TGGTTC,GTCGTC,AGAGTC,TCTCTC,ACGATC,ATCTGC,CCATGC,TACGGC,GGTCGC,CAGCGC,TTGAGC,AAGTCC,CTTGCC,GCGCCC,CGCCCC,TGTACC,CAAACC,ACTTAC,GGATAC,GATGAC,AGGCAC,TTACAC,TCCAAC,AGCTTA,GAATTA,TGTGTA,CCCGTA,ATACTA,GTGATA,CTTTGA,GCAGGA,AATCGA,TGGCGA,GTCCGA,CCGAGA,AGAAGA,GGTTCA,TTGTCA,CGGGCA,TAAGCA,TCCCCA,TCATAA,ACGGAA,CTAGAA,GCTCAA,ATTAAA,GACAAA,CGATGT,TTAGGC,TGACCA,ACAGTG,GCCAAT,CAGATC,ACTTGA,GATCAG,GGCTAC,CTTGTA,AGTCAA,AGTTCC,ATGTCA,CCGTCC,GTCCGC,GTGAAA,GTGGCC,GTTTCG,CGTACG,GAGTGG,ACTGAT,ATTCCT <span class="va">$out</span></a></code></pre></div>
 </div>
 <div id="barcodesplitlist3files.pl" class="section level4">
 <h4><code>BarcodeSplitList3Files.pl</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/usr/bin/perl</span>
-
-<span class="kw">if</span> <span class="kw">(</span><span class="va">$#</span><span class="ex">ARGV</span> == 4<span class="kw">)</span> <span class="kw">{</span>
-        <span class="va">$fileR1</span> = <span class="va">$ARGV[0]</span>;
-        <span class="va">$fileR2</span> = <span class="va">$ARGV[1]</span>;
-        <span class="va">$fileR3</span> = <span class="va">$ARGV[2]</span>;
-        <span class="va">$barcode</span> = <span class="va">$ARGV[3]</span>;
-        <span class="va">$prefix</span> = <span class="va">$ARGV[4]</span>;
-<span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span>
-        <span class="ex">die</span><span class="kw">;</span>    
-<span class="kw">}</span>
-
-<span class="ex">@commas</span> = split(/\,/, <span class="va">$barcode</span>);
-
-<span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span>
-
-        <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R1_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;
-        <span class="va">$filenameR1</span> = <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span>;
-        <span class="ex">open</span>(<span class="va">$filenameR1</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-
-        <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R2_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;
-        <span class="va">$filenameR2</span> = <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span>;
-        <span class="ex">open</span>(<span class="va">$filenameR2</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-
-        <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R3_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;
-        <span class="va">$filenameR3</span> = <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span>;
-        <span class="ex">open</span>(<span class="va">$filenameR3</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR3</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-
-        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-<span class="kw">}</span>
-
-
-<span class="ex">open</span>(FILER1, <span class="st">&quot;&lt;</span><span class="va">$fileR1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-<span class="ex">open</span>(FILER2, <span class="st">&quot;&lt;</span><span class="va">$fileR2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-<span class="ex">open</span>(FILER3, <span class="st">&quot;&lt;</span><span class="va">$fileR3</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-
-
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-
-        <span class="va">$R1_l1</span> = <span class="va">$_</span>;
-        <span class="va">$R1_l2</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R1_l3</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R1_l4</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span>
-        
-        <span class="va">$R2_l1</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R2_l2</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R2_l3</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R2_l4</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span>
-
-        <span class="va">$R3_l1</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R3_l2</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R3_l3</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$R3_l4</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span>
-
-        <span class="va">$bc</span> = <span class="ex">substr</span>(<span class="va">$R2_l2</span>,0,6);
-        
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$hashR1</span><span class="dt">{$bc}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span><span class="kw">)</span>  <span class="kw">{</span>
-        
-                <span class="va">$F1</span> = <span class="va">$hashR1</span><span class="dt">{$bc}</span>; <span class="va">$F2</span> = <span class="va">$hashR2</span><span class="dt">{$bc}</span>; <span class="va">$F3</span> = <span class="va">$hashR3</span><span class="dt">{$bc}</span>;
-                <span class="ex">print</span> <span class="va">$F1</span> <span class="va">$R1_l1</span> . <span class="va">$R1_l2</span> . <span class="va">$R1_l3</span> . <span class="va">$R1_l4</span><span class="kw">;</span>
-                <span class="ex">print</span> <span class="va">$F2</span> <span class="va">$R2_l1</span> . <span class="va">$R2_l2</span> . <span class="va">$R2_l3</span> . <span class="va">$R2_l4</span><span class="kw">;</span>
-                <span class="ex">print</span> <span class="va">$F3</span> <span class="va">$R3_l1</span> . <span class="va">$R3_l2</span> . <span class="va">$R3_l3</span> . <span class="va">$R3_l4</span><span class="kw">;</span>
-
-        <span class="kw">}</span>
-
-<span class="kw">}</span>
-<span class="ex">close</span> FILER1<span class="kw">;</span> <span class="ex">close</span> FILER2<span class="kw">;</span> <span class="ex">close</span> FILER3<span class="kw">;</span>
-
-<span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span>
-        <span class="va">$F1</span> = <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span>; <span class="va">$F2</span> = <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span>; <span class="va">$F3</span> = <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span>;
-        <span class="ex">close</span>(<span class="va">$F1</span>); <span class="ex">close</span>(<span class="va">$F2</span>); <span class="ex">close</span>(<span class="va">$F3</span>);
-        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-<span class="kw">}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">#!/usr/bin/perl</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">if</span> <span class="kw">(</span><span class="va">$#</span><span class="ex">ARGV</span> == 4<span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">        <span class="va">$fileR1</span> = <span class="va">$ARGV[0]</span>;</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">        <span class="va">$fileR2</span> = <span class="va">$ARGV[1]</span>;</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">        <span class="va">$fileR3</span> = <span class="va">$ARGV[2]</span>;</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">        <span class="va">$barcode</span> = <span class="va">$ARGV[3]</span>;</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">        <span class="va">$prefix</span> = <span class="va">$ARGV[4]</span>;</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">        <span class="ex">die</span><span class="kw">;</span>    </a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="ex">@commas</span> = split(/\,/, <span class="va">$barcode</span>);</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">        <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R1_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">        <span class="va">$filenameR1</span> = <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">        <span class="ex">open</span>(<span class="va">$filenameR1</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">        <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R2_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">        <span class="va">$filenameR2</span> = <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">        <span class="ex">open</span>(<span class="va">$filenameR2</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">        <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_R3_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;</a>
+<a class="sourceLine" id="cb2-27" data-line-number="27">        <span class="va">$filenameR3</span> = <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">        <span class="ex">open</span>(<span class="va">$filenameR3</span>, <span class="st">&quot;&gt;</span><span class="va">$filenameR3</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30">        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="ex">open</span>(FILER1, <span class="st">&quot;&lt;</span><span class="va">$fileR1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="ex">open</span>(FILER2, <span class="st">&quot;&lt;</span><span class="va">$fileR2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="ex">open</span>(FILER3, <span class="st">&quot;&lt;</span><span class="va">$fileR3</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41">        <span class="va">$R1_l1</span> = <span class="va">$_</span>;</a>
+<a class="sourceLine" id="cb2-42" data-line-number="42">        <span class="va">$R1_l2</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">        <span class="va">$R1_l3</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">        <span class="va">$R1_l4</span> = <span class="op">&lt;</span><span class="ex">FILER1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-45" data-line-number="45">        </a>
+<a class="sourceLine" id="cb2-46" data-line-number="46">        <span class="va">$R2_l1</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47">        <span class="va">$R2_l2</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48">        <span class="va">$R2_l3</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49">        <span class="va">$R2_l4</span> = <span class="op">&lt;</span><span class="ex">FILER2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb2-51" data-line-number="51">        <span class="va">$R3_l1</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-52" data-line-number="52">        <span class="va">$R3_l2</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53">        <span class="va">$R3_l3</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54">        <span class="va">$R3_l4</span> = <span class="op">&lt;</span><span class="ex">FILER3</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb2-56" data-line-number="56">        <span class="va">$bc</span> = <span class="ex">substr</span>(<span class="va">$R2_l2</span>,0,6);</a>
+<a class="sourceLine" id="cb2-57" data-line-number="57">        </a>
+<a class="sourceLine" id="cb2-58" data-line-number="58">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$hashR1</span><span class="dt">{$bc}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span><span class="kw">)</span>  <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-59" data-line-number="59">        </a>
+<a class="sourceLine" id="cb2-60" data-line-number="60">                <span class="va">$F1</span> = <span class="va">$hashR1</span><span class="dt">{$bc}</span>; <span class="va">$F2</span> = <span class="va">$hashR2</span><span class="dt">{$bc}</span>; <span class="va">$F3</span> = <span class="va">$hashR3</span><span class="dt">{$bc}</span>;</a>
+<a class="sourceLine" id="cb2-61" data-line-number="61">                <span class="ex">print</span> <span class="va">$F1</span> <span class="va">$R1_l1</span> . <span class="va">$R1_l2</span> . <span class="va">$R1_l3</span> . <span class="va">$R1_l4</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-62" data-line-number="62">                <span class="ex">print</span> <span class="va">$F2</span> <span class="va">$R2_l1</span> . <span class="va">$R2_l2</span> . <span class="va">$R2_l3</span> . <span class="va">$R2_l4</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-63" data-line-number="63">                <span class="ex">print</span> <span class="va">$F3</span> <span class="va">$R3_l1</span> . <span class="va">$R3_l2</span> . <span class="va">$R3_l3</span> . <span class="va">$R3_l4</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb2-65" data-line-number="65">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-66" data-line-number="66"></a>
+<a class="sourceLine" id="cb2-67" data-line-number="67"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="ex">close</span> FILER1<span class="kw">;</span> <span class="ex">close</span> FILER2<span class="kw">;</span> <span class="ex">close</span> FILER3<span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb2-72" data-line-number="72">        <span class="va">$F1</span> = <span class="va">$hashR1</span><span class="dt">{$commas[$x]}</span>; <span class="va">$F2</span> = <span class="va">$hashR2</span><span class="dt">{$commas[$x]}</span>; <span class="va">$F3</span> = <span class="va">$hashR3</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb2-73" data-line-number="73">        <span class="ex">close</span>(<span class="va">$F1</span>); <span class="ex">close</span>(<span class="va">$F2</span>); <span class="ex">close</span>(<span class="va">$F3</span>);</a>
+<a class="sourceLine" id="cb2-74" data-line-number="74">        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb2-75" data-line-number="75"><span class="kw">}</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Run script using something like:
 <ul>
@@ -639,145 +667,126 @@ div.tocify {
 </ol>
 <div id="barcodesplitlistbestradpairedend.pl" class="section level4">
 <h4><code>BarcodeSplitListBestRadPairedEnd.pl</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/usr/bin/perl</span>
-
-<span class="kw">if</span> <span class="kw">(</span><span class="va">$#</span><span class="ex">ARGV</span> == 3<span class="kw">)</span> <span class="kw">{</span>
-        <span class="va">$file1</span> = <span class="va">$ARGV[0]</span>;
-        <span class="va">$file2</span> = <span class="va">$ARGV[1]</span>;
-        <span class="va">$barcode</span> = <span class="va">$ARGV[2]</span>;
-        <span class="va">$prefix</span> = <span class="va">$ARGV[3]</span>;
-<span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span>
-        <span class="ex">die</span><span class="kw">;</span>    
-<span class="kw">}</span>
-
-<span class="ex">@commas</span> = split(/\,/, <span class="va">$barcode</span>);
-<span class="va">$barcode_length</span> = <span class="ex">length</span>(<span class="va">$commas[0]</span>);
-
-<span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span>
-        <span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_RA_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;
-        <span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_RB_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;
-        <span class="va">$filename_r1</span> = <span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span>;
-        <span class="va">$filename_r2</span> = <span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span>;
-        <span class="ex">open</span>(<span class="va">$filename_r1</span>, <span class="st">&quot;&gt;</span><span class="va">$filename_r1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-        <span class="ex">open</span>(<span class="va">$filename_r2</span>, <span class="st">&quot;&gt;</span><span class="va">$filename_r2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-<span class="kw">}</span>
-
-
-<span class="ex">open</span>(FILE1, <span class="st">&quot;&lt;</span><span class="va">$file1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-<span class="ex">open</span>(FILE2, <span class="st">&quot;&lt;</span><span class="va">$file2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span>
-
-
-<span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span>
-
-        <span class="va">$f1a</span> = <span class="va">$_</span>;
-        <span class="va">$f1b</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$f1c</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$f1d</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span>
-
-        <span class="va">$f2a</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$f2b</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$f2c</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span>
-        <span class="va">$f2d</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span>
-        
-        <span class="va">$bc1</span> = <span class="ex">substr</span>(<span class="va">$f1b</span>,0,<span class="va">$barcode_length</span>);
-        <span class="va">$bc2</span> = <span class="ex">substr</span>(<span class="va">$f2b</span>,0,<span class="va">$barcode_length</span>);
-        
-        <span class="kw">if</span> <span class="kw">(</span><span class="va">$hash_r1</span><span class="dt">{$bc1}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">eq</span> <span class="st">&quot;&quot;</span><span class="kw">)</span>  <span class="kw">{</span>
-
-                <span class="va">$f1b_2</span> = <span class="ex">substr</span>(<span class="va">$f1b</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f1b</span>));
-                <span class="va">$f1d_2</span> = <span class="ex">substr</span>(<span class="va">$f1d</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f1d</span>));
-
-                <span class="va">$out1</span> = <span class="va">$hash_r1</span><span class="dt">{$bc1}</span>;
-                <span class="va">$out2</span> = <span class="va">$hash_r2</span><span class="dt">{$bc1}</span>;
-
-                <span class="ex">print</span> <span class="va">$out1</span> <span class="va">$f1a</span> . <span class="va">$f1b_2</span> . <span class="va">$f1c</span> . <span class="va">$f1d_2</span><span class="kw">;</span>
-                <span class="ex">print</span> <span class="va">$out2</span> <span class="va">$f2a</span> . <span class="va">$f2b</span> . <span class="va">$f2c</span> . <span class="va">$f2d</span><span class="kw">;</span>
-                
-        <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$hash_r1</span><span class="dt">{$bc1}</span> eq <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span>)  <span class="kw">{</span>
-
-                <span class="va">$f2b_2</span> = <span class="ex">substr</span>(<span class="va">$f2b</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f2b</span>));
-                <span class="va">$f2d_2</span> = <span class="ex">substr</span>(<span class="va">$f2d</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f2d</span>));
-
-                <span class="va">$out1</span> = <span class="va">$hash_r1</span><span class="dt">{$bc2}</span>;
-                <span class="va">$out2</span> = <span class="va">$hash_r2</span><span class="dt">{$bc2}</span>;
-
-                <span class="ex">print</span> <span class="va">$out1</span> <span class="va">$f2a</span> . <span class="va">$f2b_2</span> . <span class="va">$f2c</span> . <span class="va">$f2d_2</span><span class="kw">;</span>
-                <span class="ex">print</span> <span class="va">$out2</span> <span class="va">$f1a</span> . <span class="va">$f1b</span> . <span class="va">$f1c</span> . <span class="va">$f1d</span><span class="kw">;</span>
-
-        <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$hash_r1</span><span class="dt">{$bc1}</span> ne <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span>)  <span class="kw">{</span>
-
-                <span class="ex">print</span> <span class="st">&quot;Double Barcode!\t</span><span class="va">$bc1</span><span class="st">\t</span><span class="va">$bc2</span><span class="st">\n&quot;</span><span class="kw">;</span>
-        
-        <span class="kw">}</span>
-
-<span class="kw">}</span>
-<span class="ex">close</span> FILE1<span class="kw">;</span> <span class="ex">close</span> FILE2<span class="kw">;</span>
-
-
-
-<span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span>
-<span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span>
-        <span class="ex">close</span>(<span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span>);
-        <span class="ex">close</span>(<span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span>);
-        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span>
-<span class="kw">}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#!/usr/bin/perl</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">if</span> <span class="kw">(</span><span class="va">$#</span><span class="ex">ARGV</span> == 3<span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">        <span class="va">$file1</span> = <span class="va">$ARGV[0]</span>;</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">        <span class="va">$file2</span> = <span class="va">$ARGV[1]</span>;</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">        <span class="va">$barcode</span> = <span class="va">$ARGV[2]</span>;</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">        <span class="va">$prefix</span> = <span class="va">$ARGV[3]</span>;</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw">}</span> <span class="kw">else</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">        <span class="ex">die</span><span class="kw">;</span>    </a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="ex">@commas</span> = split(/\,/, <span class="va">$barcode</span>);</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="va">$barcode_length</span> = <span class="ex">length</span>(<span class="va">$commas[0]</span>);</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">        <span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_RA_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">        <span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span> = <span class="va">$prefix</span> <span class="bu">.</span> <span class="st">&quot;_RB_&quot;</span> <span class="bu">.</span> <span class="va">$commas[$x]</span> <span class="bu">.</span> <span class="st">&quot;.fastq&quot;</span>;</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">        <span class="va">$filename_r1</span> = <span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">        <span class="va">$filename_r2</span> = <span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span>;</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">        <span class="ex">open</span>(<span class="va">$filename_r1</span>, <span class="st">&quot;&gt;</span><span class="va">$filename_r1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">        <span class="ex">open</span>(<span class="va">$filename_r2</span>, <span class="st">&quot;&gt;</span><span class="va">$filename_r2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="ex">open</span>(FILE1, <span class="st">&quot;&lt;</span><span class="va">$file1</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="ex">open</span>(FILE2, <span class="st">&quot;&lt;</span><span class="va">$file2</span><span class="st">&quot;</span>) <span class="ex">or</span> die<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="kw">while</span> <span class="kw">(</span><span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33">        <span class="va">$f1a</span> = <span class="va">$_</span>;</a>
+<a class="sourceLine" id="cb3-34" data-line-number="34">        <span class="va">$f1b</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35">        <span class="va">$f1c</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36">        <span class="va">$f1d</span> = <span class="op">&lt;</span><span class="ex">FILE1</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38">        <span class="va">$f2a</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39">        <span class="va">$f2b</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-40" data-line-number="40">        <span class="va">$f2c</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41">        <span class="va">$f2d</span> = <span class="op">&lt;</span><span class="ex">FILE2</span><span class="op">&gt;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-42" data-line-number="42">        </a>
+<a class="sourceLine" id="cb3-43" data-line-number="43">        <span class="va">$bc1</span> = <span class="ex">substr</span>(<span class="va">$f1b</span>,0,<span class="va">$barcode_length</span>);</a>
+<a class="sourceLine" id="cb3-44" data-line-number="44">        <span class="va">$bc2</span> = <span class="ex">substr</span>(<span class="va">$f2b</span>,0,<span class="va">$barcode_length</span>);</a>
+<a class="sourceLine" id="cb3-45" data-line-number="45">        </a>
+<a class="sourceLine" id="cb3-46" data-line-number="46">        <span class="kw">if</span> <span class="kw">(</span><span class="va">$hash_r1</span><span class="dt">{$bc1}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">eq</span> <span class="st">&quot;&quot;</span><span class="kw">)</span>  <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-47" data-line-number="47"></a>
+<a class="sourceLine" id="cb3-48" data-line-number="48">                <span class="va">$f1b_2</span> = <span class="ex">substr</span>(<span class="va">$f1b</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f1b</span>));</a>
+<a class="sourceLine" id="cb3-49" data-line-number="49">                <span class="va">$f1d_2</span> = <span class="ex">substr</span>(<span class="va">$f1d</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f1d</span>));</a>
+<a class="sourceLine" id="cb3-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb3-51" data-line-number="51">                <span class="va">$out1</span> = <span class="va">$hash_r1</span><span class="dt">{$bc1}</span>;</a>
+<a class="sourceLine" id="cb3-52" data-line-number="52">                <span class="va">$out2</span> = <span class="va">$hash_r2</span><span class="dt">{$bc1}</span>;</a>
+<a class="sourceLine" id="cb3-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb3-54" data-line-number="54">                <span class="ex">print</span> <span class="va">$out1</span> <span class="va">$f1a</span> . <span class="va">$f1b_2</span> . <span class="va">$f1c</span> . <span class="va">$f1d_2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-55" data-line-number="55">                <span class="ex">print</span> <span class="va">$out2</span> <span class="va">$f2a</span> . <span class="va">$f2b</span> . <span class="va">$f2c</span> . <span class="va">$f2d</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-56" data-line-number="56">                </a>
+<a class="sourceLine" id="cb3-57" data-line-number="57">        <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$hash_r1</span><span class="dt">{$bc1}</span> eq <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span>)  <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb3-59" data-line-number="59">                <span class="va">$f2b_2</span> = <span class="ex">substr</span>(<span class="va">$f2b</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f2b</span>));</a>
+<a class="sourceLine" id="cb3-60" data-line-number="60">                <span class="va">$f2d_2</span> = <span class="ex">substr</span>(<span class="va">$f2d</span>, <span class="va">$barcode_length</span>, length(<span class="va">$f2d</span>));</a>
+<a class="sourceLine" id="cb3-61" data-line-number="61"></a>
+<a class="sourceLine" id="cb3-62" data-line-number="62">                <span class="va">$out1</span> = <span class="va">$hash_r1</span><span class="dt">{$bc2}</span>;</a>
+<a class="sourceLine" id="cb3-63" data-line-number="63">                <span class="va">$out2</span> = <span class="va">$hash_r2</span><span class="dt">{$bc2}</span>;</a>
+<a class="sourceLine" id="cb3-64" data-line-number="64"></a>
+<a class="sourceLine" id="cb3-65" data-line-number="65">                <span class="ex">print</span> <span class="va">$out1</span> <span class="va">$f2a</span> . <span class="va">$f2b_2</span> . <span class="va">$f2c</span> . <span class="va">$f2d_2</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-66" data-line-number="66">                <span class="ex">print</span> <span class="va">$out2</span> <span class="va">$f1a</span> . <span class="va">$f1b</span> . <span class="va">$f1c</span> . <span class="va">$f1d</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-67" data-line-number="67"></a>
+<a class="sourceLine" id="cb3-68" data-line-number="68">        <span class="kw">}</span> <span class="ex">elsif</span> (<span class="va">$hash_r1</span><span class="dt">{$bc1}</span> ne <span class="st">&quot;&quot;</span> <span class="kw">&amp;&amp;</span> <span class="va">$hash_r1</span><span class="dt">{$bc2}</span> <span class="ex">ne</span> <span class="st">&quot;&quot;</span>)  <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb3-70" data-line-number="70">                <span class="ex">print</span> <span class="st">&quot;Double Barcode!\t</span><span class="va">$bc1</span><span class="st">\t</span><span class="va">$bc2</span><span class="st">\n&quot;</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-71" data-line-number="71">        </a>
+<a class="sourceLine" id="cb3-72" data-line-number="72">        <span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-73" data-line-number="73"></a>
+<a class="sourceLine" id="cb3-74" data-line-number="74"><span class="kw">}</span></a>
+<a class="sourceLine" id="cb3-75" data-line-number="75"><span class="ex">close</span> FILE1<span class="kw">;</span> <span class="ex">close</span> FILE2<span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-76" data-line-number="76"></a>
+<a class="sourceLine" id="cb3-77" data-line-number="77"></a>
+<a class="sourceLine" id="cb3-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb3-79" data-line-number="79"><span class="va">$x</span>=<span class="ex">0</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-80" data-line-number="80"><span class="kw">while</span> <span class="kw">(</span><span class="va">$x</span> <span class="op">&lt;</span>= <span class="va">$#</span><span class="ex">commas</span><span class="kw">)</span> <span class="kw">{</span></a>
+<a class="sourceLine" id="cb3-81" data-line-number="81">        <span class="ex">close</span>(<span class="va">$hash_r1</span><span class="dt">{$commas[$x]}</span>);</a>
+<a class="sourceLine" id="cb3-82" data-line-number="82">        <span class="ex">close</span>(<span class="va">$hash_r2</span><span class="dt">{$commas[$x]}</span>);</a>
+<a class="sourceLine" id="cb3-83" data-line-number="83">        <span class="va">$x</span><span class="ex">++</span><span class="kw">;</span></a>
+<a class="sourceLine" id="cb3-84" data-line-number="84"><span class="kw">}</span></a></code></pre></div>
 </div>
 <div id="run_wellsplit.sh" class="section level4">
 <h4><code>run_wellsplit.sh</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash -l</span>
-
-<span class="va">list=$1</span>
-
-<span class="va">wc=$(</span><span class="fu">wc</span> -l <span class="va">${list}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span>
-
-<span class="va">x=</span>1
-<span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$wc</span><span class="bu"> ]</span> 
-<span class="kw">do</span>
-        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p </span><span class="va">${list}</span><span class="st">&quot;</span> 
-        <span class="va">str=$($string)</span>
-
-        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1, $2, $3}&#39;</span><span class="va">)</span>   
-        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span>
-        <span class="va">c1=$1</span>
-        <span class="va">c2=$2</span>
-        <span class="va">c3=$3</span>
-
-        <span class="fu">sh</span> run_BestRadSplit.sh <span class="va">$c1</span> <span class="va">$c2</span> <span class="va">$c3</span>
-
-        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span>
-
-<span class="kw">done</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#!/bin/bash -l</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="va">list=$1</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="va">wc=$(</span><span class="fu">wc</span> -l <span class="va">${list}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="va">x=</span>1</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$wc</span><span class="bu"> ]</span> </a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="kw">do</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p </span><span class="va">${list}</span><span class="st">&quot;</span> </a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">        <span class="va">str=$($string)</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1, $2, $3}&#39;</span><span class="va">)</span>   </a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">        <span class="va">c1=$1</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">        <span class="va">c2=$2</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">        <span class="va">c3=$3</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">        <span class="fu">sh</span> run_BestRadSplit.sh <span class="va">$c1</span> <span class="va">$c2</span> <span class="va">$c3</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21">        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="kw">done</span></a></code></pre></div>
 </div>
 <div id="run_bestradsplit.sh" class="section level4">
 <h4><code>run_BestRadSplit.sh</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
-
-<span class="va">f1=$1</span>
-<span class="va">f2=$2</span>
-<span class="va">out=$3</span>
-
-<span class="fu">perl</span> BarcodeSplitListBestRadPairedEnd.pl <span class="va">$f1</span> <span class="va">$f2</span> GGACAAGCTATGCAGG,GGAAACATCGTGCAGG,GGACATTGGCTGCAGG,GGACCACTGTTGCAGG,GGAACGTGATTGCAGG,GGCGCTGATCTGCAGG,GGCAGATCTGTGCAGG,GGATGCCTAATGCAGG,GGAACGAACGTGCAGG,GGAGTACAAGTGCAGG,GGCATCAAGTTGCAGG,GGAGTGGTCATGCAGG,GGAACAACCATGCAGG,GGAACCGAGATGCAGG,GGAACGCTTATGCAGG,GGAAGACGGATGCAGG,GGAAGGTACATGCAGG,GGACACAGAATGCAGG,GGACAGCAGATGCAGG,GGACCTCCAATGCAGG,GGACGCTCGATGCAGG,GGACGTATCATGCAGG,GGACTATGCATGCAGG,GGAGAGTCAATGCAGG,GGAGATCGCATGCAGG,GGAGCAGGAATGCAGG,GGAGTCACTATGCAGG,GGATCCTGTATGCAGG,GGATTGAGGATGCAGG,GGCAACCACATGCAGG,GGCAAGACTATGCAGG,GGCAATGGAATGCAGG,GGCACTTCGATGCAGG,GGCAGCGTTATGCAGG,GGCATACCAATGCAGG,GGCCAGTTCATGCAGG,GGCCGAAGTATGCAGG,GGCCGTGAGATGCAGG,GGCCTCCTGATGCAGG,GGCGAACTTATGCAGG,GGCGACTGGATGCAGG,GGCGCATACATGCAGG,GGCTCAATGATGCAGG,GGCTGAGCCATGCAGG,GGCTGGCATATGCAGG,GGGAATCTGATGCAGG,GGGACTAGTATGCAGG,GGGAGCTGAATGCAGG,GGGATAGACATGCAGG,GGGCCACATATGCAGG,GGGCGAGTAATGCAGG,GGGCTAACGATGCAGG,GGGCTCGGTATGCAGG,GGGGAGAACATGCAGG,GGGGTGCGAATGCAGG,GGGTACGCAATGCAGG,GGGTCGTAGATGCAGG,GGGTCTGTCATGCAGG,GGGTGTTCTATGCAGG,GGTAGGATGATGCAGG,GGTATCAGCATGCAGG,GGTCCGTCTATGCAGG,GGTCTTCACATGCAGG,GGTGAAGAGATGCAGG,GGTGGAACAATGCAGG,GGTGGCTTCATGCAGG,GGTGGTGGTATGCAGG,GGTTCACGCATGCAGG,GGACACGAGATGCAGG,GGAAGAGATCTGCAGG,GGAAGGACACTGCAGG,GGAATCCGTCTGCAGG,GGAATGTTGCTGCAGG,GGACACTGACTGCAGG,GGACAGATTCTGCAGG,GGAGATGTACTGCAGG,GGAGCACCTCTGCAGG,GGAGCCATGCTGCAGG,GGAGGCTAACTGCAGG,GGATAGCGACTGCAGG,GGACGACAAGTGCAGG,GGATTGGCTCTGCAGG,GGCAAGGAGCTGCAGG,GGCACCTTACTGCAGG,GGCCATCCTCTGCAGG,GGCCGACAACTGCAGG,GGAGTCAAGCTGCAGG,GGCCTCTATCTGCAGG,GGCGACACACTGCAGG,GGCGGATTGCTGCAGG,GGCTAAGGTCTGCAGG,GGGAACAGGCTGCAGG,GGGACAGTGCTGCAGG,GGGAGTTAGCTGCAGG,GGGATGAATCTGCAGG,GGGCCAAGACTGCAGG <span class="va">$out</span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>Run script using something like:
-<ul>
-<li><code>sbatch -t 8:00:00 run_split.sh SOMM163_S1_L001_R1_001.fastq SOMM163_S1_L001_R2_001.fastq SOMM163_S1_L001_R3_001.fastq SOMM163</code></li>
-</ul></li>
-<li>If other plates with no data, or not your data, need to sort/filter. One option is to sort by size <code>du -hs *fastq | sort -hs</code>, get just the plates that have data…<em>(should see a size jump between plates w data and those without)</em>.
-<ul>
-<li>This lists all files of interest, but may need to pipe to head or tail to filter:</li>
-</ul></li>
-</ol>
-<ul>
-<li><code>du -hs *fastq | sort -hs | cut -f2</code></li>
-</ul>
-<ol start="4" style="list-style-type: decimal">
-<li>Move them to a folder of interest, here, the <code>split_out</code> folder in the <code>split</code> folder.</li>
-</ol>
-<ul>
-<li><code>du -hs *fastq | sort -hs | tail -n37 | head -n-3 | cut -f2 | sed &quot;s/^/mv /g&quot; | sed &quot;s/$/ split_out\//g&quot;</code></li>
-</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co">#!/bin/bash</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="va">f1=$1</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="va">f2=$2</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="va">out=$3</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="fu">perl</span> BarcodeSplitListBestRadPairedEnd.pl <span class="va">$f1</span> <span class="va">$f2</span> GGACAAGCTATGCAGG,GGAAACATCGTGCAGG,GGACATTGGCTGCAGG,GGACCACTGTTGCAGG,GGAACGTGATTGCAGG,GGCGCTGATCTGCAGG,GGCAGATCTGTGCAGG,GGATGCCTAATGCAGG,GGAACGAACGTGCAGG,GGAGTACAAGTGCAGG,GGCATCAAGTTGCAGG,GGAGTGGTCATGCAGG,GGAACAACCATGCAGG,GGAACCGAGATGCAGG,GGAACGCTTATGCAGG,GGAAGACGGATGCAGG,GGAAGGTACATGCAGG,GGACACAGAATGCAGG,GGACAGCAGATGCAGG,GGACCTCCAATGCAGG,GGACGCTCGATGCAGG,GGACGTATCATGCAGG,GGACTATGCATGCAGG,GGAGAGTCAATGCAGG,GGAGATCGCATGCAGG,GGAGCAGGAATGCAGG,GGAGTCACTATGCAGG,GGATCCTGTATGCAGG,GGATTGAGGATGCAGG,GGCAACCACATGCAGG,GGCAAGACTATGCAGG,GGCAATGGAATGCAGG,GGCACTTCGATGCAGG,GGCAGCGTTATGCAGG,GGCATACCAATGCAGG,GGCCAGTTCATGCAGG,GGCCGAAGTATGCAGG,GGCCGTGAGATGCAGG,GGCCTCCTGATGCAGG,GGCGAACTTATGCAGG,GGCGACTGGATGCAGG,GGCGCATACATGCAGG,GGCTCAATGATGCAGG,GGCTGAGCCATGCAGG,GGCTGGCATATGCAGG,GGGAATCTGATGCAGG,GGGACTAGTATGCAGG,GGGAGCTGAATGCAGG,GGGATAGACATGCAGG,GGGCCACATATGCAGG,GGGCGAGTAATGCAGG,GGGCTAACGATGCAGG,GGGCTCGGTATGCAGG,GGGGAGAACATGCAGG,GGGGTGCGAATGCAGG,GGGTACGCAATGCAGG,GGGTCGTAGATGCAGG,GGGTCTGTCATGCAGG,GGGTGTTCTATGCAGG,GGTAGGATGATGCAGG,GGTATCAGCATGCAGG,GGTCCGTCTATGCAGG,GGTCTTCACATGCAGG,GGTGAAGAGATGCAGG,GGTGGAACAATGCAGG,GGTGGCTTCATGCAGG,GGTGGTGGTATGCAGG,GGTTCACGCATGCAGG,GGACACGAGATGCAGG,GGAAGAGATCTGCAGG,GGAAGGACACTGCAGG,GGAATCCGTCTGCAGG,GGAATGTTGCTGCAGG,GGACACTGACTGCAGG,GGACAGATTCTGCAGG,GGAGATGTACTGCAGG,GGAGCACCTCTGCAGG,GGAGCCATGCTGCAGG,GGAGGCTAACTGCAGG,GGATAGCGACTGCAGG,GGACGACAAGTGCAGG,GGATTGGCTCTGCAGG,GGCAAGGAGCTGCAGG,GGCACCTTACTGCAGG,GGCCATCCTCTGCAGG,GGCCGACAACTGCAGG,GGAGTCAAGCTGCAGG,GGCCTCTATCTGCAGG,GGCGACACACTGCAGG,GGCGGATTGCTGCAGG,GGCTAAGGTCTGCAGG,GGGAACAGGCTGCAGG,GGGACAGTGCTGCAGG,GGGAGTTAGCTGCAGG,GGGATGAATCTGCAGG,GGGCCAAGACTGCAGG <span class="va">$out</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Make a list of the files we want to split out (need the R1/R3’s):
 <ul>
@@ -807,39 +816,39 @@ div.tocify {
 <p>If you want to add metadata to your filenames, you can do that here, but it is optional. A metadata file should contains the name of each individual, its location on the plate, etc. <em><span style="color:red"> This part can be done now or later. But be absolutely sure that your indiv names, their plate location (A1, B1, etc.), and the appropriate barcode are all in sync. For example, the barcodes might be A1 A2 A3 (Across the plate row) while your sample names are A1 B1 C1 (Down the plate column)</span></em></p>
 <div id="barcode_to_name.sh" class="section level4">
 <h4><code>Barcode_to_Name.sh</code></h4>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
-<span class="co"># use this script to remove the barcode from bamfile and replace with sample/indiv name</span>
-
-
-<span class="va">pop=$1</span> <span class="co"># this is the metadata file with well number, old label, new label, description, etc (can include header)</span>
-<span class="va">n=</span>$ <span class="kw">(</span><span class="fu">wc</span> -l <span class="va">${pop}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">)</span>
-<span class="va">x=</span>2 <span class="co"># change to 1 if no header</span>
-
-<span class="co">## another option for 3 lines above:</span>
-<span class="co">#x=1</span>
-<span class="co">#while [ $x -le 96 ] #This can be adjusted based on number of files</span>
-
-<span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">${n}</span><span class="bu"> ]</span> 
-<span class="kw">do</span>
-
-        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p file&quot;</span> <span class="co"># represents whatever metadata file contains columns of barcodes/names</span>
-        <span class="va">str=$($string)</span>
-
-        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1, $2, $3, $4, $5}&#39;</span><span class="va">)</span>   
-        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span>
-        <span class="va">c1=$1</span> <span class="co">## Well Number</span>
-        <span class="va">c2=$2</span> <span class="co">## Old Labels</span>
-        <span class="va">c3=$3</span> <span class="co">## New Labels</span>
-        <span class="va">c4=$4</span> <span class="co">## Description</span>
-        <span class="va">c5=$5</span> <span class="co">## Barcode</span>
-        
-        <span class="co"># need to fix these two lines to match your specific fastq file name and metadata cols</span>
-        <span class="fu">mv</span> SOMM065_RA_GG<span class="va">${c5}</span>TGCAGG.fastq <span class="va">${c3}</span>_RA.fastq
-        <span class="fu">mv</span> SOMM065_RB_GG<span class="va">${c5}</span>TGCAGG.fastq <span class="va">${c3}</span>_RB.fastq
-
-        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span> <span class="co"># loop to next line</span>
-
-<span class="kw">done</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">#!/bin/bash</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># use this script to remove the barcode from bamfile and replace with sample/indiv name</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="va">pop=$1</span> <span class="co"># this is the metadata file with well number, old label, new label, description, etc (can include header)</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="va">n=</span>$ <span class="kw">(</span><span class="fu">wc</span> -l <span class="va">${pop}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="kw">)</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="va">x=</span>2 <span class="co"># change to 1 if no header</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">## another option for 3 lines above:</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#x=1</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#while [ $x -le 96 ] #This can be adjusted based on number of files</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">${n}</span><span class="bu"> ]</span> </a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="kw">do</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">        <span class="va">string=</span><span class="st">&quot;sed -n </span><span class="va">${x}</span><span class="st">p file&quot;</span> <span class="co"># represents whatever metadata file contains columns of barcodes/names</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17">        <span class="va">str=$($string)</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">        <span class="va">var=$(</span><span class="bu">echo</span> <span class="va">$str</span> <span class="kw">|</span> <span class="fu">awk</span> -F<span class="st">&quot;\t&quot;</span> <span class="st">&#39;{print $1, $2, $3, $4, $5}&#39;</span><span class="va">)</span>   </a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">        <span class="kw">set</span> <span class="ex">--</span> <span class="va">$var</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">        <span class="va">c1=$1</span> <span class="co">## Well Number</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">        <span class="va">c2=$2</span> <span class="co">## Old Labels</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">        <span class="va">c3=$3</span> <span class="co">## New Labels</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">        <span class="va">c4=$4</span> <span class="co">## Description</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">        <span class="va">c5=$5</span> <span class="co">## Barcode</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">        </a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">        <span class="co"># need to fix these two lines to match your specific fastq file name and metadata cols</span></a>
+<a class="sourceLine" id="cb6-28" data-line-number="28">        <span class="fu">mv</span> SOMM065_RA_GG<span class="va">${c5}</span>TGCAGG.fastq <span class="va">${c3}</span>_RA.fastq</a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">        <span class="fu">mv</span> SOMM065_RB_GG<span class="va">${c5}</span>TGCAGG.fastq <span class="va">${c3}</span>_RB.fastq</a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31">        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span> <span class="co"># loop to next line</span></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="kw">done</span></a></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Replace barcode with name of Indiv using Metadata file and script <code>Barcode_to_Name.sh</code>
 <ul>
