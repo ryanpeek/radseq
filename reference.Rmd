@@ -8,17 +8,17 @@ If you aready of a reference genome or assembly, you can skip the *de Novo* step
 
 
  1. Build index of contigs: `bwa index final_contigs_300.fasta` OR `A_model_genome.fasta`
-    - Files will now end in `.amb`, `.ann`, etc.
+    - You will now have 5 additional files with extensions `.amb`, `.ann`, `.bwt`, `.pac`, and `.sa`
  
- 2. Using all `fastq` build a list of the fastq RA and RB files into different columns:
+ 2. Using all `fastq`, build a list of the fastq RA and RB files into different columns:
     - `ls *RA* | sed "s/\.fastq//g" > bamlistA`
     - `ls *RB* | sed "s/\.fastq//g" > bamlistB`
     - `paste bamlist? > bamlist`
- 3. Obtain the `run_align.sh` script  For example copy `cp ~millermr/common/run_align.sh ./`
+ 3. Obtain the `run_align.sh` script.  For example copy `cp ~/millermr/common/run_align.sh ./`. Alternatively, use `wget https://raw.githubusercontent.com/ryanpeek/radseq/master/scripts/run_align.sh` 
     - `sh run_align.sh bamlist final_contigs_300.fasta`
-    - It's taking all fastq files (`RA` and `RB`) and aligning to the `_300.fasta` file (or model genome file)
+    - This command takes all fastq files (`RA` and `RB`) and aligns to the `_300.fasta` file created in *de novo* assembly (or model genome file)
  
- 4. This should create your final bam files   
+ 4. This should create your final bam alignment files   
  
 #### Node Failures and Missing Bams
 
