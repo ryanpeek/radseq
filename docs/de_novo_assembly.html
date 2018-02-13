@@ -650,8 +650,8 @@ div.tocify {
 </ol>
 </div>
 </div>
-<div id="alignment" class="section level2">
-<h2>Alignment</h2>
+<div id="aligning-index-to-itself" class="section level2">
+<h2>Aligning Index to Itself</h2>
 <p>Before aligning, need to know parameters for alignment script. To count files in a dir:</p>
 <ul>
 <li><code>ls -l *.hash | wc -l</code></li>
@@ -665,7 +665,7 @@ div.tocify {
 <p>Create the novoindex index file (can run with 32G if need more memory):</p>
 <ul>
 <li><code>screen</code> See notes at start of this pipeline in case you are unfamiliar</li>
-<li><code>srun --mem=16G novoindex _.fa.idx _.fasta</code> This is what you want it called and whatever your fasta file was named</li>
+<li><code>srun -t 48:00:00 --mem=16G novoindex _.fa.idx _.fasta</code> This is what you want it called and whatever your fasta file was named</li>
 <li>Use smap to view task <code>smap -c | grep your_user_name</code></li>
 </ul>
 </div>
@@ -674,7 +674,7 @@ div.tocify {
 <p>Now align index to itself, with following:</p>
 <ul>
 <li><code>screen</code> See notes at start of this pipeline in case you are unfamiliar</li>
-<li><code>srun --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta &gt; _.novo</code></li>
+<li><code>srun -t 48:00:00 --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta &gt; _.novo</code></li>
 <li>Output is a **“_.novo“_** file</li>
 <li>Check size of file with <code>du -hs * | sort -hr</code></li>
 </ul>
@@ -686,7 +686,7 @@ div.tocify {
 <li>Now identify loci:
 <ul>
 <li><code>screen</code> See notes at start of this pipeline in case you are unfamiliar</li>
-<li><code>srun --mem=16G IdentifyLoci3.pl _.novo &gt; _IDloci.fasta</code></li>
+<li><code>srun -t 48:00:00 --mem=16G IdentifyLoci3.pl _.novo &gt; _IDloci.fasta</code></li>
 </ul></li>
 </ol>
 <p><strong>IdentifyLoci3.pl</strong></p>
@@ -898,7 +898,7 @@ div.tocify {
 <li><code>cat.sh</code></li>
 <li><code>select_loci.py</code> (<em>This must be in the PRICE directory</em>)</li>
 </ul></li>
-<li>Cat all your R1 &amp; R2 files into one file each (one R1 and one R2) and copy to PRICE:<br />
+<li>Cat all your forward and reverse, i.e., (<strong>R1</strong> &amp; <strong>R3</strong>, or <strong>RA</strong> and <strong>RB</strong> files into one file each and copy to PRICE:<br />
 <em>Depending on the size and number of seq, may be best to sbatch</em>
 <ul>
 <li><code>cat *_RA.fastq &gt; RABO_R1.fastq</code> For example RABO is the species name and its all individuals sequenced</li>

@@ -161,7 +161,7 @@ foreach $key (sort { $tags{$b} <=> $tags{$a} } keys %tags) {
     - Do for all individuals you chose
 4. May need more samples because don't have many sequences within the distribution (low coverage)
 
-## Alignment
+## Aligning Index to Itself
 
 Before aligning, need to know parameters for alignment script. To count files in a dir: 
 
@@ -176,7 +176,7 @@ Concatenate all the hash files `cat *.hash > _.fasta` where the underscore can b
 Create the novoindex index file (can run with 32G if need more memory):
 
  - `screen` See notes at start of this pipeline in case you are unfamiliar
- - `srun --mem=16G novoindex _.fa.idx _.fasta` This is what you want it called and whatever your fasta file was named
+ - `srun -t 48:00:00 --mem=16G novoindex _.fa.idx _.fasta` This is what you want it called and whatever your fasta file was named
  - Use smap to view task `smap -c | grep your_user_name`
 
 ### Align
@@ -184,7 +184,7 @@ Create the novoindex index file (can run with 32G if need more memory):
 Now align index to itself, with following:
 
  - `screen` See notes at start of this pipeline in case you are unfamiliar
- - `srun --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta > _.novo`
+ - `srun -t 48:00:00 --mem=16G novoalign -r E 48 -t 180 -d _.fa.idx -f _.fasta > _.novo`
  - Output is a **"_.novo"_** file
  - Check size of file with `du -hs * | sort -hr`
 
@@ -192,7 +192,7 @@ Now align index to itself, with following:
 
  1. Now identify loci:  
     - `screen` See notes at start of this pipeline in case you are unfamiliar
-    - `srun --mem=16G IdentifyLoci3.pl _.novo > _IDloci.fasta`
+    - `srun -t 48:00:00 --mem=16G IdentifyLoci3.pl _.novo > _IDloci.fasta`
 
 **IdentifyLoci3.pl**
 ```{bash, eval=F}
@@ -404,7 +404,7 @@ sub valid_alignments {
     - `cat.sh`
     - `select_loci.py` (*This must be in the PRICE directory*)
 
- 3. Cat all your R1 & R2 files into one file each (one R1 and one R2) and copy to PRICE:  
+ 3. Cat all your forward and reverse, i.e., (**R1** & **R3**, or **RA** and **RB** files into one file each and copy to PRICE:  
    *Depending on the size and number of seq, may be best to sbatch*
     - `cat *_RA.fastq > RABO_R1.fastq` For example RABO is the species name and its all individuals sequenced
     - `cat *_RB.fastq > RABO_R2.fastq`

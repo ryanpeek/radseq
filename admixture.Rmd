@@ -5,17 +5,19 @@ title: "Admixture"
 ## Using Admixture
 
   1. Obtain the scripts  
-    - `Beagleinput.sh`
-    - `NGSAdmixture.sh`
-    - `Multi_K_NGSadmixture.sh`
-    - `Admix_plot.R`
+      - `Beagleinput.sh`
+      - `NGSAdmixture.sh`
+      - `Multi_K_NGSadmixture.sh`
+      - `Admix_plot.R`
 
   2. Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name:
-    - `sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8`  (out can be any name you want)
+      - `sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8`  (out can be any name you want)
+      - You can add an email to your sbatch call so you know when you're job is done!:
+      - `sbatch -t 24:00:00 -p high --mail-type ALL --mail-user myemail@ucdavis.edu scripts/05a_beagleinput.sh bamlists/POPS/bamlist_mrg_RASI_all_25k_thresh angsd_output/admix_rasi_all_25k_thresh 0.9`
   
   3. To make 1 version of multiple Ks (where K can be adjusted in the script):
-    - `sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K ` OR
-    - To make multiple versions of multiple Ks: `sh Multi_K_NGSadmix.sh __  K` which makes 3 version per K but can be modified in the script
+      - `sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K ` OR
+      - To make multiple versions of multiple Ks: `sh Multi_K_NGSadmix.sh __  K` which makes 3 version per K but can be modified in the script
   
   4. The results should be various outputs `out__.qopt` where __ is a number (e.g. 2, 3, 4, 21, 22 and so on)
   

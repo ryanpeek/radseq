@@ -419,10 +419,24 @@ div.tocify {
 <div id="using-admixture" class="section level2">
 <h2>Using Admixture</h2>
 <ol style="list-style-type: decimal">
-<li><p>Obtain the scripts<br />
-- <code>Beagleinput.sh</code> - <code>NGSAdmixture.sh</code> - <code>Multi_K_NGSadmixture.sh</code> - <code>Admix_plot.R</code></p></li>
-<li><p>Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name: - <code>sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8</code> (out can be any name you want)</p></li>
-<li><p>To make 1 version of multiple Ks (where K can be adjusted in the script): - <code>sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K</code> OR - To make multiple versions of multiple Ks: <code>sh Multi_K_NGSadmix.sh __  K</code> which makes 3 version per K but can be modified in the script</p></li>
+<li>Obtain the scripts
+<ul>
+<li><code>Beagleinput.sh</code></li>
+<li><code>NGSAdmixture.sh</code></li>
+<li><code>Multi_K_NGSadmixture.sh</code></li>
+<li><code>Admix_plot.R</code></li>
+</ul></li>
+<li>Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name:
+<ul>
+<li><code>sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8</code> (out can be any name you want)</li>
+<li>You can add an email to your sbatch call so you know when you’re job is done!:</li>
+<li><code>sbatch -t 24:00:00 -p high --mail-type ALL --mail-user myemail@ucdavis.edu scripts/05a_beagleinput.sh bamlists/POPS/bamlist_mrg_RASI_all_25k_thresh angsd_output/admix_rasi_all_25k_thresh 0.9</code></li>
+</ul></li>
+<li>To make 1 version of multiple Ks (where K can be adjusted in the script):
+<ul>
+<li><code>sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K</code> OR</li>
+<li>To make multiple versions of multiple Ks: <code>sh Multi_K_NGSadmix.sh __  K</code> which makes 3 version per K but can be modified in the script</li>
+</ul></li>
 <li><p>The results should be various outputs <code>out__.qopt</code> where __ is a number (e.g. 2, 3, 4, 21, 22 and so on)</p></li>
 <li><p>You can run an R script <code>Rscript Admix_plot.R __.qopt bamlist.input K out.pdf</code> which will plot the admixture graph</p></li>
 <li><p>For Evanno <code>grep -h &quot;^best&quot; --no-group-separator NAME.log | cut -c11 - 24 &gt; FILE</code></p></li>
