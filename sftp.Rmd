@@ -19,4 +19,9 @@ To connect to the Cluster to get/put files from your local directory (your compu
     
 ## Using `scp`
 
-*To be added*
+Similarly, you can use `scp` to copy files to and from the cluster. The different here is we explicitly say where the file is and where we want to put it, vs. with `sftp` we can copy a whole series of files.
+
+The structure of `scp` is as follows: 
+
+ - `scp -P 2022 FILENAME YOURKERBEROSNAME@agri.cse.ucdavis.edu:/username/COMPLETEPATH/`
+ 

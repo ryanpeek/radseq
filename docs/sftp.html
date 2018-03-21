@@ -357,6 +357,9 @@ div.tocify {
     <li>
       <a href="FST.html">F_st</a>
     </li>
+    <li>
+      <a href="ngsCovar.html">ngsRelate</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -440,7 +443,11 @@ div.tocify {
 </div>
 <div id="using-scp" class="section level2">
 <h2>Using <code>scp</code></h2>
-<p><em>To be added</em></p>
+<p>Similarly, you can use <code>scp</code> to copy files to and from the cluster. The different here is we explicitly say where the file is and where we want to put it, vs. with <code>sftp</code> we can copy a whole series of files.</p>
+<p>The structure of <code>scp</code> is as follows:</p>
+<ul>
+<li><code>scp -P 2022 FILENAME YOURKERBEROSNAME@agri.cse.ucdavis.edu:/username/COMPLETEPATH/</code></li>
+</ul>
 </div>
 
 

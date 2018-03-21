@@ -1,62 +1,68 @@
 navbar:
   left:
-    - text: "Home"
-      href: index.html
-    - text: "Background"
-      icon: fa-info-circle  fa-1x
-      menu:
-        - text: "Using bash"
-          href: background_bash.html
-        - text: "Using sftp"
-          href: sftp.html
-        - text: "Additional Coding Resources"
-          href: resources.html
-    - text: "Downloading Data"
-      icon: fa-database fa-1x
-      href: downloading_illumina.html
-    - text: "Alignment"
-      icon: ion-ios-barcode-outline
-      menu:
-        - text: "de Novo Assembly"
-          href: de_novo_assembly.html
-        - text: "Reference Assembly"
-          href: reference.html
-        - text: "Merging Reads"
-          href: merging.html
-    - text: "Filtering/QC"
-      menu:
-        - text: "Subsampling"
-          href: subsampling.html 
-    - text: "PopGen Analysis"
-      menu: 
-        - text: "Tools"
-          href: popgen_tools.html
-        - text: "PCA"
-          href: pca.html
-        - text: "Admixture"
-          href: admixture.html
-        - text: "F_st"
-          href: FST.html
-    - text: "Piplelines"
-      menu:
-        - text: "Colony"
-          href: pipeline_colony.html
-    - text: "Post-Analysis"
-      menu: 
-        - text: "Uploading to NCBI"
-          href: upload_ncbi.html
+  - text: Home
+    href: index.html
+  - text: Background
+    icon: fa-info-circle  fa-1x
+    menu:
+    - text: Using bash
+      href: background_bash.html
+    - text: Using sftp
+      href: sftp.html
+    - text: Additional Coding Resources
+      href: resources.html
+  - text: Downloading Data
+    icon: fa-database fa-1x
+    href: downloading_illumina.html
+  - text: Alignment
+    icon: ion-ios-barcode-outline
+    menu:
+    - text: de Novo Assembly
+      href: de_novo_assembly.html
+    - text: Reference Assembly
+      href: reference.html
+    - text: Merging Reads
+      href: merging.html
+  - text: Filtering/QC
+    menu:
+    - text: Subsampling
+      href: subsampling.html
+  - text: PopGen Analysis
+    menu:
+    - text: Tools
+      href: popgen_tools.html
+    - text: PCA
+      href: pca.html
+    - text: Admixture
+      href: admixture.html
+    - text: F_st
+      href: FST.html
+    - text: ngsRelate
+      href: ngsCovar.html
+  - text: Piplelines
+    menu:
+    - text: Colony
+      href: pipeline_colony.html
+  - text: Post-Analysis
+    menu:
+    - text: Uploading to NCBI
+      href: upload_ncbi.html
   right:
-    - text: "Contact"
-      href: contact.html
-    - icon: fa-github fa-lg
-      href: https://github.com/ryanpeek/radseq
-output_dir: "docs"
+  - text: Contact
+    href: contact.html
+  - icon: fa-github fa-lg
+    href: https://github.com/ryanpeek/radseq
+output_dir: docs
 output:
   html_document:
     theme: sandstone
     highlight: pygments
     code_folding: hide
-    toc: true
+    toc: yes
     toc_float:
-      collapsed: false
+      collapsed: no
     css: style.css
+    lib_dir: site_libs
+    self_contained: no
+name: radseq
+

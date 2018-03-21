@@ -1,0 +1,127 @@
+---
+title: "ngsRelate"
+---
+
+<br> 
+
+## NGSRelate Steps
+
+### Step 1: Use `ANGSD`
+
+We need to generate an `angsd` file to estimate frequencies and calculate genotpe likelihoods while doing SNP calling. See the [wiki](http://www.popgen.dk/software/index.php/NgsRelate).
+
+```{bash, eval=F}
+
+#!/bin/sh
+#SBATCH -o slurm_outs/08a_ngsR_angsd-%j.out
+#SBATCH -J ngsR_angsd
+
+list=$1
+output=$2
+
+~/bin/angsd -bam $list -GL 1 -out $output -doMaf 1  -doMajorMinor 1 -SNP_pval 1e-6 -doGlf 3 -minMaf 0.05
+
+```
+
+To actually run this on the cluster, I used the following:
+
+```{bash, eval=F}
+
+sbatch -t 36:00:00 -p high scripts/08a_angsd2ngs.sh bamlists/POPS/bamlist_mrg_RASI_all_25k_thresh angsd_output/ngs_relate_rasi_all_25k_thresh
+
+```
+
+### Step 2: Extract the frequence column for `ngsRelate`
+
+Next we extract the frequency column from the allele frequency file (`.mafs.gz`) and remove the header.
+
+```{bash, eval=F}
+# in angsd_output
+zcat ngs_relate_rasi_all_25k_thresh.mafs.gz | cut -f5 | sed 1d > ngs_relate_rasi_all_25k_thresh_freq
+
+```
+
+### Step 3: `ngsRelate`
+
+Finally, we run the `NGSRelate` script (below). *I found this didn't work without `ngsRelate` **and** the `ngsRelate.cpp` file in your `~/bin` folder.*
+
+**The script:**
+```{bash ngsscript, eval=F}
+
+#!/bin/sh
+
+#SBATCH -o slurm_outs/08b_ngsRelate-%j.out
+#SBATCH -J ngsRelate
+
+input=$1
+nInd=$2
+freq=$3
+names=$4
+outfile=$5
+
+~/bin/ngsRelate -g $input -n $nInd -f $freq -z $names > ${outfile}.res
+
+```
+
+We can add an ID or names file for easier plotting/sorting of the data later. Just `sed` out the correct column from a `bamlist_clst` file (so ID's are in same order/length as data).
+
+```{bash sbatchNGS, eval=F}
+# cd to bamlist directory
+# cut -d ' ' -f 2 bamlist_mrg_RASI_all_25k_clst | sed 1d > bamlist_mrg_RASI_all_25k_IID #  to get names
+
+sbatch -t 36:00:00 -p high scripts/08b_ngsRelate.sh angsd_output/ngs_relate_rasi_all_25k_thresh.glf.gz 311 angsd_output/ngs_relate_rasi_all_25k_thresh_freq bamlists/POPS/bamlist_mrg_RASI_all_25k_IID angsd_output/ngs_relate_rasi_all_25k_thresh
+
+```
+
+##  Get the ngsRelate output
+Now that the `.res` file has finished, let's grab it and take a look.
+
+### Get the `.res`
+
+Connect via `scp` or `sftp` and get your `.res` file.
+
+### Read in `.res`
+
+Load the data in R for plotting. **`NGSrelate`** uses allele frequencies from samples and estimates IBD probabilities to infer the relationships between individuals. The output is a set of Cotterman coefficients of relatedness (`k0, k1, k2`). 
+
+```{r, loaddata, echo=F, eval=F}
+suppressPackageStartupMessages({
+  library(tidyverse)
+})
+
+# read in a res file
+res_rabo <- read_tsv(file = "data_output/angsd/ngs_relate_rabo_only_25k_thresh.res")
+
+```
+
+**Column definitions**
+
+ - **`k0:k2`** are the maximum likelihood (ML) estimates of the relatedness coefficients. $k$'s are a function of the number of loci with 0, 1 or 2 alleles from IBD or IBS (*IBS*: two alleles are functionally the same), identity by descent (*IBD*: one is physical copy of other, or both physical copies of the same ancestral allele).
+ - **`loglh`**  column is the log of the likelihood of the ML estimate
+ - **`nIter`** is the number of iterations of the maximization algorithm that was used to find the MLE
+ - **`coverage`** is fraction of non-missing sites, i.e. the fraction of sites where data was available for both individuals, and where the minor allele frequency (MAF) above the threshold (default is 0.05 but the user may specify a different threshold). Note that in some cases nIter is -1. This indicates that values on the boundary of the parameter space had a higher likelihood than the values achieved using the EM-algorithm (ML methods sometimes have trouble finding the ML estimate when it is on the boundary of the parameter space, and we therefore test the boundary values explicitly and output these if these have the highest likelihood).
+
+## Visualization
+
+### Heat Map
+
+Let's take a look at an interactive heatmap, only RABO vs. RABO:
+
+```{r heatmap_rabo, echo=F, eval=T}
+suppressPackageStartupMessages({
+  library(tidyverse);
+  library(viridis)
+})
+
+load("data/demo_rabo_res.rda")
+
+plotly::ggplotly(ggplot(data=res_rabo, aes(x=ida, y=idb, fill=k0)) + 
+  geom_tile() + 
+  scale_fill_viridis() + 
+  labs(title="Heatmap of k0: RABO only_v2", x="", y="") +
+  theme_bw(base_family = "Roboto Condensed", base_size = 7) + 
+  theme(axis.text.x = element_text(angle=90)))
+
+
+```
+
