@@ -28,6 +28,80 @@
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
 
 
 <style type="text/css">
@@ -421,30 +495,67 @@ div.tocify {
 
 <div id="using-admixture" class="section level2">
 <h2>Using Admixture</h2>
-<ol style="list-style-type: decimal">
-<li>Obtain the scripts
+<p>The following script requires a few pieces…broken down below:</p>
+<p><strong>Programs</strong></p>
 <ul>
-<li><code>Beagleinput.sh</code></li>
-<li><code>NGSAdmixture.sh</code></li>
-<li><code>Multi_K_NGSadmixture.sh</code></li>
-<li><code>Admix_plot.R</code></li>
-</ul></li>
-<li>Using your bamlist, generate a Beagle input file, with the proportion of individuals to keep and the outfile name:
+<li><code>angsd</code> installed</li>
+<li><code>NGSadmix</code> in your ~/bin (comes as part of NGStools, but may need to copy exec into bin)</li>
+</ul>
+<p><strong>Folders</strong></p>
 <ul>
-<li><code>sbatch -t 12:00:00 -p high beagleinput.sh bamlist __out__ 0.8</code> (out can be any name you want)</li>
-<li>You can add an email to your sbatch call so you know when you’re job is done!:</li>
-<li><code>sbatch -t 24:00:00 -p high --mail-type ALL --mail-user myemail@ucdavis.edu scripts/05a_beagleinput.sh bamlists/POPS/bamlist_mrg_RASI_all_25k_thresh angsd_output/admix_rasi_all_25k_thresh 0.9</code></li>
-</ul></li>
-<li>To make 1 version of multiple Ks (where K can be adjusted in the script):
+<li>I use a <code>out_slurms</code> folder to catch the slurm output</li>
+<li>The script can/will create <code>results_admix</code> folder</li>
+<li>assumes my bamlist lives in a <code>bamlists</code> folder</li>
+</ul>
+<p><strong>Files</strong></p>
 <ul>
-<li><code>sbatch -t 24:00:00 -p high NGS_admixture.sh ___.beagle.gz admix_out K</code> OR</li>
-<li>To make multiple versions of multiple Ks: <code>sh Multi_K_NGSadmix.sh __  K</code> which makes 3 version per K but can be modified in the script</li>
-</ul></li>
-<li><p>The results should be various outputs <code>out__.qopt</code> where __ is a number (e.g. 2, 3, 4, 21, 22 and so on)</p></li>
-<li><p>You can run an R script <code>Rscript Admix_plot.R __.qopt bamlist.input K out.pdf</code> which will plot the admixture graph</p></li>
-<li><p>For Evanno <code>grep -h &quot;^best&quot; --no-group-separator NAME.log | cut -c11 - 24 &gt; FILE</code></p></li>
-<li><p>An easier method may be to put all <code>___.qopt</code> files on your local computer and use the simple online gui to make all of your admixture graphs (see <a href="http://pophelper.com/">pophelper</a>)</p></li>
-</ol>
+<li>a bamlist of with all samples you are interested in assessing admixture</li>
+</ul>
+<p><br></p>
+<div id="the-script" class="section level3">
+<h3>The Script</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#!/bin/bash -l</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#SBATCH -o out_slurms/04_get_admix-%j.out</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#SBATCH -J get_admix</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="fu">mkdir</span> results_admix <span class="co"># optional or comment if already have folder</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="va">pop=$1</span> <span class="al">###</span><span class="co"> bamlist ##</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="va">n1=$2</span> <span class="al">###</span><span class="co"> k number </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="va">ref=</span>final_contigs_300.fasta <span class="al">###</span><span class="co"> de novo alignment/reference</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="va">nInd=$(</span><span class="fu">wc</span> -l bamlists/<span class="va">${pop}</span>_25k_thresh.bamlist <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="va">n=$(($nInd</span>/2<span class="va">))</span> <span class="co"># can change </span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="va">mInd=${n%</span>.*<span class="va">}</span> <span class="co"># also can modify</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">### Beagle output genotype file ####</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">        <span class="ex">angsd</span> -bam bamlists/<span class="va">${pop}</span>_25k_thresh.bamlist -out results_admix/<span class="va">${pop}</span>_glh -ref <span class="va">$ref</span> -sites bait_lengths.txt -GL 2 -doMajorMinor 1 -doMaf 2 -doPost 2 -doGLF 2 -minMapQ 10 -minQ 20 -minInd <span class="va">$mInd</span> -SNP_pval 1e-6 -minMaf 0.05</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">### Unzip files </span><span class="al">###</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">        <span class="fu">gunzip</span> results_admix/*<span class="va">${pop}</span>_glh*.gz</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">### Calculate Admixture for Plot </span><span class="al">###</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="va">x=</span>2</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="kw">while</span><span class="bu"> [</span> <span class="va">$x</span> <span class="ot">-le</span> <span class="va">$n1</span><span class="bu"> ]</span> </a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="kw">do</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">        <span class="ex">~/bin/NGSadmix</span> -likes results_admix/<span class="va">${pop}</span>_glh.beagle -K <span class="va">$x</span> -o results_admix/<span class="va">${pop}</span>_admix<span class="va">${x}</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">        <span class="va">x=$((</span> <span class="va">$x</span> + 1 <span class="va">))</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="kw">done</span></a></code></pre></div>
+<p><br></p>
+</div>
+<div id="the-output-.opt-file" class="section level3">
+<h3>The Output (<code>.opt</code> file)</h3>
+<p>You should end up with a file that ends in <code>admix</code><strong>X</strong><code>.qopt</code>, where <strong>X</strong> is the k-groups you chose. This file can be plotted a number of ways.</p>
+<ul>
+<li>Use Rscripts to plot (see:)</li>
+<li>Try the online <a href="http://pophelper.com/">pophelper</a> to make admixture graphs</li>
+</ul>
+</div>
 </div>
 
 
