@@ -4,25 +4,28 @@ title: "PCA"
 
 ## Principal Component Analysis
 
-PCA is a great way to explore your sequencing data, assess structure, patterns, or discover plate inversions. Yay.
+PCA is a great way to explore your sequencing data, assess structure, patterns, or discover plate inversions. Yay. Generally it reduces the dimensionality of data and provides a way to view that data along two axes.
 
-The newest `angsd` version (**0.918+**) provides a way to do PCA without subsampling your data. The basic angsd call for this is as follows:
+### IBS PCA
+
+The newest `angsd` version (**0.918+**) provides a way to do PCA without subsampling your data. This creates a covariance matrix bt sampling a single read at each polymorphic site. The basic angsd call for this is as follows:
 
 ```{bash, eval=F, echo=T}
 ~/bin/angsd -bam ${bamlist} -out ${out}.PCAMDS1 -doIBS 1 -doCounts 1 -doMajorMinor 1 -minFreq 0.05 -maxMis ${nind} -minMapQ 30 -minQ 20 -SNP_pval 0.000001 -makeMatrix 1 -doCov 1 -GL 1 -doMaf 2 -doPost 2 -nThreads 16
 
 ```
 
-If you have already run the subsampling script, you could `ls` all bamfiles that have a certain threshold (say 100k), and then `sed` out the 100k component, so you end up with the original bam file name, but only bams that have read counts 100k or greater. Use this bamlist in the `angsd` call, and everything else should work.  
+**Notes**: 
 
-### The `subsample` PCA pipeline
+ - when running with `doIBS` give extra time/memory. This method can take a long time because it uses all sites in the data.
+ - if you've already run the subsample script, one option is to `ls` all bamfiles that have a certain subsampling threshold (say 100k), and then `sed` out the 100k part of the filename, so you match the the original bam file name, but only keep bams that have read counts 100k or greater. This is a good way to use all the data, but only for samples that have great than a certain number of reads.
+ - The post-processing scripts for plotting should be largely the same.
 
-**This is a general way to generate a principal component analysis from your subsampled bam files**
+### `ngsCovar` PCA with subsampling
 
-1. Obtain and copy scripts:   `pca_calc.sh` and `plotPCA_2.R` and `pca_plot.sh`
+This method uses the other genotype calling option and `ngsCovar`.
 
-2. Run `pca_calc.sh`
-    - `sbatch pca_calc.sh subbamlist out` (out is whatever you want filename)
+ > **PCA_CALC.sh**:
 
 ```{bash pca_calc, eval=F}
 
@@ -56,16 +59,15 @@ date
 ```
 
 
-3. Make a clst file for plotting: `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`
+To plot, you'll need to assign IDs using a `clst` file. I use the following steps (assuming we are using the `100k` subsampled bamlist):
 
-4. VIM (or other text editor) out.clst and insert a header **`FID IID CLUSTER`**:
+ 1. Use `sed` to create a clst file of the samples/bamnames (i.e., `sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist > out.clst`)
+ 2. VIM (or other text editor) to edit the `out.clst` and insert a header **`FID IID CLUSTER`**:
     - (IID changes symbol; CLUSTER changes color)
     - Feel free to modify this file according to symbol or color as you see fit for the final PCA plot
-  
-5. `sh pca_plot.sh`  This should create 3 pdfs (but can be modified by modifying the script)
+ 3. Use `pca_plot.sh` to create 3 pdfs (pc1 vs pc2, pc1 v pc3, pc2 vs. pc3). It can be modified.
 
-The shell script for the PCA plot is here:
-
+**PCA_PLOT**
 ```{bash pca_plot_sh, eval=F}
 
 #!/bin/bash -l
@@ -93,7 +95,7 @@ date
 
 ```
 
-And the R script for the PCA plot is here:
+**Rscript** to Plot PCA
 
 ```{r pca_plot_R, eval=F}
 
@@ -142,10 +144,10 @@ cat(signif(eig$val, digits=3)*100,"\n");
 # Plot
 PC <- as.data.frame(eig$vectors)
 colnames(PC) <- gsub("V", "PC", colnames(PC))
-PC$River <- factor(strtrim(annot$FID,5))
+PC$River <- factor(strtrim(annot$FID,5)) # adjust/add a column of interest here from metadata
 PC$Pop <- factor(annot$CLUSTER)
 PC$ID <- factor(annot$IID)
-PC$IDname <- factor(stringr::str_extract(annot$FID, pattern = "(?<=_)([A-Z]{2})"))
+PC$IDname <- factor(stringr::str_extract(annot$FID, pattern = "(?<=_)([A-Z]{2})")) # change to match your naming convention
 
 # Write PC components
 
