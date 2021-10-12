@@ -1,64 +1,91 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
 
 <title>PCA</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
-<script src="site_libs/htmlwidgets-1.2/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.7.1/plotly.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="site_libs/plotlyjs-1.29.2/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="site_libs/plotlyjs-1.29.2/plotly-latest.min.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 <link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
-
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -67,9 +94,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -100,49 +127,45 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-div.sourceCode {
-  overflow-x: visible;
+
+.sourceCode .row {
+  width: 100%;
+}
+.sourceCode {
+  overflow-x: auto;
+}
+.code-folding-btn {
+  margin-right: -30px;
 }
 </style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
   }
-</style>
+})();
+</script>
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -150,58 +173,68 @@ h6 {
   margin-left: auto;
   margin-right: auto;
 }
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
 }
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 61px;
-  padding-bottom: 40px;
+.dropdown-submenu {
+  position: relative;
 }
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
 }
-
-.section h2 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
 }
-.section h3 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
-.section h4 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
 }
-.section h5 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu.pull-left {
+  float: none;
 }
-.section h6 {
-  padding-top: 66px;
-  margin-top: -66px;
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -212,62 +245,88 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
-
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
-});
-</script>
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -281,6 +340,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -316,8 +381,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -333,8 +396,18 @@ div.tocify {
 
 </style>
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -483,11 +556,11 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
-<div class="btn-group pull-right">
-<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
-<ul class="dropdown-menu" style="min-width: 50px;">
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
 </ul>
@@ -506,7 +579,7 @@ div.tocify {
 <div id="ibs-pca" class="section level3">
 <h3>IBS PCA</h3>
 <p>The newest <code>angsd</code> version (<strong>0.918+</strong>) provides a way to do PCA without subsampling your data. This creates a covariance matrix bt sampling a single read at each polymorphic site. The basic angsd call for this is as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">~/bin/angsd</span> -bam <span class="va">${bamlist}</span> -out <span class="va">${out}</span>.PCAMDS1 -doIBS 1 -doCounts 1 -doMajorMinor 1 -minFreq 0.05 -maxMis <span class="va">${nind}</span> -minMapQ 30 -minQ 20 -SNP_pval 0.000001 -makeMatrix 1 -doCov 1 -GL 1 -doMaf 2 -doPost 2 -nThreads 16</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/bin/angsd</span> <span class="at">-bam</span> <span class="va">${bamlist}</span> <span class="at">-out</span> <span class="va">${out}</span>.PCAMDS1 <span class="at">-doIBS</span> 1 <span class="at">-doCounts</span> 1 <span class="at">-doMajorMinor</span> 1 <span class="at">-minFreq</span> 0.05 <span class="at">-maxMis</span> <span class="va">${nind}</span> <span class="at">-minMapQ</span> 30 <span class="at">-minQ</span> 20 <span class="at">-SNP_pval</span> 0.000001 <span class="at">-makeMatrix</span> 1 <span class="at">-doCov</span> 1 <span class="at">-GL</span> 1 <span class="at">-doMaf</span> 2 <span class="at">-doPost</span> 2 <span class="at">-nThreads</span> 16</span></code></pre></div>
 <p><strong>Notes</strong>:</p>
 <ul>
 <li>when running with <code>doIBS</code> give extra time/memory. This method can take a long time because it uses all sites in the data.</li>
@@ -520,33 +593,33 @@ div.tocify {
 <blockquote>
 <p><strong>PCA_CALC.sh</strong>:</p>
 </blockquote>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#!/bin/bash -l</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#SBATCH -o slurm_outs/03_pca_calc-%j.out</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#SBATCH -J pca_calc_sites</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="bu">echo</span> <span class="st">&quot;Starting Job: &quot;</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="fu">date</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="va">bamlist=$1</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="va">out=$2</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="va">bamdir=$3</span> </a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="va">nInd=$(</span><span class="fu">wc</span> <span class="va">${bamdir}</span>/<span class="va">${bamlist}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="va">minInd=</span>$[<span class="va">$nInd</span>/<span class="ex">2</span>]</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="va">outdir=</span><span class="st">&#39;angsd_output&#39;</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="ex">angsd</span> -bam <span class="va">${bamdir}</span>/<span class="va">${bamlist}</span> -out <span class="va">${outdir}</span>/<span class="va">${out}</span> -minQ 20 -minMapQ 10 -minInd <span class="va">$minInd</span> -GL 1 -doMajorMinor 1 -doMaf 2 -doPost 2 -doGeno 32 -minMaf 0.05 -postCutoff 0.95 -SNP_pval 1e-6 -sites bait_lengths.txt</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="fu">gunzip</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>.*.gz</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="va">count=$(</span><span class="fu">sed</span> 1d <span class="va">${outdir}</span>/<span class="va">${out}</span>.mafs <span class="kw">|</span> <span class="fu">wc</span> -l <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="ex">ngsCovar</span> -probfile <span class="va">${outdir}</span>/<span class="va">${out}</span>.geno -outfile <span class="va">${outdir}</span>/<span class="va">${out}</span>.covar -nind <span class="va">$nInd</span> -nsites <span class="va">$count</span> -call 1</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="bu">echo</span> <span class="st">&quot;Ending Job: &quot;</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="fu">date</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -o slurm_outs/03_pca_calc-%j.out</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -J pca_calc_sites</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Starting Job: &quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">bamlist</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="va">bamdir</span><span class="op">=</span><span class="va">$3</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="va">nInd</span><span class="op">=</span><span class="va">$(</span><span class="fu">wc</span> <span class="va">${bamdir}</span>/<span class="va">${bamlist}</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="va">minInd</span><span class="op">=</span>$[<span class="va">$nInd</span>/2]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="st">&#39;angsd_output&#39;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">angsd</span> <span class="at">-bam</span> <span class="va">${bamdir}</span>/<span class="va">${bamlist}</span> <span class="at">-out</span> <span class="va">${outdir}</span>/<span class="va">${out}</span> <span class="at">-minQ</span> 20 <span class="at">-minMapQ</span> 10 <span class="at">-minInd</span> <span class="va">$minInd</span> <span class="at">-GL</span> 1 <span class="at">-doMajorMinor</span> 1 <span class="at">-doMaf</span> 2 <span class="at">-doPost</span> 2 <span class="at">-doGeno</span> 32 <span class="at">-minMaf</span> 0.05 <span class="at">-postCutoff</span> 0.95 <span class="at">-SNP_pval</span> 1e-6 <span class="at">-sites</span> bait_lengths.txt</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">gunzip</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>.<span class="pp">*</span>.gz</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="va">count</span><span class="op">=</span><span class="va">$(</span><span class="fu">sed</span> 1d <span class="va">${outdir}</span>/<span class="va">${out}</span>.mafs <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{print $1}&#39;</span><span class="va">)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ex">ngsCovar</span> <span class="at">-probfile</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>.geno <span class="at">-outfile</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>.covar <span class="at">-nind</span> <span class="va">$nInd</span> <span class="at">-nsites</span> <span class="va">$count</span> <span class="at">-call</span> 1</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Ending Job: &quot;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
 <p>To plot, you’ll need to assign IDs using a <code>clst</code> file. I use the following steps (assuming we are using the <code>100k</code> subsampled bamlist):</p>
 <ol style="list-style-type: decimal">
 <li>Use <code>sed</code> to create a clst file of the samples/bamnames (i.e., <code>sed 's/_RA\.sort\.flt_100000\.bam/ 1 1/g' subbamlist &gt; out.clst</code>)</li>
@@ -558,155 +631,155 @@ div.tocify {
 <li>Use <code>pca_plot.sh</code> to create 3 pdfs (pc1 vs pc2, pc1 v pc3, pc2 vs. pc3). It can be modified.</li>
 </ol>
 <p><strong>PCA_PLOT</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#!/bin/bash -l</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#SBATCH -o slurm_outs/04_pca_pdf-%j.out</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#OUTDIR=pca_pdfs</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#SBATCH -J PCA_plots</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="bu">echo</span> <span class="st">&quot;Starting Job: &quot;</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="fu">date</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="va">out=$1</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="va">bamclst=$2</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="va">outdir=</span><span class="st">&#39;pca_pdfs&#39;</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="va">homedir=</span><span class="st">&#39;/home/fastq&#39;</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="ex">Rscript</span> --vanilla --slave  <span class="va">${homedir}</span>/pca_makeplot.R -i ./angsd_output/<span class="va">${out}</span>.covar -c 1-2 -a <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> -o <span class="va">${outdir}</span>/<span class="va">${out}</span>_12_pca.pdf</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="ex">Rscript</span> --vanilla --slave <span class="va">${homedir}</span>/pca_makeplot.R -i ./angsd_output/<span class="va">${out}</span>.covar -c 1-3 -a <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> -o <span class="va">${outdir}</span>/<span class="va">${out}</span>_13_pca.pdf</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="ex">Rscript</span> --vanilla --slave <span class="va">${homedir}</span>/pca_makeplot.R -i ./angsd_output/<span class="va">${out}</span>.covar -c 2-3 -a <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> -o <span class="va">${outdir}</span>/<span class="va">${out}</span>_23_pca.pdf</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="bu">echo</span> <span class="st">&quot;Ending Job: &quot;</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="fu">date</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash -l</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -o slurm_outs/04_pca_pdf-%j.out</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#OUTDIR=pca_pdfs</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH -J PCA_plots</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Starting Job: &quot;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">out</span><span class="op">=</span><span class="va">$1</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="va">bamclst</span><span class="op">=</span><span class="va">$2</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">outdir</span><span class="op">=</span><span class="st">&#39;pca_pdfs&#39;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="va">homedir</span><span class="op">=</span><span class="st">&#39;/home/fastq&#39;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">--vanilla</span> <span class="at">--slave</span>  <span class="va">${homedir}</span>/pca_makeplot.R <span class="at">-i</span> ./angsd_output/<span class="va">${out}</span>.covar <span class="at">-c</span> 1-2 <span class="at">-a</span> <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> <span class="at">-o</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>_12_pca.pdf</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">--vanilla</span> <span class="at">--slave</span> <span class="va">${homedir}</span>/pca_makeplot.R <span class="at">-i</span> ./angsd_output/<span class="va">${out}</span>.covar <span class="at">-c</span> 1-3 <span class="at">-a</span> <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> <span class="at">-o</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>_13_pca.pdf</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">--vanilla</span> <span class="at">--slave</span> <span class="va">${homedir}</span>/pca_makeplot.R <span class="at">-i</span> ./angsd_output/<span class="va">${out}</span>.covar <span class="at">-c</span> 2-3 <span class="at">-a</span> <span class="va">${homedir}</span>/<span class="va">${bamclst}</span> <span class="at">-o</span> <span class="va">${outdir}</span>/<span class="va">${out}</span>_23_pca.pdf</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Ending Job: &quot;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div>
 <p><strong>Rscript</strong> to Plot PCA</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#!/usr/bin/Rscript</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># Usage: Rscript -i infile.covar -c component1-component2 -a annotation.file -o outfile.eps</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#.libPaths(&quot;~/R/x86_64-pc-linux-gnu-library/3.2&quot;)</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw">library</span>(optparse)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">library</span>(stringi)</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="kw">library</span>(viridis)</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#if(!require(viridis)) { </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#  install.packages(&quot;viridis&quot;); require(viridis)} #load / install+load installr</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">option_list &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">make_option</span>(<span class="kw">c</span>(<span class="st">&#39;-i&#39;</span>,<span class="st">&#39;--in_file&#39;</span>), <span class="dt">action=</span><span class="st">&#39;store&#39;</span>, <span class="dt">type=</span><span class="st">&#39;character&#39;</span>, <span class="dt">default=</span><span class="ot">NULL</span>, <span class="dt">help=</span><span class="st">&#39;Input file (output from ngsCovar)&#39;</span>),</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">                    <span class="kw">make_option</span>(<span class="kw">c</span>(<span class="st">&#39;-c&#39;</span>,<span class="st">&#39;--comp&#39;</span>), <span class="dt">action=</span><span class="st">&#39;store&#39;</span>, <span class="dt">type=</span><span class="st">&#39;character&#39;</span>, <span class="dt">default=</span><span class="dv">1-2</span>, <span class="dt">help=</span><span class="st">&#39;Components to plot&#39;</span>),</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">                    <span class="kw">make_option</span>(<span class="kw">c</span>(<span class="st">&#39;-a&#39;</span>,<span class="st">&#39;--annot_file&#39;</span>), <span class="dt">action=</span><span class="st">&#39;store&#39;</span>, <span class="dt">type=</span><span class="st">&#39;character&#39;</span>, <span class="dt">default=</span><span class="ot">NULL</span>, <span class="dt">help=</span><span class="st">&#39;Annotation file with individual classification (2 column TSV with ID and ANNOTATION)&#39;</span>),</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">                    <span class="kw">make_option</span>(<span class="kw">c</span>(<span class="st">&#39;-o&#39;</span>,<span class="st">&#39;--out_file&#39;</span>), <span class="dt">action=</span><span class="st">&#39;store&#39;</span>, <span class="dt">type=</span><span class="st">&#39;character&#39;</span>, <span class="dt">default=</span><span class="ot">NULL</span>, <span class="dt">help=</span><span class="st">&#39;Output file&#39;</span>)</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">                    )</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">opt &lt;-<span class="st"> </span><span class="kw">parse_args</span>(<span class="kw">OptionParser</span>(<span class="dt">option_list =</span> option_list))</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co"># Annotation file is in plink cluster format</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">#################################################################################</a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># Read input file</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">covar &lt;-<span class="st"> </span><span class="kw">read.table</span>(opt<span class="op">$</span>in_file, <span class="dt">stringsAsFact=</span>F);</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co"># Read annot file</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">annot &lt;-<span class="st"> </span><span class="kw">read.table</span>(opt<span class="op">$</span>annot_file, <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">header=</span>T); <span class="co"># note that plink cluster files are usually tab-separated instead</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co"># Parse components to analyze</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">comp &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">strsplit</span>(opt<span class="op">$</span>comp, <span class="st">&quot;-&quot;</span>, <span class="dt">fixed=</span><span class="ot">TRUE</span>)[[<span class="dv">1</span>]])</a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co"># Eigenvalues</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">eig &lt;-<span class="st"> </span><span class="kw">eigen</span>(covar, <span class="dt">symm=</span><span class="ot">TRUE</span>);</a>
-<a class="sourceLine" id="cb4-36" data-line-number="36">eig<span class="op">$</span>val &lt;-<span class="st"> </span>eig<span class="op">$</span>val<span class="op">/</span><span class="kw">sum</span>(eig<span class="op">$</span>val);</a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="kw">cat</span>(<span class="kw">signif</span>(eig<span class="op">$</span>val, <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>);</a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co"># Write eigenvalues</span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#write.table(eig, file = &quot;eigen_scores.txt&quot;, quote = FALSE)</span></a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co"># Plot</span></a>
-<a class="sourceLine" id="cb4-44" data-line-number="44">PC &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(eig<span class="op">$</span>vectors)</a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="kw">colnames</span>(PC) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="kw">colnames</span>(PC))</a>
-<a class="sourceLine" id="cb4-46" data-line-number="46">PC<span class="op">$</span>River &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">strtrim</span>(annot<span class="op">$</span>FID,<span class="dv">5</span>)) <span class="co"># adjust/add a column of interest here from metadata</span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47">PC<span class="op">$</span>Pop &lt;-<span class="st"> </span><span class="kw">factor</span>(annot<span class="op">$</span>CLUSTER)</a>
-<a class="sourceLine" id="cb4-48" data-line-number="48">PC<span class="op">$</span>ID &lt;-<span class="st"> </span><span class="kw">factor</span>(annot<span class="op">$</span>IID)</a>
-<a class="sourceLine" id="cb4-49" data-line-number="49">PC<span class="op">$</span>IDname &lt;-<span class="st"> </span><span class="kw">factor</span>(stringr<span class="op">::</span><span class="kw">str_extract</span>(annot<span class="op">$</span>FID, <span class="dt">pattern =</span> <span class="st">&quot;(?&lt;=_)([A-Z]{2})&quot;</span>)) <span class="co"># change to match your naming convention</span></a>
-<a class="sourceLine" id="cb4-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co"># Write PC components</span></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52"></a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="co">#write.table(PC, file = &quot;PC_scores.txt&quot;, quote = FALSE)</span></a>
-<a class="sourceLine" id="cb4-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb4-55" data-line-number="55">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">1</span>],<span class="st">&quot; (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[comp[<span class="dv">1</span>]], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC&quot;</span>,comp[<span class="dv">2</span>],<span class="st">&quot; (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[comp[<span class="dv">2</span>]], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"></a>
-<a class="sourceLine" id="cb4-57" data-line-number="57">x_axis =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">1</span>],<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb4-58" data-line-number="58">y_axis =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">2</span>],<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb4-59" data-line-number="59"></a>
-<a class="sourceLine" id="cb4-60" data-line-number="60"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">data=</span>PC, <span class="kw">aes_string</span>(<span class="dt">x=</span>x_axis, <span class="dt">y=</span>y_axis, <span class="dt">color=</span><span class="st">&quot;IDname&quot;</span>, <span class="dt">shape=</span><span class="st">&quot;River&quot;</span>), <span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="st">        </span><span class="kw">geom_text</span>(<span class="dt">data=</span>PC, <span class="kw">aes_string</span>(<span class="dt">x=</span>x_axis, <span class="dt">y=</span>y_axis, <span class="dt">label=</span><span class="st">&quot;IDname&quot;</span>, <span class="dt">vjust=</span> <span class="fl">-0.784</span>), <span class="dt">check_overlap=</span><span class="ot">TRUE</span>, <span class="dt">cex=</span><span class="fl">2.5</span>, <span class="dt">hjust=</span><span class="op">-</span><span class="fl">0.3</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="st">        </span><span class="kw">ggtitle</span>(title) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span><span class="kw">scale_color_viridis</span>(<span class="dt">discrete=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="kw">ggsave</span>(opt<span class="op">$</span>out_file)</a>
-<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="kw">unlink</span>(<span class="st">&quot;Rplots.pdf&quot;</span>, <span class="dt">force=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/Rscript</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage: Rscript -i infile.covar -c component1-component2 -a annotation.file -o outfile.eps</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#.libPaths(&quot;~/R/x86_64-pc-linux-gnu-library/3.2&quot;)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(optparse)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#if(!require(viridis)) { </span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  install.packages(&quot;viridis&quot;); require(viridis)} #load / install+load installr</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>option_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">make_option</span>(<span class="fu">c</span>(<span class="st">&#39;-i&#39;</span>,<span class="st">&#39;--in_file&#39;</span>), <span class="at">action=</span><span class="st">&#39;store&#39;</span>, <span class="at">type=</span><span class="st">&#39;character&#39;</span>, <span class="at">default=</span><span class="cn">NULL</span>, <span class="at">help=</span><span class="st">&#39;Input file (output from ngsCovar)&#39;</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">make_option</span>(<span class="fu">c</span>(<span class="st">&#39;-c&#39;</span>,<span class="st">&#39;--comp&#39;</span>), <span class="at">action=</span><span class="st">&#39;store&#39;</span>, <span class="at">type=</span><span class="st">&#39;character&#39;</span>, <span class="at">default=</span><span class="dv">1-2</span>, <span class="at">help=</span><span class="st">&#39;Components to plot&#39;</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">make_option</span>(<span class="fu">c</span>(<span class="st">&#39;-a&#39;</span>,<span class="st">&#39;--annot_file&#39;</span>), <span class="at">action=</span><span class="st">&#39;store&#39;</span>, <span class="at">type=</span><span class="st">&#39;character&#39;</span>, <span class="at">default=</span><span class="cn">NULL</span>, <span class="at">help=</span><span class="st">&#39;Annotation file with individual classification (2 column TSV with ID and ANNOTATION)&#39;</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">make_option</span>(<span class="fu">c</span>(<span class="st">&#39;-o&#39;</span>,<span class="st">&#39;--out_file&#39;</span>), <span class="at">action=</span><span class="st">&#39;store&#39;</span>, <span class="at">type=</span><span class="st">&#39;character&#39;</span>, <span class="at">default=</span><span class="cn">NULL</span>, <span class="at">help=</span><span class="st">&#39;Output file&#39;</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                    )</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>opt <span class="ot">&lt;-</span> <span class="fu">parse_args</span>(<span class="fu">OptionParser</span>(<span class="at">option_list =</span> option_list))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotation file is in plink cluster format</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="do">#################################################################################</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Read input file</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">read.table</span>(opt<span class="sc">$</span>in_file, <span class="at">stringsAsFact=</span>F);</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Read annot file</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>annot <span class="ot">&lt;-</span> <span class="fu">read.table</span>(opt<span class="sc">$</span>annot_file, <span class="at">sep=</span><span class="st">&quot; &quot;</span>, <span class="at">header=</span>T); <span class="co"># note that plink cluster files are usually tab-separated instead</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse components to analyze</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>comp <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">strsplit</span>(opt<span class="sc">$</span>comp, <span class="st">&quot;-&quot;</span>, <span class="at">fixed=</span><span class="cn">TRUE</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Eigenvalues</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>eig <span class="ot">&lt;-</span> <span class="fu">eigen</span>(covar, <span class="at">symm=</span><span class="cn">TRUE</span>);</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>eig<span class="sc">$</span>val <span class="ot">&lt;-</span> eig<span class="sc">$</span>val<span class="sc">/</span><span class="fu">sum</span>(eig<span class="sc">$</span>val);</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">signif</span>(eig<span class="sc">$</span>val, <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Write eigenvalues</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">#write.table(eig, file = &quot;eigen_scores.txt&quot;, quote = FALSE)</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(eig<span class="sc">$</span>vectors)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(PC) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="fu">colnames</span>(PC))</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>River <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">strtrim</span>(annot<span class="sc">$</span>FID,<span class="dv">5</span>)) <span class="co"># adjust/add a column of interest here from metadata</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>Pop <span class="ot">&lt;-</span> <span class="fu">factor</span>(annot<span class="sc">$</span>CLUSTER)</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">factor</span>(annot<span class="sc">$</span>IID)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>IDname <span class="ot">&lt;-</span> <span class="fu">factor</span>(stringr<span class="sc">::</span><span class="fu">str_extract</span>(annot<span class="sc">$</span>FID, <span class="at">pattern =</span> <span class="st">&quot;(?&lt;=_)([A-Z]{2})&quot;</span>)) <span class="co"># change to match your naming convention</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Write PC components</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="co">#write.table(PC, file = &quot;PC_scores.txt&quot;, quote = FALSE)</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">1</span>],<span class="st">&quot; (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[comp[<span class="dv">1</span>]], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC&quot;</span>,comp[<span class="dv">2</span>],<span class="st">&quot; (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[comp[<span class="dv">2</span>]], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="at">sep=</span><span class="st">&quot;&quot;</span>,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>x_axis <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">1</span>],<span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>y_axis <span class="ot">=</span> <span class="fu">paste</span>(<span class="st">&quot;PC&quot;</span>,comp[<span class="dv">2</span>],<span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">data=</span>PC, <span class="fu">aes_string</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis, <span class="at">color=</span><span class="st">&quot;IDname&quot;</span>, <span class="at">shape=</span><span class="st">&quot;River&quot;</span>), <span class="at">size=</span><span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_text</span>(<span class="at">data=</span>PC, <span class="fu">aes_string</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis, <span class="at">label=</span><span class="st">&quot;IDname&quot;</span>, <span class="at">vjust=</span> <span class="sc">-</span><span class="fl">0.784</span>), <span class="at">check_overlap=</span><span class="cn">TRUE</span>, <span class="at">cex=</span><span class="fl">2.5</span>, <span class="at">hjust=</span><span class="sc">-</span><span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ggtitle</span>(title) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">scale_color_viridis</span>(<span class="at">discrete=</span><span class="cn">TRUE</span>)</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(opt<span class="sc">$</span>out_file)</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="fu">unlink</span>(<span class="st">&quot;Rplots.pdf&quot;</span>, <span class="at">force=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="dynamic-pca" class="section level2">
 <h2>Dynamic PCA</h2>
 <p>For data exploration, you can use the following script to make an interactive or dynamic plot, which is useful for investigating your data. You’ll need to grab the <code>.covar</code> file, and have the <code>.clst</code> file from your original call.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># LIBRARIES ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">suppressPackageStartupMessages</span>({</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="kw">library</span>(tidyverse); <span class="co"># for ggplot2 and dplyr</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="kw">library</span>(viridis); <span class="co"># for color palettes</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="kw">library</span>(plotly) <span class="co"># interactive plotting</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">})</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># READ INPUT FILES --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">covarfile&lt;-<span class="st">&quot;rabo_mfa_100k&quot;</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">clstfile&lt;-<span class="st">&quot;rabo_mfa_100k&quot;</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># read covar file</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">covar_path &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;./data/&quot;</span>,covarfile, <span class="st">&quot;.covar&quot;</span>)</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">covar &lt;-<span class="st"> </span><span class="kw">read.table</span>(covar_path, <span class="dt">stringsAsFactors =</span> F);</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co"># Read annot file</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">annot &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="kw">paste0</span>(<span class="st">&quot;data/bamlist_mrg_&quot;</span>,clstfile, <span class="st">&quot;_clst&quot;</span>),<span class="dt">stringsAsFactors =</span> F, <span class="dt">header =</span> <span class="ot">TRUE</span>); </a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># CREATE EIGEN MATRIX -----------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co"># Eigenvalues</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">eig &lt;-<span class="st"> </span><span class="kw">eigen</span>(covar, <span class="dt">symm=</span><span class="ot">TRUE</span>);</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">eig<span class="op">$</span>val &lt;-<span class="st"> </span>eig<span class="op">$</span>val<span class="op">/</span><span class="kw">sum</span>(eig<span class="op">$</span>val);</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co"># SET UP PCA -------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co"># get PC colnames and set label/col/pops</span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30">PC &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(eig<span class="op">$</span>vectors)</a>
-<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="kw">colnames</span>(PC) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="kw">colnames</span>(PC))</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">PC<span class="op">$</span>Region &lt;-<span class="st"> </span><span class="kw">factor</span>(annot<span class="op">$</span>FID)</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">PC<span class="op">$</span>Pop &lt;-<span class="st"> </span><span class="kw">factor</span>(annot<span class="op">$</span>CLUSTER)</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">PC<span class="op">$</span>ID &lt;-<span class="st"> </span><span class="kw">factor</span>(annot<span class="op">$</span>IID)</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co"># SET UP PLOTS ------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co"># set the xy vars:</span></a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">x1 =<span class="st"> &#39;PC1&#39;</span></a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">y1 =<span class="st"> &#39;PC2&#39;</span></a>
-<a class="sourceLine" id="cb5-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co"># Create the titles for each PCA</span></a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">title12 &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC1 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">1</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC2 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">2</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb5-44" data-line-number="44">title13 &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC1 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">1</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC3 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">3</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>, <span class="dt">sep=</span><span class="st">&quot;&quot;</span>,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">title23 &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;PC2 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">2</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC3 (&quot;</span>,<span class="kw">signif</span>(eig<span class="op">$</span>val[<span class="dv">3</span>], <span class="dt">digits=</span><span class="dv">3</span>)<span class="op">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>,<span class="dt">collapse=</span><span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb5-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co"># </span><span class="al">TEST</span><span class="co"> PLOTLY PLOTS ------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-48" data-line-number="48"></a>
-<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co"># 1 v 2</span></a>
-<a class="sourceLine" id="cb5-50" data-line-number="50">(p1v2 &lt;-<span class="st"> </span><span class="kw">ggplotly</span>(<span class="dt">p =</span> <span class="kw">ggplot</span>(<span class="dt">data=</span>PC, <span class="kw">aes</span>(<span class="dt">x=</span>PC1, <span class="dt">y=</span>PC2, <span class="dt">color=</span>Pop, </a>
-<a class="sourceLine" id="cb5-51" data-line-number="51">                                          <span class="dt">label=</span><span class="kw">paste</span>(Region,<span class="st">&quot;-&quot;</span>,ID))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="st">                    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">4</span>, <span class="dt">alpha=</span><span class="fl">0.8</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="st">                    </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="kw">paste0</span>(covarfile, <span class="st">&quot;: &quot;</span>,title12)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="st">                    </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-55" data-line-number="55"><span class="st">                    </span><span class="kw">scale_color_viridis</span>(<span class="dt">discrete =</span> <span class="ot">TRUE</span>, <span class="dt">option =</span> <span class="st">&quot;D&quot;</span>)))</a></code></pre></div>
-<div id="48d300e8e41" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="48d300e8e41">{"x":{"data":[{"x":[0.14504115141426,0.150497264336029,0.0719646223012949,0.102195704018144,0.0831084506827355,0.131411086441978],"y":[0.0541533464351796,0.091399076021801,0.039581800162054,0.0240363722861573,-0.00677949123128583,0.0747909712489848],"text":["~PC1:  0.14504115<br />~PC2:  0.054153346<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP631","~PC1:  0.15049726<br />~PC2:  0.091399076<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP635","~PC1:  0.07196462<br />~PC2:  0.039581800<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP622","~PC1:  0.10219570<br />~PC2:  0.024036372<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP619","~PC1:  0.08310845<br />~PC2: -0.006779491<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP624","~PC1:  0.13141109<br />~PC2:  0.074790971<br />~Pop: MFA-AMEC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP634"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(68,1,84,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(68,1,84,1)"}},"hoveron":"points","name":"MFA-AMEC","legendgroup":"MFA-AMEC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0978800273482809,0.0806516910458526,0.0912216299167885,0.102786758476786,0.0905945449291509,0.0631931381130749],"y":[-0.160617784332414,-0.169097529486233,-0.164925567059077,-0.16669636523117,-0.129222984583054,-0.146131469203348],"text":["~PC1:  0.09788003<br />~PC2: -0.160617784<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP796","~PC1:  0.08065169<br />~PC2: -0.169097529<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP793","~PC1:  0.09122163<br />~PC2: -0.164925567<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP792","~PC1:  0.10278676<br />~PC2: -0.166696365<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP791","~PC1:  0.09059454<br />~PC2: -0.129222985<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP795","~PC1:  0.06319314<br />~PC2: -0.146131469<br />~Pop: MFA-GASC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP794"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(70,51,126,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(70,51,126,1)"}},"hoveron":"points","name":"MFA-GASC","legendgroup":"MFA-GASC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0912210380412826,0.0717850882233689,0.0787470277788509,0.0993616497392642,0.0889078716301395,0.104145021926913,0.089810737828984,0.104512083297463,0.0741250957280377],"y":[-0.250889247392036,-0.265539763867277,-0.17516088294698,-0.208468348016748,-0.251581207321454,-0.222044871659963,-0.22706683111484,-0.211556713146516,-0.246130266492145],"text":["~PC1:  0.09122104<br />~PC2: -0.250889247<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - AAA822","~PC1:  0.07178509<br />~PC2: -0.265539764<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - AAA823","~PC1:  0.07874703<br />~PC2: -0.175160883<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP782","~PC1:  0.09936165<br />~PC2: -0.208468348<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP790","~PC1:  0.08890787<br />~PC2: -0.251581207<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP788","~PC1:  0.10414502<br />~PC2: -0.222044872<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP787","~PC1:  0.08981074<br />~PC2: -0.227066831<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP786","~PC1:  0.10451208<br />~PC2: -0.211556713<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP785","~PC1:  0.07412510<br />~PC2: -0.246130266<br />~Pop: MFA-TODC<br />~paste(Region, \"-\", ID): Lower Middle Fork American River - RAP789"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(54,92,141,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(54,92,141,1)"}},"hoveron":"points","name":"MFA-TODC","legendgroup":"MFA-TODC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0820447777021778],"y":[0.0371361568344799],"text":"~PC1: -0.08204478<br />~PC2:  0.037136157<br />~Pop: MFA-US-R<br />~paste(Region, \"-\", ID): Upper Middle Fork American River - RAP681","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(39,127,142,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(39,127,142,1)"}},"hoveron":"points","name":"MFA-US-R","legendgroup":"MFA-US-R","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0924678098713703,-0.0995625577495196,-0.0917310927737497,-0.0952449404946744,-0.0878621588995407,-0.0897720194374228,-0.0813497029774799,-0.0929787912715225,-0.089588180257339,-0.0880270673475764,-0.103867099594975,-0.0840769862574564,-0.0908162733607976,-0.0924214032540484,-0.0864869436539456,-0.0849569508700863,-0.0797401886518857,-0.0809672280543497],"y":[0.0233674607632504,0.0289253255799576,0.02962759442119,0.0200508795678929,0.0300859596052557,0.0252658725405613,0.0651339471648097,0.0350933441091481,0.0435767184746834,0.0128941460421609,0.0523737874522182,0.0393027785930978,0.0484388549878637,0.0311969859644067,0.0173470115013924,0.0364674400014737,0.022849508061028,0.0241191553673841],"text":["~PC1: -0.09246781<br />~PC2:  0.023367461<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP706","~PC1: -0.09956256<br />~PC2:  0.028925326<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP707","~PC1: -0.09173109<br />~PC2:  0.029627594<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP708","~PC1: -0.09524494<br />~PC2:  0.020050880<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP718","~PC1: -0.08786216<br />~PC2:  0.030085960<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP717","~PC1: -0.08977202<br />~PC2:  0.025265873<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP710","~PC1: -0.08134970<br />~PC2:  0.065133947<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP721","~PC1: -0.09297879<br />~PC2:  0.035093344<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP712","~PC1: -0.08958818<br />~PC2:  0.043576718<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP720","~PC1: -0.08802707<br />~PC2:  0.012894146<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP722","~PC1: -0.10386710<br />~PC2:  0.052373787<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP715","~PC1: -0.08407699<br />~PC2:  0.039302779<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP716","~PC1: -0.09081627<br />~PC2:  0.048438855<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP711","~PC1: -0.09242140<br />~PC2:  0.031196986<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP723","~PC1: -0.08648694<br />~PC2:  0.017347012<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP719","~PC1: -0.08495695<br />~PC2:  0.036467440<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP709","~PC1: -0.07974019<br />~PC2:  0.022849508<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP714","~PC1: -0.08096723<br />~PC2:  0.024119155<br />~Pop: NFMFA-SC<br />~paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP713"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(31,161,135,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(31,161,135,1)"}},"hoveron":"points","name":"NFMFA-SC","legendgroup":"NFMFA-SC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0741166923898024,-0.0827654983772806,-0.0895118806620026,-0.0846096095110012,-0.0946068361245097,-0.0889379935755915,-0.089714294590205,-0.0969634081472021],"y":[0.0303857808436825,0.047332730385101,0.0348656079108289,0.0272480430172302,0.0380339473695806,0.0395717720182303,0.0197648257035332,0.00429005368144895],"text":["~PC1: -0.07411669<br />~PC2:  0.030385781<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA831","~PC1: -0.08276550<br />~PC2:  0.047332730<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA811","~PC1: -0.08951188<br />~PC2:  0.034865608<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA833","~PC1: -0.08460961<br />~PC2:  0.027248043<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA813","~PC1: -0.09460684<br />~PC2:  0.038033947<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA812","~PC1: -0.08893799<br />~PC2:  0.039571772<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA834","~PC1: -0.08971429<br />~PC2:  0.019764826<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA832","~PC1: -0.09696341<br />~PC2:  0.004290054<br />~Pop: RUB-LC-US<br />~paste(Region, \"-\", ID): Rubicon River - AAA809"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(74,193,109,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(74,193,109,1)"}},"hoveron":"points","name":"RUB-LC-US","legendgroup":"RUB-LC-US","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.10743866855839,-0.0997353872285285,-0.102263878251029,-0.104430653826448,-0.0989417441320028,-0.0995105627003511,-0.0959959580268752,-0.105842130000028,-0.103477825296823,-0.101480144859789,-0.109250194420062],"y":[0.0442667557461279,0.0591072189276278,0.065337172199868,0.0544183963443869,0.044175425815533,0.0736572645217495,0.0457649036626831,0.0418744977737266,0.0483274806667124,0.0548742098446312,0.0658122836353247],"text":["~PC1: -0.10743867<br />~PC2:  0.044266756<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP724","~PC1: -0.09973539<br />~PC2:  0.059107219<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP728","~PC1: -0.10226388<br />~PC2:  0.065337172<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP734","~PC1: -0.10443065<br />~PC2:  0.054418396<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP732","~PC1: -0.09894174<br />~PC2:  0.044175426<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP727","~PC1: -0.09951056<br />~PC2:  0.073657265<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP733","~PC1: -0.09599596<br />~PC2:  0.045764904<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP725","~PC1: -0.10584213<br />~PC2:  0.041874498<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP726","~PC1: -0.10347783<br />~PC2:  0.048327481<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP730","~PC1: -0.10148014<br />~PC2:  0.054874210<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP729","~PC1: -0.10925019<br />~PC2:  0.065812284<br />~Pop: RUB-USPH<br />~paste(Region, \"-\", ID): Rubicon River - RAP731"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(159,218,58,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(159,218,58,1)"}},"hoveron":"points","name":"RUB-USPH","legendgroup":"RUB-USPH","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.258628591959102,0.264722486064792,0.297453336651293,0.277306491695773,0.301555787109974,0.271650867587637],"y":[0.238599036163449,0.191542926220907,0.230914269909033,0.23108401155888,0.239652877173523,0.181762820166447],"text":["~PC1:  0.25862859<br />~PC2:  0.238599036<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP776","~PC1:  0.26472249<br />~PC2:  0.191542926<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP781","~PC1:  0.29745334<br />~PC2:  0.230914270<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP779","~PC1:  0.27730649<br />~PC2:  0.231084012<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP778","~PC1:  0.30155579<br />~PC2:  0.239652877<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP777","~PC1:  0.27165087<br />~PC2:  0.181762820<br />~Pop: SFA-CAMI<br />~paste(Region, \"-\", ID): Silver Creek - RAP780"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(253,231,37,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(253,231,37,1)"}},"hoveron":"points","name":"SFA-CAMI","legendgroup":"SFA-CAMI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":"rabo_mfa_100k: PC1 (6.14%) / PC2 (3.15%)","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.129790493496564,0.322096086186476],"tickmode":"array","ticktext":["-0.1","0.0","0.1","0.2","0.3"],"tickvals":[-0.1,0,0.1,0.2,0.3],"categoryorder":"array","categoryarray":["-0.1","0.0","0.1","0.2","0.3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"PC1","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.290799395919317,0.264912509225563],"tickmode":"array","ticktext":["-0.2","-0.1","0.0","0.1","0.2"],"tickvals":[-0.2,-0.1,0,0.1,0.2],"categoryorder":"array","categoryarray":["-0.2","-0.1","0.0","0.1","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"PC2","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.913385826771654},"annotations":[{"text":"Pop","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"48de9849b3":{"x":{},"y":{},"colour":{},"label":{},"type":"scatter"}},"cur_data":"48de9849b3","visdat":{"48de9849b3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LIBRARIES ---------------------------------------------------------------</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse); <span class="co"># for ggplot2 and dplyr</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(viridis); <span class="co"># for color palettes</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(plotly) <span class="co"># interactive plotting</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># READ INPUT FILES --------------------------------------------------------</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>covarfile<span class="ot">&lt;-</span><span class="st">&quot;rabo_mfa_100k&quot;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>clstfile<span class="ot">&lt;-</span><span class="st">&quot;rabo_mfa_100k&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># read covar file</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>covar_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;./data/&quot;</span>,covarfile, <span class="st">&quot;.covar&quot;</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>covar <span class="ot">&lt;-</span> <span class="fu">read.table</span>(covar_path, <span class="at">stringsAsFactors =</span> F);</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Read annot file</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>annot <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/bamlist_mrg_&quot;</span>,clstfile, <span class="st">&quot;_clst&quot;</span>),<span class="at">stringsAsFactors =</span> F, <span class="at">header =</span> <span class="cn">TRUE</span>); </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># CREATE EIGEN MATRIX -----------------------------------------------------</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Eigenvalues</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>eig <span class="ot">&lt;-</span> <span class="fu">eigen</span>(covar, <span class="at">symm=</span><span class="cn">TRUE</span>);</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>eig<span class="sc">$</span>val <span class="ot">&lt;-</span> eig<span class="sc">$</span>val<span class="sc">/</span><span class="fu">sum</span>(eig<span class="sc">$</span>val);</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># SET UP PCA -------------------------------------------------------------</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># get PC colnames and set label/col/pops</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>PC <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(eig<span class="sc">$</span>vectors)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(PC) <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;PC&quot;</span>, <span class="fu">colnames</span>(PC))</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>Region <span class="ot">&lt;-</span> <span class="fu">factor</span>(annot<span class="sc">$</span>FID)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>Pop <span class="ot">&lt;-</span> <span class="fu">factor</span>(annot<span class="sc">$</span>CLUSTER)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>PC<span class="sc">$</span>ID <span class="ot">&lt;-</span> <span class="fu">factor</span>(annot<span class="sc">$</span>IID)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># SET UP PLOTS ------------------------------------------------------------</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co"># set the xy vars:</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">=</span> <span class="st">&#39;PC1&#39;</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>y1 <span class="ot">=</span> <span class="st">&#39;PC2&#39;</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the titles for each PCA</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>title12 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;PC1 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">1</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC2 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">2</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>title13 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;PC1 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">1</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC3 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">3</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>title23 <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;PC2 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">2</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="st">&quot; / PC3 (&quot;</span>,<span class="fu">signif</span>(eig<span class="sc">$</span>val[<span class="dv">3</span>], <span class="at">digits=</span><span class="dv">3</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="st">&quot;%)&quot;</span>,<span class="at">sep=</span><span class="st">&quot;&quot;</span>,<span class="at">collapse=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TEST</span><span class="co"> PLOTLY PLOTS ------------------------------------------------------</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 v 2</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>(p1v2 <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(<span class="at">p =</span> <span class="fu">ggplot</span>(<span class="at">data=</span>PC, <span class="fu">aes</span>(<span class="at">x=</span>PC1, <span class="at">y=</span>PC2, <span class="at">color=</span>Pop, </span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">label=</span><span class="fu">paste</span>(Region,<span class="st">&quot;-&quot;</span>,ID))) <span class="sc">+</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">4</span>, <span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">labs</span>(<span class="at">title=</span><span class="fu">paste0</span>(covarfile, <span class="st">&quot;: &quot;</span>,title12)) <span class="sc">+</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">scale_color_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>, <span class="at">option =</span> <span class="st">&quot;D&quot;</span>)))</span></code></pre></div>
+<div id="htmlwidget-f68fae47d95417c114f1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f68fae47d95417c114f1">{"x":{"data":[{"x":[0.14504115141426,0.150497264336029,0.0719646223012949,0.102195704018144,0.0831084506827355,0.131411086441978],"y":[0.0541533464351796,0.0913990760218009,0.039581800162054,0.0240363722861572,-0.00677949123128595,0.0747909712489848],"text":["PC1:  0.14504115<br />PC2:  0.054153346<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP631","PC1:  0.15049726<br />PC2:  0.091399076<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP635","PC1:  0.07196462<br />PC2:  0.039581800<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP622","PC1:  0.10219570<br />PC2:  0.024036372<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP619","PC1:  0.08310845<br />PC2: -0.006779491<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP624","PC1:  0.13141109<br />PC2:  0.074790971<br />Pop: MFA-AMEC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP634"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(68,1,84,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(68,1,84,1)"}},"hoveron":"points","name":"MFA-AMEC","legendgroup":"MFA-AMEC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0978800273482808,0.0806516910458526,0.0912216299167885,0.102786758476786,0.0905945449291509,0.0631931381130749],"y":[-0.160617784332414,-0.169097529486233,-0.164925567059077,-0.16669636523117,-0.129222984583054,-0.146131469203348],"text":["PC1:  0.09788003<br />PC2: -0.160617784<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP796","PC1:  0.08065169<br />PC2: -0.169097529<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP793","PC1:  0.09122163<br />PC2: -0.164925567<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP792","PC1:  0.10278676<br />PC2: -0.166696365<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP791","PC1:  0.09059454<br />PC2: -0.129222985<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP795","PC1:  0.06319314<br />PC2: -0.146131469<br />Pop: MFA-GASC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP794"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(70,51,126,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(70,51,126,1)"}},"hoveron":"points","name":"MFA-GASC","legendgroup":"MFA-GASC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.0912210380412826,0.0717850882233689,0.0787470277788509,0.0993616497392642,0.0889078716301395,0.104145021926913,0.089810737828984,0.104512083297463,0.0741250957280377],"y":[-0.250889247392036,-0.265539763867277,-0.17516088294698,-0.208468348016748,-0.251581207321454,-0.222044871659963,-0.22706683111484,-0.211556713146516,-0.246130266492145],"text":["PC1:  0.09122104<br />PC2: -0.250889247<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - AAA822","PC1:  0.07178509<br />PC2: -0.265539764<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - AAA823","PC1:  0.07874703<br />PC2: -0.175160883<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP782","PC1:  0.09936165<br />PC2: -0.208468348<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP790","PC1:  0.08890787<br />PC2: -0.251581207<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP788","PC1:  0.10414502<br />PC2: -0.222044872<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP787","PC1:  0.08981074<br />PC2: -0.227066831<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP786","PC1:  0.10451208<br />PC2: -0.211556713<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP785","PC1:  0.07412510<br />PC2: -0.246130266<br />Pop: MFA-TODC<br />paste(Region, \"-\", ID): Lower Middle Fork American River - RAP789"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(54,92,141,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(54,92,141,1)"}},"hoveron":"points","name":"MFA-TODC","legendgroup":"MFA-TODC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0820447777021778],"y":[0.0371361568344797],"text":"PC1: -0.08204478<br />PC2:  0.037136157<br />Pop: MFA-US-R<br />paste(Region, \"-\", ID): Upper Middle Fork American River - RAP681","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(39,127,142,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(39,127,142,1)"}},"hoveron":"points","name":"MFA-US-R","legendgroup":"MFA-US-R","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0924678098713703,-0.0995625577495197,-0.0917310927737497,-0.0952449404946745,-0.0878621588995407,-0.0897720194374228,-0.0813497029774799,-0.0929787912715225,-0.089588180257339,-0.0880270673475765,-0.103867099594975,-0.0840769862574565,-0.0908162733607977,-0.0924214032540484,-0.0864869436539457,-0.0849569508700863,-0.0797401886518858,-0.0809672280543497],"y":[0.0233674607632508,0.0289253255799566,0.0296275944211897,0.0200508795678928,0.0300859596052554,0.025265872540561,0.0651339471648095,0.035093344109148,0.0435767184746831,0.0128941460421608,0.0523737874522181,0.0393027785930976,0.0484388549878636,0.0311969859644065,0.0173470115013924,0.0364674400014736,0.0228495080610278,0.024119155367384],"text":["PC1: -0.09246781<br />PC2:  0.023367461<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP706","PC1: -0.09956256<br />PC2:  0.028925326<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP707","PC1: -0.09173109<br />PC2:  0.029627594<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP708","PC1: -0.09524494<br />PC2:  0.020050880<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP718","PC1: -0.08786216<br />PC2:  0.030085960<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP717","PC1: -0.08977202<br />PC2:  0.025265873<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP710","PC1: -0.08134970<br />PC2:  0.065133947<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP721","PC1: -0.09297879<br />PC2:  0.035093344<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP712","PC1: -0.08958818<br />PC2:  0.043576718<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP720","PC1: -0.08802707<br />PC2:  0.012894146<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP722","PC1: -0.10386710<br />PC2:  0.052373787<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP715","PC1: -0.08407699<br />PC2:  0.039302779<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP716","PC1: -0.09081627<br />PC2:  0.048438855<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP711","PC1: -0.09242140<br />PC2:  0.031196986<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP723","PC1: -0.08648694<br />PC2:  0.017347012<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP719","PC1: -0.08495695<br />PC2:  0.036467440<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP709","PC1: -0.07974019<br />PC2:  0.022849508<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP714","PC1: -0.08096723<br />PC2:  0.024119155<br />Pop: NFMFA-SC<br />paste(Region, \"-\", ID): North Fork Middle Fork American River - RAP713"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(31,161,135,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(31,161,135,1)"}},"hoveron":"points","name":"NFMFA-SC","legendgroup":"NFMFA-SC","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.0741166923898024,-0.0827654983772807,-0.0895118806620026,-0.0846096095110012,-0.0946068361245097,-0.0889379935755916,-0.0897142945902051,-0.0969634081472022],"y":[0.0303857808436826,0.0473327303851011,0.0348656079108291,0.0272480430172304,0.0380339473695806,0.0395717720182304,0.0197648257035333,0.00429005368144912],"text":["PC1: -0.07411669<br />PC2:  0.030385781<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA831","PC1: -0.08276550<br />PC2:  0.047332730<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA811","PC1: -0.08951188<br />PC2:  0.034865608<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA833","PC1: -0.08460961<br />PC2:  0.027248043<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA813","PC1: -0.09460684<br />PC2:  0.038033947<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA812","PC1: -0.08893799<br />PC2:  0.039571772<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA834","PC1: -0.08971429<br />PC2:  0.019764826<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA832","PC1: -0.09696341<br />PC2:  0.004290054<br />Pop: RUB-LC-US<br />paste(Region, \"-\", ID): Rubicon River - AAA809"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(74,193,109,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(74,193,109,1)"}},"hoveron":"points","name":"RUB-LC-US","legendgroup":"RUB-LC-US","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.10743866855839,-0.0997353872285284,-0.102263878251028,-0.104430653826448,-0.0989417441320028,-0.099510562700351,-0.0959959580268751,-0.105842130000028,-0.103477825296823,-0.101480144859789,-0.109250194420062],"y":[0.0442667557461281,0.0591072189276279,0.0653371721998682,0.0544183963443875,0.0441754258155334,0.0736572645217495,0.0457649036626831,0.0418744977737269,0.0483274806667129,0.0548742098446315,0.0658122836353252],"text":["PC1: -0.10743867<br />PC2:  0.044266756<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP724","PC1: -0.09973539<br />PC2:  0.059107219<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP728","PC1: -0.10226388<br />PC2:  0.065337172<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP734","PC1: -0.10443065<br />PC2:  0.054418396<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP732","PC1: -0.09894174<br />PC2:  0.044175426<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP727","PC1: -0.09951056<br />PC2:  0.073657265<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP733","PC1: -0.09599596<br />PC2:  0.045764904<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP725","PC1: -0.10584213<br />PC2:  0.041874498<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP726","PC1: -0.10347783<br />PC2:  0.048327481<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP730","PC1: -0.10148014<br />PC2:  0.054874210<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP729","PC1: -0.10925019<br />PC2:  0.065812284<br />Pop: RUB-USPH<br />paste(Region, \"-\", ID): Rubicon River - RAP731"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(159,218,58,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(159,218,58,1)"}},"hoveron":"points","name":"RUB-USPH","legendgroup":"RUB-USPH","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.258628591959102,0.264722486064792,0.297453336651293,0.277306491695773,0.301555787109974,0.271650867587637],"y":[0.238599036163449,0.191542926220907,0.230914269909033,0.23108401155888,0.239652877173523,0.181762820166448],"text":["PC1:  0.25862859<br />PC2:  0.238599036<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP776","PC1:  0.26472249<br />PC2:  0.191542926<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP781","PC1:  0.29745334<br />PC2:  0.230914270<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP779","PC1:  0.27730649<br />PC2:  0.231084012<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP778","PC1:  0.30155579<br />PC2:  0.239652877<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP777","PC1:  0.27165087<br />PC2:  0.181762820<br />Pop: SFA-CAMI<br />paste(Region, \"-\", ID): Silver Creek - RAP780"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(253,231,37,1)","opacity":0.8,"size":15.1181102362205,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(253,231,37,1)"}},"hoveron":"points","name":"SFA-CAMI","legendgroup":"SFA-CAMI","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"rabo_mfa_100k: PC1 (6.14%) / PC2 (3.15%)","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.129790493496564,0.322096086186476],"tickmode":"array","ticktext":["-0.1","0.0","0.1","0.2","0.3"],"tickvals":[-0.1,0,0.1,0.2,0.3],"categoryorder":"array","categoryarray":["-0.1","0.0","0.1","0.2","0.3"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"PC1","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.290799395919317,0.264912509225563],"tickmode":"array","ticktext":["-0.2","-0.1","0.0","0.1","0.2"],"tickvals":[-0.2,-0.1,0,0.0999999999999999,0.2],"categoryorder":"array","categoryarray":["-0.2","-0.1","0.0","0.1","0.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"PC2","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"Pop","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"e5d82bb65bed":{"x":{},"y":{},"colour":{},"label":{},"type":"scatter"}},"cur_data":"e5d82bb65bed","visdat":{"e5d82bb65bed":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <!-- add additional code/examples here, Ryan will add additional PCA code and custom R script here-->
 </div>
 
@@ -721,13 +794,64 @@ div.tocify {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

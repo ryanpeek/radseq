@@ -87,10 +87,11 @@ Load the data in R for plotting. **`NGSrelate`** uses allele frequencies from sa
 ```{r, loaddata, echo=F, eval=F}
 suppressPackageStartupMessages({
   library(tidyverse)
+  library(here)
 })
 
 # read in a res file
-res_rabo <- read_tsv(file = "data_output/angsd/ngs_relate_rabo_only_25k_thresh.res")
+res_rabo <- read_tsv(file = here("data_output/angsd/ngs_relate_rabo_only_25k_thresh.res"))
 
 ```
 
@@ -111,9 +112,10 @@ Let's take a look at an interactive heatmap, only RABO vs. RABO:
 suppressPackageStartupMessages({
   library(tidyverse);
   library(viridis)
+  library(here)
 })
 
-load("data/demo_rabo_res.rda")
+load(here("data/demo_rabo_res.rda"))
 
 plotly::ggplotly(ggplot(data=res_rabo, aes(x=ida, y=idb, fill=k0)) + 
   geom_tile() + 
